@@ -122,6 +122,23 @@ The image intentionally uses host networking. Matter commissioning requires
 mDNS and UDP 5540; use a separate network only if it preserves IPv6 and
 multicast behavior.
 
+## Documentation
+
+The Sphinx source and build system are in
+[sphinx_docs_build](sphinx_docs_build). Build the strict HTML documentation
+locally from WSL or Linux with:
+
+```bash
+cd sphinx_docs_build
+python3 -m pip install -r requirements.txt
+make clean
+make html SPHINXOPTS="-W"
+```
+
+The output is written to `docs/html/` and is ignored by Git. The
+`Sphinx Docs Build` workflow builds and deploys the site to GitHub Pages for
+pushes to `main` and manual workflow runs.
+
 ## Testing And Publishing
 
 `npm publish` runs the `prepublishOnly` verification hook, which cleans and

@@ -2,3 +2,5 @@ node_modules/
 dist/
 coverage/
 .cache/
+docs/html/
+docs/doctrees/
