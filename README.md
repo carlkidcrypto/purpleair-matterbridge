@@ -36,9 +36,34 @@ Registration persists. Start the bridge with:
 ```
 
 ## Local Development
+## Docker
+
+The combined Matterbridge and `purpleair_data_logger` container files are in
+[docker](docker). The image uses Ubuntu 26.04, Node.js 26, and host networking
+so Matter mDNS and UDP traffic can reach the local network. Build and start it
+from this directory:
+
+```bash
+export LOGGER_ARGS='-paa_read_key YOUR_READ_KEY -paa_multiple_sensor_request_json_file /config/sensors.json --matter-only'
+docker compose -f docker/docker-compose.yml up --build -d
+```
+
+For local-network sensors, use the logger's local configuration instead:
+
+```bash
+export LOGGER_ARGS='-paa_local_sensor_request_json_file /config/sensors.json --matter-only'
+```
+
+Add a read-only bind mount such as
+`./sensors.json:/config/sensors.json:ro` to the volumes in
 
 ```bash
 npm install --global --prefix "$HOME/.local" matterbridge@3.10.3
+the LAN.
+
+The image intentionally uses host networking. Matter commissioning requires
+mDNS and UDP 5540; use a separate network only if it preserves IPv6 and
+multicast behavior.
 npm install
 npm_config_prefix="$HOME/.local" npm run dev:link
 npm run typecheck
@@ -67,6 +92,35 @@ The default feed URL is `http://127.0.0.1:9855/matter/sensors`.
 Each accepted sensor receives a stable Matter identity of
 `purpleair-<sensor_index>`. MAC-based display names use the final three MAC
 octets, for example `purple-air-84-a1-4b`.
+
+## Docker
+
+The combined Matterbridge and `purpleair_data_logger` container files are in
+[docker](docker). The image uses Ubuntu 26.04, Node.js 26, and host networking
+so Matter mDNS and UDP traffic can reach the local network. Build and start it
+from this directory:
+
+```bash
+export LOGGER_ARGS='-paa_read_key YOUR_READ_KEY -paa_multiple_sensor_request_json_file /config/sensors.json --matter-only'
+docker compose -f docker/docker-compose.yml up --build -d
+```
+
+For local-network sensors, use the logger's local configuration instead:
+
+```bash
+export LOGGER_ARGS='-paa_local_sensor_request_json_file /config/sensors.json --matter-only'
+```
+
+Add a read-only bind mount such as
+`./sensors.json:/config/sensors.json:ro` to the volumes in
+`docker/docker-compose.yml`. Matterbridge state is persisted in the
+`matterbridge-data` volume. The logger serves its private feed on
+`127.0.0.1:9855`, and Matterbridge consumes that feed without exposing it on
+the LAN.
+
+The image intentionally uses host networking. Matter commissioning requires
+mDNS and UDP 5540; use a separate network only if it preserves IPv6 and
+multicast behavior.
 
 ## Testing And Publishing
 
