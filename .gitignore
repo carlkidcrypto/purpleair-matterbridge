@@ -4,3 +4,4 @@ coverage/
 .cache/
 docs/html/
 docs/doctrees/
+sphinx_docs_build/landing/.doctrees/

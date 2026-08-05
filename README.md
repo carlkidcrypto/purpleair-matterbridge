@@ -137,7 +137,11 @@ make html SPHINXOPTS="-W"
 
 The output is written to `docs/html/` and is ignored by Git. The
 `Sphinx Docs Build` workflow builds and deploys the site to GitHub Pages for
-pushes to `main` and manual workflow runs.
+pushes to `main` and manual workflow runs. When a GitHub release is published,
+the workflow also builds that release tag and prepares a versioned
+`docs/html_<tag>/` snapshot plus a landing-page link in an automated pull
+request. Those versioned directories are intentionally tracked so released
+documentation remains locked as the project changes.
 
 ## Testing And Publishing
 

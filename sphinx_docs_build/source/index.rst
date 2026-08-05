@@ -1,5 +1,5 @@
 purpleair-matterbridge documentation
-===================================
+=====================================
 
 Matterbridge plugin that exposes PurpleAir Matter JSON as bridged Matter air
 quality sensors.

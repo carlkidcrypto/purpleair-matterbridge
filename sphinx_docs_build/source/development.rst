@@ -18,6 +18,20 @@ The generated site is written to ``docs/html/``. Build warnings are treated as
 errors in the command above, which catches broken references and malformed
 reStructuredText before a change reaches GitHub Actions.
 
+Versioned documentation
+-----------------------
+
+The GitHub Pages landing page is built from
+``sphinx_docs_build/landing/source/index.rst``. It always links to the latest
+site at ``docs/html/`` and lists locked release snapshots at
+``docs/html_<release-tag>/``.
+
+Publishing a GitHub release starts a workflow that builds the documentation
+from the release tag, updates the landing-page version list between its
+``VERSION_LIST_START`` and ``VERSION_LIST_END`` markers, and opens a pull
+request containing the snapshot. Merge that pull request to preserve the
+release documentation as the project evolves.
+
 Code checks
 -----------
 
