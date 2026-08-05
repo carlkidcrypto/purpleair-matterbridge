@@ -2,6 +2,10 @@ node_modules/
 dist/
 coverage/
 .cache/
-docs/html/
 docs/doctrees/
+docs/.doctrees/
+docs/html/.doctrees/
+docs/html_v*/.doctrees/
+docs/html/.buildinfo
+docs/html_v*/.buildinfo
 sphinx_docs_build/landing/.doctrees/

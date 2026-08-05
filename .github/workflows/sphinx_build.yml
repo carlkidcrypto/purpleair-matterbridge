@@ -50,7 +50,7 @@ jobs:
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: docs/html/
+          path: docs/
 
   deploy_pages:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -165,6 +165,7 @@ jobs:
           base: main
           delete-branch: true
           add-paths: |
+            docs/.nojekyll
             docs/html_${{ github.event.release.tag_name }}/
             sphinx_docs_build/landing/source/index.rst
             docs/index.html
