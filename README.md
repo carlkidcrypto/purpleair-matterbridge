@@ -164,13 +164,12 @@ The final command should print:
 The Docker publishing workflow targets
 `carlkidcrypto/purpleair-matterbridge-images` on Docker Hub and the matching
 repository on GHCR. Repository tags are configured as immutable, so the
-workflow does not publish `latest` or reusable bare version tags. Each image
-gets unique tags containing the package version or commit, the GitHub run ID,
-and the run attempt, for example:
+workflow does not publish `latest`, reusable bare version tags, or a duplicate
+SHA-only tag. Each build publishes one unique tag containing the package
+version, commit, GitHub run ID, and run attempt, for example:
 
 ```text
 0.1.0-35eb4068220a-123456789-1
-sha-35eb4068220a-123456789-1
 ```
 
 Use the complete generated tag when pulling an image. A new workflow run or
@@ -199,11 +198,49 @@ documentation remains locked as the project changes.
 
 ## Testing And Publishing
 
-`npm publish` runs the `prepublishOnly` verification hook, which cleans and
-rebuilds `dist`, typechecks the project, and runs the test suite. The package is
-configured for public npm access. Before publishing from a clean checkout,
-install and link Matterbridge as shown in the local-development commands, then
-run `npm publish`.
+The package is configured for public npm access. From a clean checkout, install
+the locked dependencies and run the release checks:
+
+```bash
+npm ci
+npm run typecheck
+npm test
+npm run build
+npm run lint
+npm run format:check
+npm pack --dry-run
+npm publish --dry-run
+```
+
+Before the first publication, authenticate and verify the npm account:
+
+```bash
+npm login
+npm whoami
+```
+
+For a new release, update both package metadata files with npm and push the
+generated commit and tag:
+
+```bash
+npm version patch
+# or: npm version minor
+# or: npm version major
+git push origin main --follow-tags
+```
+
+Then publish the public package. The `prepublishOnly` hook automatically cleans
+and rebuilds `dist`, typechecks, and runs the tests before npm uploads anything:
+
+```bash
+npm publish --access public
+npm view purpleair-matterbridge version
+```
+
+Published npm versions are immutable. Never reuse a version that has already
+been published. The complete maintainer runbook, including prereleases,
+registry verification, package inspection, release ordering, and troubleshooting
+is in [npm-publishing.rst](sphinx_docs_build/source/npm-publishing.rst).
 
 See [Requirements.rst](Requirements.rst) for normative behavior,
 [PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results, and
