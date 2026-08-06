@@ -122,6 +122,60 @@ The image intentionally uses host networking. Matter commissioning requires
 mDNS and UDP 5540; use a separate network only if it preserves IPv6 and
 multicast behavior.
 
+### Verify the image from WSL
+
+The container build uses Ubuntu 26.04, Node.js 26, the latest npm and npx
+available for that Node release, Matterbridge 3.10.3, and the published
+`purpleair-data-logger` 1.5.0a2 package on Python 3.14. When Docker Desktop's
+Linux engine is unavailable, use the Docker Engine installed inside WSL:
+
+```bash
+cd /home/carlkidcrypto/Github/purpleair-matterbridge
+
+docker build \
+	--progress=plain \
+	--build-arg LOGGER_VERSION=1.5.0a2 \
+	--build-arg MATTERBRIDGE_VERSION=3.10.3 \
+	-f docker/Dockerfile \
+	-t purpleair-matterbridge:logger-1.5.0a2 .
+```
+
+The build output should show the Matterbridge TypeScript build completing and
+the logger package being installed. Verify the generated image and the
+published logger module with:
+
+```bash
+docker image inspect purpleair-matterbridge:logger-1.5.0a2
+
+docker run --rm \
+	--entrypoint /opt/logger-venv/bin/python \
+	purpleair-matterbridge:logger-1.5.0a2 \
+	-c 'import importlib.metadata as m; print(m.version("purpleair-data-logger"))'
+```
+
+The final command should print:
+
+```text
+1.5.0a2
+```
+
+### Published image tags
+
+The Docker publishing workflow targets
+`carlkidcrypto/purpleair-matterbridge-images` on Docker Hub and the matching
+repository on GHCR. Repository tags are configured as immutable, so the
+workflow does not publish `latest` or reusable bare version tags. Each image
+gets unique tags containing the package version or commit, the GitHub run ID,
+and the run attempt, for example:
+
+```text
+0.1.0-35eb4068220a-123456789-1
+sha-35eb4068220a-123456789-1
+```
+
+Use the complete generated tag when pulling an image. A new workflow run or
+retry creates a new tag instead of attempting to move an existing tag.
+
 ## Documentation
 
 The Sphinx source and build system are in
