@@ -16,7 +16,7 @@ on:
       - .github/workflows/build_and_publish_docker_images.yml
 
 env:
-  DOCKER_REPO: carlkidcrypto/purpleair-matterbridge
+  DOCKER_REPO: carlkidcrypto/purpleair-matterbridge-images
   GHCR_REPO: ghcr.io/carlkidcrypto/purpleair-matterbridge
 
 jobs:
@@ -53,16 +53,16 @@ jobs:
           set -euo pipefail
           version=$(node -p "require('./package.json').version")
           short_sha="${GITHUB_SHA::12}"
+          unique_suffix="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           {
             echo "version=${version}"
             echo "short_sha=${short_sha}"
+            echo "unique_suffix=${unique_suffix}"
             echo "docker_tags<<EOF"
-            echo "${DOCKER_REPO}:${version}"
-            echo "${DOCKER_REPO}:latest"
-            echo "${DOCKER_REPO}:sha-${short_sha}"
-            echo "${GHCR_REPO}:${version}"
-            echo "${GHCR_REPO}:latest"
-            echo "${GHCR_REPO}:sha-${short_sha}"
+            echo "${DOCKER_REPO}:${version}-${short_sha}-${unique_suffix}"
+            echo "${DOCKER_REPO}:sha-${short_sha}-${unique_suffix}"
+            echo "${GHCR_REPO}:${version}-${short_sha}-${unique_suffix}"
+            echo "${GHCR_REPO}:sha-${short_sha}-${unique_suffix}"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 

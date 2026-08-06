@@ -159,6 +159,23 @@ The final command should print:
 1.5.0a2
 ```
 
+### Published image tags
+
+The Docker publishing workflow targets
+`carlkidcrypto/purpleair-matterbridge-images` on Docker Hub and the matching
+repository on GHCR. Repository tags are configured as immutable, so the
+workflow does not publish `latest` or reusable bare version tags. Each image
+gets unique tags containing the package version or commit, the GitHub run ID,
+and the run attempt, for example:
+
+```text
+0.1.0-35eb4068220a-123456789-1
+sha-35eb4068220a-123456789-1
+```
+
+Use the complete generated tag when pulling an image. A new workflow run or
+retry creates a new tag instead of attempting to move an existing tag.
+
 ## Documentation
 
 The Sphinx source and build system are in
