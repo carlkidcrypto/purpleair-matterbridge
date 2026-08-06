@@ -89,8 +89,10 @@ PAMB-021
    image configuration.
 
 PAMB-022
-   The runtime SHALL persist Matterbridge state in the ``matterbridge-data``
-   volume mounted at ``/data/matterbridge``.
+   The runtime SHALL persist the Matterbridge home directory, including
+   commissioning state, in the ``matterbridge-data`` volume mounted at
+   ``/data``. The logger data volume MAY be mounted below that path at
+   ``/data/logger``.
 
 PAMB-023
    The runtime SHALL persist logger data in the ``logger-data`` volume mounted
@@ -122,6 +124,21 @@ PAMB-033
 PAMB-034
    The entrypoint SHALL terminate with a non-zero status when the required
    logger configuration is unavailable.
+
+PAMB-035
+   On first startup, the entrypoint SHALL preserve Matterbridge console output
+   containing the pairing QR code and numerical pairing code in the container
+   logs.
+
+PAMB-036
+   The runtime SHALL NOT reset Matterbridge commissioning state during an
+   ordinary restart, image pull, or container replacement.
+
+PAMB-037
+   The Docker lifecycle scripts SHALL perform a Matterbridge factory reset
+   only when the operator explicitly sets ``FDR=1``. The reset SHALL complete
+   before the normal Matterbridge process starts and SHALL use the supported
+   ``matterbridge --factoryreset`` command.
 
 Build and verification
 ----------------------

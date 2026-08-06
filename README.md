@@ -71,6 +71,9 @@ IMAGE_TAG='0.1.0-35eb4068220a-123456789-1' \
 The script pulls from GHCR by default, stops and removes the existing
 `purpleair-matterbridge` container, then starts the pulled image with host
 networking, persistent named volumes, and the settings file mounted read-only.
+The Matterbridge home, including its commissioning identity, is stored in the
+`matterbridge-data` volume. Replacing the container or pulling a new immutable
+image does not reset pairing state.
 To use Docker Hub instead, set the repository explicitly:
 
 ```bash
@@ -78,6 +81,35 @@ IMAGE_REPOSITORY='carlkidcrypto/purpleair-matterbridge-images' \
 IMAGE_TAG='0.1.0-35eb4068220a-123456789-1' \
 	./docker/update_pa_matterbridge.sh /absolute/path/to/sensors.json
 ```
+
+### Matter pairing and factory reset
+
+On the first startup, Matterbridge prints its pairing QR code and numerical
+pairing code to the container log. Follow the live output with:
+
+```bash
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+Commission the bridge with either code. The commissioning identity remains in
+the `matterbridge-data` volume across restarts, image pulls, and container
+replacement. Do not remove that volume unless you intentionally want to lose
+the pairing state.
+
+To deliberately erase all Matterbridge commissioning and registered-plugin
+state, set `FDR=1` for one startup operation. The script stops the existing
+container, runs Matterbridge's supported `--factoryreset` command against the
+persistent volume, and starts a clean instance that prints new pairing codes:
+
+```bash
+FDR=1 ./docker/spinup.sh /absolute/path/to/sensors.json
+
+FDR=1 IMAGE_TAG='0.1.0-35eb4068220a-123456789-1' \
+	./docker/update_pa_matterbridge.sh /absolute/path/to/sensors.json
+```
+
+Factory reset is destructive and invalidates all existing controller pairings.
+Normal startup and image updates leave the commissioning state untouched.
 
 For local-network sensors, use the logger's local configuration instead:
 

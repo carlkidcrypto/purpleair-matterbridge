@@ -44,5 +44,5 @@ RUN uv venv --python 3.14 /opt/logger-venv \
     && uv pip install --python /opt/logger-venv/bin/python --no-cache "purpleair-data-logger==${LOGGER_VERSION}"
 
 EXPOSE 5540/udp 5353/udp
-VOLUME ["/data/matterbridge", "/data/logger"]
+VOLUME ["/data"]
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
