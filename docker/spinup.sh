@@ -62,7 +62,7 @@ export PURPLEAIR_SETTINGS_FILE="$SETTINGS_FILE"
 
 cd "$REPO_DIR"
 if [ "${FDR:-0}" = "1" ]; then
-    printf '%s\n' "FDR=1: factory-resetting the persistent Matterbridge data volume." >&2
+    printf '%s\n' "--fdr 1: factory-resetting the persistent Matterbridge data volume." >&2
     docker compose -f "$COMPOSE_FILE" stop purpleair-matterbridge 2>/dev/null || true
     docker compose -f "$COMPOSE_FILE" build
     docker compose -f "$COMPOSE_FILE" run --rm --no-deps \

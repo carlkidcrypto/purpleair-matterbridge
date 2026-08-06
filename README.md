@@ -64,8 +64,9 @@ locally, use `docker/update_pa_matterbridge.sh`. Published tags are immutable,
 so provide the complete tag from the Docker publishing workflow:
 
 ```bash
-IMAGE_TAG='0.1.0-35eb4068220a-123456789-1' \
-	./docker/update_pa_matterbridge.sh /absolute/path/to/sensors.json
+./docker/update_pa_matterbridge.sh \
+	--image-tag '0.1.0-35eb4068220a-123456789-1' \
+	/absolute/path/to/sensors.json
 ```
 
 The script pulls from GHCR by default, stops and removes the existing
@@ -77,9 +78,10 @@ image does not reset pairing state.
 To use Docker Hub instead, set the repository explicitly:
 
 ```bash
-IMAGE_REPOSITORY='carlkidcrypto/purpleair-matterbridge-images' \
-IMAGE_TAG='0.1.0-35eb4068220a-123456789-1' \
-	./docker/update_pa_matterbridge.sh /absolute/path/to/sensors.json
+./docker/update_pa_matterbridge.sh \
+	--image-repository 'carlkidcrypto/purpleair-matterbridge-images' \
+	--image-tag '0.1.0-35eb4068220a-123456789-1' \
+	/absolute/path/to/sensors.json
 ```
 
 ### Matter pairing and factory reset
@@ -97,15 +99,17 @@ replacement. Do not remove that volume unless you intentionally want to lose
 the pairing state.
 
 To deliberately erase all Matterbridge commissioning and registered-plugin
-state, set `FDR=1` for one startup operation. The script stops the existing
+state, pass `--fdr 1` for one startup operation. The script stops the existing
 container, runs Matterbridge's supported `--factoryreset` command against the
 persistent volume, and starts a clean instance that prints new pairing codes:
 
 ```bash
-FDR=1 ./docker/spinup.sh /absolute/path/to/sensors.json
+./docker/spinup.sh --fdr 1 /absolute/path/to/sensors.json
 
-FDR=1 IMAGE_TAG='0.1.0-35eb4068220a-123456789-1' \
-	./docker/update_pa_matterbridge.sh /absolute/path/to/sensors.json
+./docker/update_pa_matterbridge.sh \
+	--fdr 1 \
+	--image-tag '0.1.0-35eb4068220a-123456789-1' \
+	/absolute/path/to/sensors.json
 ```
 
 Factory reset is destructive and invalidates all existing controller pairings.

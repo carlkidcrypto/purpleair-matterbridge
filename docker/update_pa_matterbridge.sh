@@ -76,7 +76,7 @@ docker pull "$IMAGE"
 docker rm --force "$CONTAINER_NAME" 2>/dev/null || true
 
 if [ "$FDR" = "1" ]; then
-    printf '%s\n' "FDR=1: factory-resetting the persistent Matterbridge data volume." >&2
+    printf '%s\n' "--fdr 1: factory-resetting the persistent Matterbridge data volume." >&2
     docker run --rm \
         --network host \
         --volume matterbridge-data:/data \
