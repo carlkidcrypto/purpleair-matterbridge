@@ -44,9 +44,20 @@ so Matter mDNS and UDP traffic can reach the local network. Build and start it
 from this directory:
 
 ```bash
-export LOGGER_ARGS='-paa_read_key YOUR_READ_KEY -paa_multiple_sensor_request_json_file /config/sensors.json --matter-only'
-docker compose -f docker/docker-compose.yml up --build -d
+./docker/spinup.sh /absolute/path/to/sensors.json
 ```
+
+The script accepts one path to the PurpleAir data logger settings JSON file.
+It mounts that file read-only at `/config/purpleair-settings.json`, starts the
+container in the background, and configures the logger to use it.
+
+```bash
+./docker/spinup.sh ./sensors.json
+```
+
+It builds the image, removes orphaned Compose containers, and prints the
+resulting container status. It can be run from any directory inside the
+repository.
 
 For local-network sensors, use the logger's local configuration instead:
 
