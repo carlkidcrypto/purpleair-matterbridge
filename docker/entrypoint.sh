@@ -21,6 +21,7 @@ trap cleanup INT TERM EXIT
 printf '%s\n' "Matterbridge pairing information follows below. On first startup, scan the QR code or enter the numerical pairing code shown in these logs." >&2
 
 /opt/matterbridge/node_modules/.bin/matterbridge \
+    --docker \
     --add /opt/plugin \
     --bridge \
     --productName "Purple Air Matterbridge" \

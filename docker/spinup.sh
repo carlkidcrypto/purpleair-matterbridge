@@ -5,9 +5,40 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPO_DIR=$(dirname -- "$SCRIPT_DIR")
 COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
+FDR=0
+
+usage() {
+    printf '%s\n' "Usage: ./spinup.sh [--fdr 0|1] PATH_TO_PURPLEAIR_SETTINGS_JSON" >&2
+}
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --fdr)
+            [ "$#" -ge 2 ] || { usage; exit 1; }
+            FDR=$2
+            shift 2
+            ;;
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            printf '%s\n' "Unknown option: $1" >&2
+            usage
+            exit 1
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
 
 if [ "$#" -ne 1 ]; then
-    printf '%s\n' "Usage: FDR=1 ./docker/spinup.sh PATH_TO_PURPLEAIR_SETTINGS_JSON" >&2
+    usage
     exit 1
 fi
 
@@ -43,3 +74,5 @@ docker compose -f "$COMPOSE_FILE" up --build -d --remove-orphans
 
 printf '%s\n' "purpleair-matterbridge is running."
 docker compose -f "$COMPOSE_FILE" ps
+printf '%s\n' "Recent Matterbridge logs (pairing QR/manual code is shown here on first startup):"
+docker compose -f "$COMPOSE_FILE" logs --no-color --tail 200 purpleair-matterbridge
