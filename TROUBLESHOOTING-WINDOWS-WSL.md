@@ -3,6 +3,40 @@
 This guide covers Matter commissioning when Matterbridge runs in WSL 2 and the
 Matter controller, such as Home Assistant, runs elsewhere on the LAN.
 
+## Build the Docker image from WSL
+
+The combined image is built for Ubuntu 26.04 and installs Node.js 26, the
+latest npm and npx available for that Node release, Matterbridge 3.10.3, and
+`purpleair-data-logger` 1.5.0a2 with Python 3.14. Docker Desktop's Linux
+engine does not need to be running when WSL has its own Docker Engine.
+
+From an Ubuntu WSL terminal at the repository root, run:
+
+```bash
+docker build \
+  --progress=plain \
+  --build-arg LOGGER_VERSION=1.5.0a2 \
+  --build-arg MATTERBRIDGE_VERSION=3.10.3 \
+  -f docker/Dockerfile \
+  -t purpleair-matterbridge:logger-1.5.0a2 .
+```
+
+The build should finish after the final runtime-user setup layer. Confirm that
+the image was exported and that the published logger is importable:
+
+```bash
+docker image inspect purpleair-matterbridge:logger-1.5.0a2
+
+docker run --rm \
+  --entrypoint /opt/logger-venv/bin/python \
+  purpleair-matterbridge:logger-1.5.0a2 \
+  -c 'import importlib.metadata as m; print(m.version("purpleair-data-logger"))'
+```
+
+The version check should print `1.5.0a2`. If the Docker Desktop client reports
+that `dockerDesktopLinuxEngine` is unavailable, run these commands from WSL so
+the Docker CLI uses the WSL Engine instead.
+
 ## Known-good network shape
 
 - WSL uses mirrored networking.
