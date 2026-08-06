@@ -59,6 +59,26 @@ It builds the image, removes orphaned Compose containers, and prints the
 resulting container status. It can be run from any directory inside the
 repository.
 
+To update an existing installation from a published image without building
+locally, use `docker/update_pa_matterbridge.sh`. Published tags are immutable,
+so provide the complete tag from the Docker publishing workflow:
+
+```bash
+IMAGE_TAG='0.1.0-35eb4068220a-123456789-1' \
+	./docker/update_pa_matterbridge.sh /absolute/path/to/sensors.json
+```
+
+The script pulls from GHCR by default, stops and removes the existing
+`purpleair-matterbridge` container, then starts the pulled image with host
+networking, persistent named volumes, and the settings file mounted read-only.
+To use Docker Hub instead, set the repository explicitly:
+
+```bash
+IMAGE_REPOSITORY='carlkidcrypto/purpleair-matterbridge-images' \
+IMAGE_TAG='0.1.0-35eb4068220a-123456789-1' \
+	./docker/update_pa_matterbridge.sh /absolute/path/to/sensors.json
+```
+
 For local-network sensors, use the logger's local configuration instead:
 
 ```bash

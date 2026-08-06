@@ -65,6 +65,18 @@ PAMB-015
    The logger SHALL serve its Matter JSON feed on ``127.0.0.1:9855`` inside
    the container.
 
+PAMB-016
+   The registry update script SHALL accept exactly one command-line argument,
+   which SHALL be the path to the host PurpleAir settings JSON file.
+
+PAMB-017
+   The registry update script SHALL pull a complete immutable image tag before
+   replacing the running container and SHALL NOT build the image locally.
+
+PAMB-018
+   The registry update script SHALL support GHCR by default and SHALL support
+   Docker Hub when ``IMAGE_REPOSITORY`` is explicitly set.
+
 Networking and persistence
 --------------------------
 
