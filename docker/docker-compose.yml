@@ -5,7 +5,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         MATTERBRIDGE_VERSION: "3.10.3"
-        LOGGER_REF: "main"
+        LOGGER_VERSION: "1.5.0a2"
     container_name: purpleair-matterbridge
     network_mode: host
     restart: unless-stopped

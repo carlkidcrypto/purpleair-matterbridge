@@ -1,8 +1,7 @@
 FROM ubuntu:26.04
 
 ARG MATTERBRIDGE_VERSION=3.10.3
-ARG LOGGER_REPOSITORY=https://github.com/carlkidcrypto/purpleair_data_logger.git
-ARG LOGGER_REF=main
+ARG LOGGER_VERSION=1.5.0a2
 
 ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/data \
@@ -11,7 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LOGGER_ARGS=
 
 RUN apt-get update \
-    && apt-get install --yes --no-install-recommends ca-certificates curl git \
+    && apt-get install --yes --no-install-recommends ca-certificates curl \
     && curl --fail --silent --show-error https://deb.nodesource.com/setup_26.x | bash - \
     && apt-get install --yes --no-install-recommends nodejs \
     && curl --fail --silent --show-error --location https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz \
@@ -28,10 +27,8 @@ RUN npm ci --include=dev --ignore-scripts \
     && ln -s /opt/matterbridge/node_modules/matterbridge node_modules/matterbridge \
     && npm run build
 
-RUN git clone --depth 1 --branch "${LOGGER_REF}" "${LOGGER_REPOSITORY}" /opt/purpleair_data_logger \
-    && uv venv --python 3.13 /opt/logger-venv \
-    && uv pip install --python /opt/logger-venv/bin/python --no-cache /opt/purpleair_data_logger \
-    && rm -rf /opt/purpleair_data_logger/.git
+RUN uv venv --python 3.14 /opt/logger-venv \
+    && uv pip install --python /opt/logger-venv/bin/python --no-cache "purpleair-data-logger==${LOGGER_VERSION}"
 
 RUN mkdir -p /data/matterbridge /data/logger
 COPY docker/entrypoint.sh /usr/local/bin/docker-entrypoint
