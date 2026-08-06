@@ -7,7 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/data \
     PATH=/opt/plugin/node_modules/.bin:/opt/matterbridge/node_modules/.bin:/opt/logger-venv/bin:$PATH \
     NODE_ENV=production \
-    LOGGER_ARGS=
+    LOGGER_ARGS="-paa_multiple_sensor_request_json_file /config/purpleair-settings.json --matter-only" \
+    PURPLEAIR_SETTINGS_FILE=/config/purpleair-settings.json
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends ca-certificates curl \

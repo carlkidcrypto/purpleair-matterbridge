@@ -60,9 +60,7 @@ jobs:
             echo "unique_suffix=${unique_suffix}"
             echo "docker_tags<<EOF"
             echo "${DOCKER_REPO}:${version}-${short_sha}-${unique_suffix}"
-            echo "${DOCKER_REPO}:sha-${short_sha}-${unique_suffix}"
             echo "${GHCR_REPO}:${version}-${short_sha}-${unique_suffix}"
-            echo "${GHCR_REPO}:sha-${short_sha}-${unique_suffix}"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
