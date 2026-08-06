@@ -248,6 +248,12 @@ npm publish --access public
 npm view purpleair-matterbridge version
 ```
 
+The `Publish npm Package` workflow also publishes automatically when a
+semantic-version tag is pushed. Configure npm trusted publishing for
+`.github/workflows/publish_npm.yml` first, then use `npm version` and push the
+generated tag. The workflow runs the release checks, publishes with npm
+provenance, and does not require an `NPM_TOKEN` secret.
+
 Published npm versions are immutable. Never reuse a version that has already
 been published. The complete maintainer runbook, including prereleases,
 registry verification, package inspection, release ordering, and troubleshooting

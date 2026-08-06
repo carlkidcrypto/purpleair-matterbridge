@@ -110,6 +110,37 @@ Use a fresh temporary install when checking the package contents. Do not test
 only from the repository checkout, because local ``src`` files and development
 dependencies can hide packaging mistakes.
 
+Automated publication
+---------------------
+
+The ``Publish npm Package`` workflow in
+``.github/workflows/publish_npm.yml`` publishes automatically when a semantic
+version tag is pushed. It also supports a manual workflow dispatch. Before
+using it, configure npm trusted publishing for the
+``carlkidcrypto/purpleair-matterbridge`` GitHub repository and select:
+
+* workflow file: ``.github/workflows/publish_npm.yml``;
+* GitHub environment: none; and
+* package: ``purpleair-matterbridge``.
+
+The workflow uses the GitHub Actions OIDC token and publishes with npm
+provenance. It does not require an ``NPM_TOKEN`` repository secret. The
+workflow installs the lockfile, runs type checking, tests, the production
+build, linting, formatting checks, and package inspection before publishing.
+
+To use the automated path, update the package version and push the generated
+commit and tag:
+
+.. code-block:: bash
+
+   npm version patch
+   git push origin main --follow-tags
+
+The workflow verifies that the tag version matches ``package.json`` before it
+publishes. npm versions remain immutable, so a failed publication must be
+diagnosed and rerun only when that version has not already reached the npm
+registry.
+
 Release sequence
 ----------------
 
@@ -119,7 +150,8 @@ A recommended release sequence is:
 #. Run the local validation and ``npm pack --dry-run`` checks.
 #. Run ``npm version`` to create the new package version, commit, and tag.
 #. Push the release commit and tag to GitHub.
-#. Publish the npm package with ``npm publish --access public``.
+#. Publish the npm package with the ``Publish npm Package`` workflow, or use
+   ``npm publish --access public`` for the manual path.
 #. Create the matching GitHub release from the pushed tag.
 #. Allow the documentation workflow to create the locked versioned docs pull
    request.
