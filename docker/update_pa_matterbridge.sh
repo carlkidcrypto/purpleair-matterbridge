@@ -6,9 +6,10 @@ CONTAINER_NAME=purpleair-matterbridge
 IMAGE_REPOSITORY=ghcr.io/carlkidcrypto/purpleair-matterbridge
 IMAGE_TAG=
 FDR=0
+SETTINGS_FILE=
 
 usage() {
-    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --image-tag VERSION-SHA-RUN-ATTEMPT [--image-repository REPOSITORY] [--fdr 0|1] PATH_TO_PURPLEAIR_SETTINGS_JSON" >&2
+    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --image-tag VERSION-SHA-RUN-ATTEMPT --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--image-repository REPOSITORY] [--fdr]" >&2
 }
 
 while [ "$#" -gt 0 ]; do
@@ -24,8 +25,12 @@ while [ "$#" -gt 0 ]; do
             shift 2
             ;;
         --fdr)
+            FDR=1
+            shift
+            ;;
+        --settings-file)
             [ "$#" -ge 2 ] || { usage; exit 1; }
-            FDR=$2
+            SETTINGS_FILE=$2
             shift 2
             ;;
         --help|-h)
@@ -47,12 +52,11 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-if [ "$#" -ne 1 ] || [ -z "$IMAGE_TAG" ]; then
+if [ "$#" -ne 0 ] || [ -z "$IMAGE_TAG" ] || [ -z "$SETTINGS_FILE" ]; then
     usage
     exit 1
 fi
 
-SETTINGS_FILE=$1
 case "$SETTINGS_FILE" in
     /*) ;;
     *) SETTINGS_FILE=$(pwd)/$SETTINGS_FILE ;;
@@ -63,11 +67,6 @@ if [ ! -f "$SETTINGS_FILE" ]; then
     exit 1
 fi
 
-case "$FDR" in
-    0|1) ;;
-    *) printf '%s\n' "FDR must be 0 or 1" >&2; exit 1 ;;
-esac
-
 IMAGE="$IMAGE_REPOSITORY:$IMAGE_TAG"
 
 printf '%s\n' "Pulling $IMAGE"
@@ -76,7 +75,7 @@ docker pull "$IMAGE"
 docker rm --force "$CONTAINER_NAME" 2>/dev/null || true
 
 if [ "$FDR" = "1" ]; then
-    printf '%s\n' "--fdr 1: factory-resetting the persistent Matterbridge data volume." >&2
+    printf '%s\n' "--fdr: factory-resetting the persistent Matterbridge data volume." >&2
     docker run --rm \
         --network host \
         --volume matterbridge-data:/data \

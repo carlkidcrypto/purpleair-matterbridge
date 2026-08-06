@@ -6,16 +6,21 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPO_DIR=$(dirname -- "$SCRIPT_DIR")
 COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
 FDR=0
+SETTINGS_FILE=
 
 usage() {
-    printf '%s\n' "Usage: ./spinup.sh [--fdr 0|1] PATH_TO_PURPLEAIR_SETTINGS_JSON" >&2
+    printf '%s\n' "Usage: ./spinup.sh --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--fdr]" >&2
 }
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --fdr)
+            FDR=1
+            shift
+            ;;
+        --settings-file)
             [ "$#" -ge 2 ] || { usage; exit 1; }
-            FDR=$2
+            SETTINGS_FILE=$2
             shift 2
             ;;
         --help|-h)
@@ -37,12 +42,11 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 0 ] || [ -z "$SETTINGS_FILE" ]; then
     usage
     exit 1
 fi
 
-SETTINGS_FILE=$1
 case "$SETTINGS_FILE" in
     /*) ;;
     *) SETTINGS_FILE=$(pwd)/$SETTINGS_FILE ;;
@@ -53,16 +57,11 @@ if [ ! -f "$SETTINGS_FILE" ]; then
     exit 1
 fi
 
-case "${FDR:-0}" in
-    0|1) ;;
-    *) printf '%s\n' "FDR must be 0 or 1" >&2; exit 1 ;;
-esac
-
 export PURPLEAIR_SETTINGS_FILE="$SETTINGS_FILE"
 
 cd "$REPO_DIR"
-if [ "${FDR:-0}" = "1" ]; then
-    printf '%s\n' "--fdr 1: factory-resetting the persistent Matterbridge data volume." >&2
+if [ "$FDR" = "1" ]; then
+    printf '%s\n' "--fdr: factory-resetting the persistent Matterbridge data volume." >&2
     docker compose -f "$COMPOSE_FILE" stop purpleair-matterbridge 2>/dev/null || true
     docker compose -f "$COMPOSE_FILE" build
     docker compose -f "$COMPOSE_FILE" run --rm --no-deps \

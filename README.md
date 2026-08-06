@@ -44,15 +44,15 @@ so Matter mDNS and UDP traffic can reach the local network. Build and start it
 from this directory:
 
 ```bash
-./docker/spinup.sh /absolute/path/to/sensors.json
+./docker/spinup.sh --settings-file /absolute/path/to/sensors.json
 ```
 
-The script accepts one path to the PurpleAir data logger settings JSON file.
-It mounts that file read-only at `/config/purpleair-settings.json`, starts the
-container in the background, and configures the logger to use it.
+The script accepts the settings path through `--settings-file`. It mounts that
+file read-only at `/config/purpleair-settings.json`, starts the container in
+the background, and configures the logger to use it.
 
 ```bash
-./docker/spinup.sh ./sensors.json
+./docker/spinup.sh --settings-file ./sensors.json
 ```
 
 It builds the image, removes orphaned Compose containers, and prints the
@@ -66,7 +66,7 @@ so provide the complete tag from the Docker publishing workflow:
 ```bash
 ./docker/update_pa_matterbridge.sh \
 	--image-tag '0.1.0-35eb4068220a-123456789-1' \
-	/absolute/path/to/sensors.json
+	--settings-file /absolute/path/to/sensors.json
 ```
 
 The script pulls from GHCR by default, stops and removes the existing
@@ -81,7 +81,7 @@ To use Docker Hub instead, set the repository explicitly:
 ./docker/update_pa_matterbridge.sh \
 	--image-repository 'carlkidcrypto/purpleair-matterbridge-images' \
 	--image-tag '0.1.0-35eb4068220a-123456789-1' \
-	/absolute/path/to/sensors.json
+	--settings-file /absolute/path/to/sensors.json
 ```
 
 ### Matter pairing and factory reset
@@ -99,17 +99,17 @@ replacement. Do not remove that volume unless you intentionally want to lose
 the pairing state.
 
 To deliberately erase all Matterbridge commissioning and registered-plugin
-state, pass `--fdr 1` for one startup operation. The script stops the existing
+state, pass `--fdr` for one startup operation. The script stops the existing
 container, runs Matterbridge's supported `--factoryreset` command against the
 persistent volume, and starts a clean instance that prints new pairing codes:
 
 ```bash
-./docker/spinup.sh --fdr 1 /absolute/path/to/sensors.json
+./docker/spinup.sh --fdr --settings-file /absolute/path/to/sensors.json
 
 ./docker/update_pa_matterbridge.sh \
-	--fdr 1 \
 	--image-tag '0.1.0-35eb4068220a-123456789-1' \
-	/absolute/path/to/sensors.json
+	--fdr \
+	--settings-file /absolute/path/to/sensors.json
 ```
 
 Factory reset is destructive and invalidates all existing controller pairings.

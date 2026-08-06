@@ -54,9 +54,9 @@ PAMB-012
    The settings file SHALL be mounted read-only.
 
 PAMB-013
-   The spin-up script SHALL accept the host PurpleAir settings JSON file as
-   its final positional argument and SHALL support named ``--fdr 0|1`` and
-   ``--help`` options.
+   The spin-up script SHALL require the host PurpleAir settings JSON file
+   through the named ``--settings-file`` option, SHALL support the presence
+   option ``--fdr``, and SHALL support ``--help``.
 
 PAMB-014
    The spin-up script SHALL reject a missing, non-regular, or nonexistent
@@ -67,10 +67,10 @@ PAMB-015
    the container.
 
 PAMB-016
-   The registry update script SHALL accept the host PurpleAir settings JSON
-   file as its final positional argument and SHALL support named
-   ``--image-tag``, ``--image-repository``, ``--fdr 0|1``, and ``--help``
-   options.
+   The registry update script SHALL require the host PurpleAir settings JSON
+   file through the named ``--settings-file`` option and SHALL support named
+   ``--image-tag``, ``--image-repository``, the presence option ``--fdr``, and
+   ``--help``.
 
 PAMB-017
    The registry update script SHALL pull a complete immutable image tag before
@@ -78,7 +78,7 @@ PAMB-017
 
 PAMB-018
    The registry update script SHALL support GHCR by default and SHALL support
-   Docker Hub when ``IMAGE_REPOSITORY`` is explicitly set.
+   Docker Hub when ``--image-repository`` is explicitly provided.
 
 Networking and persistence
 --------------------------
@@ -139,7 +139,7 @@ PAMB-036
 
 PAMB-037
    The Docker lifecycle scripts SHALL perform a Matterbridge factory reset
-   only when the operator explicitly passes ``--fdr 1``. The reset SHALL complete
+   only when the operator explicitly passes ``--fdr``. The reset SHALL complete
    before the normal Matterbridge process starts and SHALL use the supported
    ``matterbridge --factoryreset`` command.
 
