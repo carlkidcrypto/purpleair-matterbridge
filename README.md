@@ -37,7 +37,7 @@ Registration persists. Start the bridge with:
 
 ## Local Development
 ## Docker
-
+## Docker
 The combined Matterbridge and `purpleair_data_logger` container files are in
 [docker](docker). The image uses Ubuntu 26.04, Node.js 26, and host networking
 so Matter mDNS and UDP traffic can reach the local network. Build and start it
@@ -47,9 +47,10 @@ from this directory:
 ./docker/spinup.sh --local --settings-file /absolute/path/to/sensors.json
 ```
 
-The script accepts the settings path through `--settings-file`. It mounts that
-file read-only at `/config/purpleair-settings.json`, starts the container in
-the background, and configures the logger to use it.
+The script requires exactly one logger mode. Use `--local` when the settings
+file contains local sensor network addresses, and use `--remote` when it
+contains PurpleAir API credentials. The settings file is mounted read-only at
+`/config/purpleair-settings.json`.
 
 ```bash
 ./docker/spinup.sh --local --settings-file ./sensors.json
@@ -125,6 +126,15 @@ Use `--local` for a settings file containing a local sensor address, or
 ./docker/spinup.sh --remote --settings-file /absolute/path/to/remote-sensors.json
 ```
 
+The logger mode is passed into the container as `PURPLEAIR_LOGGER_MODE`; the
+entrypoint maps it to the corresponding PurpleAir logger option. Do not set
+`LOGGER_ARGS` manually. The combined image starts the logger first, registers
+the plugin once, and then starts the long-running Matterbridge process.
+
+The `matterbridge-data` volume stores Matterbridge commissioning and runtime
+state. The `logger-data` volume stores logger data. Both volumes survive normal
+restarts, image updates, and container replacement.
+
 `npm run dev:link` links the locally installed Matterbridge package without
 adding Matterbridge or Matter.js to this package's dependencies. This preserves
 the single Matter.js instance required by Matterbridge.
@@ -146,35 +156,6 @@ The default feed URL is `http://127.0.0.1:9855/matter/sensors`.
 Each accepted sensor receives a stable Matter identity of
 `purpleair-<sensor_index>`. MAC-based display names use the final three MAC
 octets, for example `purple-air-84-a1-4b`.
-
-## Docker
-
-The combined Matterbridge and `purpleair_data_logger` container files are in
-[docker](docker). The image uses Ubuntu 26.04, Node.js 26, and host networking
-so Matter mDNS and UDP traffic can reach the local network. Build and start it
-from this directory:
-
-```bash
-export LOGGER_ARGS='-paa_read_key YOUR_READ_KEY -paa_multiple_sensor_request_json_file /config/sensors.json --matter-only'
-docker compose -f docker/docker-compose.yml up --build -d
-```
-
-For local-network sensors, use the logger's local configuration instead:
-
-```bash
-export LOGGER_ARGS='-paa_local_sensor_request_json_file /config/sensors.json --matter-only'
-```
-
-Add a read-only bind mount such as
-`./sensors.json:/config/sensors.json:ro` to the volumes in
-`docker/docker-compose.yml`. Matterbridge state is persisted in the
-`matterbridge-data` volume. The logger serves its private feed on
-`127.0.0.1:9855`, and Matterbridge consumes that feed without exposing it on
-the LAN.
-
-The image intentionally uses host networking. Matter commissioning requires
-mDNS and UDP 5540; use a separate network only if it preserves IPv6 and
-multicast behavior.
 
 ### Verify the image from WSL
 

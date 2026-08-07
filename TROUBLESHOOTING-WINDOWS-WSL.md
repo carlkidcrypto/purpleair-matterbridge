@@ -37,6 +37,46 @@ The version check should print `1.5.0a2`. If the Docker Desktop client reports
 that `dockerDesktopLinuxEngine` is unavailable, run these commands from WSL so
 the Docker CLI uses the WSL Engine instead.
 
+## Start the combined container
+
+Run the same lifecycle script from WSL or from a native Linux host. Choose
+`--local` for a local sensor settings file or `--remote` for a settings file
+that uses PurpleAir API credentials:
+
+```bash
+./docker/spinup.sh --local --settings-file /absolute/path/to/paa_local_config.json
+```
+
+```bash
+./docker/spinup.sh --remote --settings-file /absolute/path/to/paa_remote_config.json
+```
+
+The settings file is mounted read-only inside the container. The container
+uses host networking, starts the PurpleAir logger on `127.0.0.1:9855`, and
+starts Matterbridge after registering the plugin. Do not set `LOGGER_ARGS`; the
+selected mode supplies the correct logger option.
+
+Follow startup output with:
+
+```bash
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+On first startup, look for both `QR Code URL:` and `Manual pairing code` in the
+Matterbridge output. Commission the bridge with either value. The
+`matterbridge-data` and `logger-data` Docker volumes preserve state across
+restarts and image updates.
+
+To intentionally erase Matterbridge commissioning and runtime state, use the
+explicit factory-reset flag:
+
+```bash
+./docker/spinup.sh --local --fdr --settings-file /absolute/path/to/paa_local_config.json
+```
+
+This invalidates existing controller pairings. Do not use `--fdr` for an
+ordinary restart or image update.
+
 ## Known-good network shape
 
 - WSL uses mirrored networking.

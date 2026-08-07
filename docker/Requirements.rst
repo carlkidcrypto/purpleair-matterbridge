@@ -124,7 +124,9 @@ PAMB-032
 
 PAMB-033
    The entrypoint SHALL start the logger before Matterbridge so the local feed
-   is available when the bridge begins operation.
+   is available when the bridge begins operation. It SHALL register the plugin
+   before starting the long-running Matterbridge process and SHALL NOT pass the
+   shutdown-only ``--add`` command to that process.
 
 PAMB-034
    The entrypoint SHALL terminate with a non-zero status when the required
@@ -132,8 +134,9 @@ PAMB-034
 
 PAMB-035
    On first startup, the entrypoint SHALL preserve Matterbridge console output
-   containing the pairing QR code and numerical pairing code in the container
-   logs.
+   containing the pairing QR URL and numerical manual pairing code in the
+   container logs. The bridge SHALL remain running after plugin registration so
+   those codes can be emitted.
 
 PAMB-036
    The runtime SHALL NOT reset Matterbridge commissioning state during an

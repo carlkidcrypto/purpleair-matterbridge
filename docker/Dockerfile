@@ -26,7 +26,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY docker/entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod 0755 /usr/local/bin/docker-entrypoint
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint \
+    && chmod 0755 /usr/local/bin/docker-entrypoint
 
 USER matterbridge
 WORKDIR /opt/plugin
