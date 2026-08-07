@@ -11,6 +11,7 @@ services:
     restart: unless-stopped
     environment:
       PURPLEAIR_LOGGER_MODE: ${PURPLEAIR_LOGGER_MODE:?Set --local or --remote}
+      MDNS_INTERFACE: ${MDNS_INTERFACE:-}
     volumes:
       - matterbridge-data:/data
       - logger-data:/data/logger

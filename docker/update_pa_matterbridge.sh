@@ -7,10 +7,11 @@ IMAGE_REPOSITORY=ghcr.io/carlkidcrypto/purpleair-matterbridge
 IMAGE_TAG=
 FDR=0
 LOGGER_MODE=
+MDNS_INTERFACE=
 SETTINGS_FILE=
 
 usage() {
-    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --local|--remote --image-tag VERSION-SHA-RUN-ATTEMPT --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--image-repository REPOSITORY] [--fdr]" >&2
+    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --local|--remote --image-tag VERSION-SHA-RUN-ATTEMPT --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--mdns-interface INTERFACE] [--image-repository REPOSITORY] [--fdr]" >&2
 }
 
 while [ "$#" -gt 0 ]; do
@@ -38,6 +39,11 @@ while [ "$#" -gt 0 ]; do
             [ -z "$LOGGER_MODE" ] || { printf '%s\n' "Choose only one of --local or --remote." >&2; usage; exit 1; }
             LOGGER_MODE=remote
             shift
+            ;;
+        --mdns-interface)
+            [ "$#" -ge 2 ] || { usage; exit 1; }
+            MDNS_INTERFACE=$2
+            shift 2
             ;;
         --settings-file)
             [ "$#" -ge 2 ] || { usage; exit 1; }
@@ -104,6 +110,7 @@ docker run --detach \
     --volume logger-data:/data/logger \
     --volume "$SETTINGS_FILE:/config/purpleair-settings.json:ro" \
     --env "PURPLEAIR_LOGGER_MODE=$LOGGER_MODE" \
+    --env "MDNS_INTERFACE=$MDNS_INTERFACE" \
     "$IMAGE"
 
 printf '%s\n' "purpleair-matterbridge is running from $IMAGE."

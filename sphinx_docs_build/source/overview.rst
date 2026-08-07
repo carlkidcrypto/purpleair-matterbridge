@@ -35,3 +35,9 @@ The settings file is mounted read-only, the logger feed remains on
 ``127.0.0.1:9855``, and Matterbridge uses host networking for mDNS and UDP
 commissioning. See the repository README and the Windows/WSL troubleshooting
 guide for pairing, persistent volumes, updates, and factory reset.
+
+When the host has Docker bridge or virtual Ethernet interfaces, pass the real
+LAN interface explicitly, for example ``--mdns-interface eth0``. Do not select
+``docker0``, ``br-*``, or ``veth*``. The Node.js 26 versus Node.js 24 LTS
+message from Matterbridge is advisory; Node.js 26 is the configured and
+supported image runtime.

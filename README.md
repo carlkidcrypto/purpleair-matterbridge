@@ -56,6 +56,18 @@ contains PurpleAir API credentials. The settings file is mounted read-only at
 ./docker/spinup.sh --local --settings-file ./sensors.json
 ```
 
+If the host has Docker bridge or virtual Ethernet interfaces, identify the
+real LAN interface with `ip -brief address` and pass it explicitly:
+
+```bash
+./docker/spinup.sh --local \
+	--mdns-interface eth0 \
+	--settings-file /absolute/path/to/sensors.json
+```
+
+The interface name is host-specific; common names include `eth0`, `enp3s0`,
+and `wlan0`. Do not select `docker0`, `br-*`, or `veth*` for Matter mDNS.
+
 It builds the image, removes orphaned Compose containers, and prints the
 resulting container status. It can be run from any directory inside the
 repository.
@@ -130,6 +142,11 @@ The logger mode is passed into the container as `PURPLEAIR_LOGGER_MODE`; the
 entrypoint maps it to the corresponding PurpleAir logger option. Do not set
 `LOGGER_ARGS` manually. The combined image starts the logger first, registers
 the plugin once, and then starts the long-running Matterbridge process.
+
+The image intentionally uses Node.js 26 because that is the configured image
+runtime and it is supported by this project. Matterbridge may log an advisory
+message recommending Node.js 24 LTS; that message does not indicate a startup
+failure.
 
 The `matterbridge-data` volume stores Matterbridge commissioning and runtime
 state. The `logger-data` volume stores logger data. Both volumes survive normal

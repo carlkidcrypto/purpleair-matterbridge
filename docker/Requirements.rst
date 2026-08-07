@@ -89,6 +89,11 @@ PAMB-020
    The runtime SHALL use host networking so Matter mDNS, IPv6, multicast, and
    UDP commissioning traffic can reach the local network.
 
+PAMB-020A
+   The Docker lifecycle scripts SHALL support an optional
+   ``--mdns-interface`` value and SHALL pass it to Matterbridge as
+   ``--mdnsinterface`` when provided.
+
 PAMB-021
    The runtime SHALL expose Matter UDP ports 5540 and 5353 as declared by the
    image configuration.

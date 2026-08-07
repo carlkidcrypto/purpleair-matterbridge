@@ -44,6 +44,11 @@ case "$logger_mode" in
     *) echo "PURPLEAIR_LOGGER_MODE must be local or remote" >&2; exit 64 ;;
 esac
 
+mdns_args=
+if [ -n "${MDNS_INTERFACE:-}" ]; then
+    mdns_args="--mdnsinterface $MDNS_INTERFACE"
+fi
+
 python3 -m purpleair_data_logger.PurpleAirMatterDataLogger \
     --http-host 127.0.0.1 \
     --http-port 9855 \
@@ -66,14 +71,16 @@ printf '%s\n' "Matterbridge pairing information follows below. On first startup,
 matterbridge \
     --docker \
     --add /opt/plugin \
-    --nosudo
+    --nosudo \
+    $mdns_args
 
 matterbridge \
     --docker \
     --bridge \
     --productName "Purple Air Matterbridge" \
     --novirtual \
-    --nosudo &
+    --nosudo \
+    $mdns_args &
 matterbridge_pid=$!
 
 while process_running "$logger_pid" && process_running "$matterbridge_pid"; do

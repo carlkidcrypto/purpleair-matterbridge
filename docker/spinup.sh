@@ -7,10 +7,11 @@ REPO_DIR=$(dirname -- "$SCRIPT_DIR")
 COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
 FDR=0
 LOGGER_MODE=
+MDNS_INTERFACE=
 SETTINGS_FILE=
 
 usage() {
-    printf '%s\n' "Usage: ./spinup.sh --local|--remote --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--fdr]" >&2
+    printf '%s\n' "Usage: ./spinup.sh --local|--remote --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--mdns-interface INTERFACE] [--fdr]" >&2
 }
 
 while [ "$#" -gt 0 ]; do
@@ -28,6 +29,11 @@ while [ "$#" -gt 0 ]; do
             [ -z "$LOGGER_MODE" ] || { printf '%s\n' "Choose only one of --local or --remote." >&2; usage; exit 1; }
             LOGGER_MODE=remote
             shift
+            ;;
+        --mdns-interface)
+            [ "$#" -ge 2 ] || { usage; exit 1; }
+            MDNS_INTERFACE=$2
+            shift 2
             ;;
         --settings-file)
             [ "$#" -ge 2 ] || { usage; exit 1; }
@@ -70,6 +76,7 @@ fi
 
 export PURPLEAIR_SETTINGS_FILE="$SETTINGS_FILE"
 export PURPLEAIR_LOGGER_MODE="$LOGGER_MODE"
+export MDNS_INTERFACE
 
 cd "$REPO_DIR"
 if [ "$FDR" = "1" ]; then

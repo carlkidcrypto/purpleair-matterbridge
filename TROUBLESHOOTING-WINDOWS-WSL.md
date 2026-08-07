@@ -51,6 +51,25 @@ that uses PurpleAir API credentials:
 ./docker/spinup.sh --remote --settings-file /absolute/path/to/paa_remote_config.json
 ```
 
+If Matterbridge reports Docker bridge or `veth*` interfaces during its system
+check, identify the host interface carrying the LAN address:
+
+```bash
+ip -brief address
+```
+
+Start the container with that interface, for example:
+
+```bash
+./docker/spinup.sh --local \
+  --mdns-interface eth0 \
+  --settings-file /absolute/path/to/paa_local_config.json
+```
+
+Use the actual interface name from `ip -brief address`; do not use `docker0`,
+`br-*`, or `veth*`. The same `--mdns-interface` option is available on
+`update_pa_matterbridge.sh`.
+
 The settings file is mounted read-only inside the container. The container
 uses host networking, starts the PurpleAir logger on `127.0.0.1:9855`, and
 starts Matterbridge after registering the plugin. Do not set `LOGGER_ARGS`; the
@@ -66,6 +85,10 @@ On first startup, look for both `QR Code URL:` and `Manual pairing code` in the
 Matterbridge output. Commission the bridge with either value. The
 `matterbridge-data` and `logger-data` Docker volumes preserve state across
 restarts and image updates.
+
+The image uses Node.js 26, which is supported by this project. Matterbridge's
+recommendation to use Node.js 24 LTS is advisory and does not indicate a failed
+system check.
 
 To intentionally erase Matterbridge commissioning and runtime state, use the
 explicit factory-reset flag:
