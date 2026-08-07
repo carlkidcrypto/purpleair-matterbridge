@@ -66,6 +66,10 @@ printf '%s\n' "Matterbridge pairing information follows below. On first startup,
 matterbridge \
     --docker \
     --add /opt/plugin \
+    --nosudo
+
+matterbridge \
+    --docker \
     --bridge \
     --productName "Purple Air Matterbridge" \
     --novirtual \
