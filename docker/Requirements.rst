@@ -42,9 +42,9 @@ Configuration
 -------------
 
 PAMB-010
-   The image SHALL configure the PurpleAir logger with
-   ``-paa_multiple_sensor_request_json_file
-   /config/purpleair-settings.json --matter-only`` by default.
+   The image SHALL support local and remote PurpleAir logger modes. Local mode
+   SHALL use ``-paa_local_sensor_request_json_file`` and remote mode SHALL use
+   ``-paa_multiple_sensor_request_json_file``.
 
 PAMB-011
    The runtime SHALL make the supplied host settings file available inside
@@ -54,9 +54,10 @@ PAMB-012
    The settings file SHALL be mounted read-only.
 
 PAMB-013
-   The spin-up script SHALL require the host PurpleAir settings JSON file
-   through the named ``--settings-file`` option, SHALL support the presence
-   option ``--fdr``, and SHALL support ``--help``.
+   The spin-up script SHALL require exactly one of the named ``--local`` or
+   ``--remote`` options, SHALL require the host PurpleAir settings JSON file
+   through ``--settings-file``, SHALL support the presence option ``--fdr``,
+   and SHALL support ``--help``.
 
 PAMB-014
    The spin-up script SHALL reject a missing, non-regular, or nonexistent
@@ -67,8 +68,9 @@ PAMB-015
    the container.
 
 PAMB-016
-   The registry update script SHALL require the host PurpleAir settings JSON
-   file through the named ``--settings-file`` option and SHALL support named
+   The registry update script SHALL require exactly one of the named
+   ``--local`` or ``--remote`` options, SHALL require the host PurpleAir
+   settings JSON file through ``--settings-file``, and SHALL support named
    ``--image-tag``, ``--image-repository``, the presence option ``--fdr``, and
    ``--help``.
 

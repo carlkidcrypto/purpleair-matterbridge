@@ -6,16 +6,27 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPO_DIR=$(dirname -- "$SCRIPT_DIR")
 COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
 FDR=0
+LOGGER_MODE=
 SETTINGS_FILE=
 
 usage() {
-    printf '%s\n' "Usage: ./spinup.sh --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--fdr]" >&2
+    printf '%s\n' "Usage: ./spinup.sh --local|--remote --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--fdr]" >&2
 }
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --fdr)
             FDR=1
+            shift
+            ;;
+        --local)
+            [ -z "$LOGGER_MODE" ] || { printf '%s\n' "Choose only one of --local or --remote." >&2; usage; exit 1; }
+            LOGGER_MODE=local
+            shift
+            ;;
+        --remote)
+            [ -z "$LOGGER_MODE" ] || { printf '%s\n' "Choose only one of --local or --remote." >&2; usage; exit 1; }
+            LOGGER_MODE=remote
             shift
             ;;
         --settings-file)
@@ -42,7 +53,7 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-if [ "$#" -ne 0 ] || [ -z "$SETTINGS_FILE" ]; then
+if [ "$#" -ne 0 ] || [ -z "$SETTINGS_FILE" ] || [ -z "$LOGGER_MODE" ]; then
     usage
     exit 1
 fi
@@ -58,6 +69,7 @@ if [ ! -f "$SETTINGS_FILE" ]; then
 fi
 
 export PURPLEAIR_SETTINGS_FILE="$SETTINGS_FILE"
+export PURPLEAIR_LOGGER_MODE="$LOGGER_MODE"
 
 cd "$REPO_DIR"
 if [ "$FDR" = "1" ]; then
@@ -65,7 +77,7 @@ if [ "$FDR" = "1" ]; then
     docker compose -f "$COMPOSE_FILE" stop purpleair-matterbridge 2>/dev/null || true
     docker compose -f "$COMPOSE_FILE" build
     docker compose -f "$COMPOSE_FILE" run --rm --no-deps \
-        --entrypoint /opt/matterbridge/node_modules/.bin/matterbridge \
+        --entrypoint /opt/matterbridge/bin/matterbridge \
         purpleair-matterbridge --factoryreset
 fi
 

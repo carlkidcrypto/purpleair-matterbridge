@@ -44,7 +44,7 @@ so Matter mDNS and UDP traffic can reach the local network. Build and start it
 from this directory:
 
 ```bash
-./docker/spinup.sh --settings-file /absolute/path/to/sensors.json
+./docker/spinup.sh --local --settings-file /absolute/path/to/sensors.json
 ```
 
 The script accepts the settings path through `--settings-file`. It mounts that
@@ -52,7 +52,7 @@ file read-only at `/config/purpleair-settings.json`, starts the container in
 the background, and configures the logger to use it.
 
 ```bash
-./docker/spinup.sh --settings-file ./sensors.json
+./docker/spinup.sh --local --settings-file ./sensors.json
 ```
 
 It builds the image, removes orphaned Compose containers, and prints the
@@ -65,6 +65,7 @@ so provide the complete tag from the Docker publishing workflow:
 
 ```bash
 ./docker/update_pa_matterbridge.sh \
+	--local \
 	--image-tag '0.1.0-35eb4068220a-123456789-1' \
 	--settings-file /absolute/path/to/sensors.json
 ```
@@ -80,6 +81,7 @@ To use Docker Hub instead, set the repository explicitly:
 ```bash
 ./docker/update_pa_matterbridge.sh \
 	--image-repository 'carlkidcrypto/purpleair-matterbridge-images' \
+	--local \
 	--image-tag '0.1.0-35eb4068220a-123456789-1' \
 	--settings-file /absolute/path/to/sensors.json
 ```
@@ -104,9 +106,10 @@ container, runs Matterbridge's supported `--factoryreset` command against the
 persistent volume, and starts a clean instance that prints new pairing codes:
 
 ```bash
-./docker/spinup.sh --fdr --settings-file /absolute/path/to/sensors.json
+./docker/spinup.sh --local --fdr --settings-file /absolute/path/to/sensors.json
 
 ./docker/update_pa_matterbridge.sh \
+	--local \
 	--image-tag '0.1.0-35eb4068220a-123456789-1' \
 	--fdr \
 	--settings-file /absolute/path/to/sensors.json
@@ -115,27 +118,11 @@ persistent volume, and starts a clean instance that prints new pairing codes:
 Factory reset is destructive and invalidates all existing controller pairings.
 Normal startup and image updates leave the commissioning state untouched.
 
-For local-network sensors, use the logger's local configuration instead:
+Use `--local` for a settings file containing a local sensor address, or
+`--remote` for a settings file containing PurpleAir API credentials:
 
 ```bash
-export LOGGER_ARGS='-paa_local_sensor_request_json_file /config/sensors.json --matter-only'
-```
-
-Add a read-only bind mount such as
-`./sensors.json:/config/sensors.json:ro` to the volumes in
-
-```bash
-npm install --global --prefix "$HOME/.local" matterbridge@3.10.3
-the LAN.
-
-The image intentionally uses host networking. Matter commissioning requires
-mDNS and UDP 5540; use a separate network only if it preserves IPv6 and
-multicast behavior.
-npm install
-npm_config_prefix="$HOME/.local" npm run dev:link
-npm run typecheck
-npm test
-npm run build
+./docker/spinup.sh --remote --settings-file /absolute/path/to/remote-sensors.json
 ```
 
 `npm run dev:link` links the locally installed Matterbridge package without

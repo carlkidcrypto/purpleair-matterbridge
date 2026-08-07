@@ -9,6 +9,8 @@ services:
     container_name: purpleair-matterbridge
     network_mode: host
     restart: unless-stopped
+    environment:
+      PURPLEAIR_LOGGER_MODE: ${PURPLEAIR_LOGGER_MODE:?Set --local or --remote}
     volumes:
       - matterbridge-data:/data
       - logger-data:/data/logger

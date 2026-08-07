@@ -5,9 +5,8 @@ ARG LOGGER_VERSION=1.5.0a2
 
 ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/data \
-    PATH=/opt/plugin/node_modules/.bin:/opt/matterbridge/node_modules/.bin:/opt/logger-venv/bin:$PATH \
+    PATH=/opt/plugin/node_modules/.bin:/opt/matterbridge/bin:/opt/logger-venv/bin:$PATH \
     NODE_ENV=production \
-    LOGGER_ARGS="-paa_multiple_sensor_request_json_file /config/purpleair-settings.json --matter-only" \
     PURPLEAIR_SETTINGS_FILE=/config/purpleair-settings.json
 
 RUN apt-get update \
@@ -21,7 +20,7 @@ RUN apt-get update \
     && curl --fail --silent --show-error --location https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz \
         | tar --extract --gzip --strip-components=1 --directory /usr/local/bin uv-x86_64-unknown-linux-gnu/uv \
     && useradd --system --home-dir /data --create-home --shell /usr/sbin/nologin matterbridge \
-    && mkdir -p /opt/plugin /opt/matterbridge /opt/logger-venv /data/matterbridge /data/logger \
+    && mkdir -p /opt/plugin /opt/matterbridge /opt/logger-venv /data/logger \
     && chown -R matterbridge:matterbridge /opt/plugin /opt/matterbridge /opt/logger-venv /data \
     && chmod 0755 /usr/local/bin/uv \
     && rm -rf /var/lib/apt/lists/*
@@ -35,9 +34,9 @@ COPY --chown=matterbridge:matterbridge package.json package-lock.json tsconfig.b
 COPY --chown=matterbridge:matterbridge src ./src
 
 RUN npm ci --include=dev --ignore-scripts \
-    && npm install --prefix /opt/matterbridge --omit=dev matterbridge@${MATTERBRIDGE_VERSION} \
+    && npm install --global --prefix /opt/matterbridge --omit=dev matterbridge@${MATTERBRIDGE_VERSION} \
     && mkdir -p node_modules \
-    && ln -s /opt/matterbridge/node_modules/matterbridge node_modules/matterbridge \
+    && ln -s /opt/matterbridge/lib/node_modules/matterbridge node_modules/matterbridge \
     && npm run build
 
 RUN uv venv --python 3.14 /opt/logger-venv \

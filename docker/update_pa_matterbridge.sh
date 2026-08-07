@@ -6,10 +6,11 @@ CONTAINER_NAME=purpleair-matterbridge
 IMAGE_REPOSITORY=ghcr.io/carlkidcrypto/purpleair-matterbridge
 IMAGE_TAG=
 FDR=0
+LOGGER_MODE=
 SETTINGS_FILE=
 
 usage() {
-    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --image-tag VERSION-SHA-RUN-ATTEMPT --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--image-repository REPOSITORY] [--fdr]" >&2
+    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --local|--remote --image-tag VERSION-SHA-RUN-ATTEMPT --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--image-repository REPOSITORY] [--fdr]" >&2
 }
 
 while [ "$#" -gt 0 ]; do
@@ -26,6 +27,16 @@ while [ "$#" -gt 0 ]; do
             ;;
         --fdr)
             FDR=1
+            shift
+            ;;
+        --local)
+            [ -z "$LOGGER_MODE" ] || { printf '%s\n' "Choose only one of --local or --remote." >&2; usage; exit 1; }
+            LOGGER_MODE=local
+            shift
+            ;;
+        --remote)
+            [ -z "$LOGGER_MODE" ] || { printf '%s\n' "Choose only one of --local or --remote." >&2; usage; exit 1; }
+            LOGGER_MODE=remote
             shift
             ;;
         --settings-file)
@@ -52,7 +63,7 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-if [ "$#" -ne 0 ] || [ -z "$IMAGE_TAG" ] || [ -z "$SETTINGS_FILE" ]; then
+if [ "$#" -ne 0 ] || [ -z "$IMAGE_TAG" ] || [ -z "$SETTINGS_FILE" ] || [ -z "$LOGGER_MODE" ]; then
     usage
     exit 1
 fi
@@ -80,7 +91,7 @@ if [ "$FDR" = "1" ]; then
         --network host \
         --volume matterbridge-data:/data \
         --volume logger-data:/data/logger \
-        --entrypoint /opt/matterbridge/node_modules/.bin/matterbridge \
+        --entrypoint /opt/matterbridge/bin/matterbridge \
         "$IMAGE" \
         --factoryreset
 fi
@@ -92,6 +103,7 @@ docker run --detach \
     --volume matterbridge-data:/data \
     --volume logger-data:/data/logger \
     --volume "$SETTINGS_FILE:/config/purpleair-settings.json:ro" \
+    --env "PURPLEAIR_LOGGER_MODE=$LOGGER_MODE" \
     "$IMAGE"
 
 printf '%s\n' "purpleair-matterbridge is running from $IMAGE."
