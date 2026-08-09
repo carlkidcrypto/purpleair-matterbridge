@@ -301,7 +301,8 @@ registry verification, package inspection, release ordering, and troubleshooting
 is in [npm-publishing.rst](sphinx_docs_build/source/npm-publishing.rst).
 
 See [Requirements.rst](Requirements.rst) for normative behavior,
-[PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results, and
+[PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results and the
+Google Home measurement limitation, and
 [TROUBLESHOOTING-LINUX.md](TROUBLESHOOTING-LINUX.md) for native Linux
 firewall, IPv6, mDNS, and commissioning procedures. See
 [TROUBLESHOOTING-WINDOWS-WSL.md](TROUBLESHOOTING-WINDOWS-WSL.md) for Windows/WSL
