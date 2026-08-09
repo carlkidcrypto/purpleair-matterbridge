@@ -126,7 +126,7 @@ For example, to use a specific immutable Docker Hub image tag:
 ./docker/update_pa_matterbridge.sh \
 	--image-repository 'carlkidcrypto/purpleair-matterbridge-images' \
 	--local \
-	--image-tag '0.1.0-35eb4068220a-123456789-1' \
+	--image-tag '1.0.0-35eb4068220a-123456789-1' \
 	--settings-file /absolute/path/to/sensors.json
 ```
 
@@ -250,7 +250,7 @@ The immutable tag contains the package version, commit, GitHub run ID, and run
 attempt, for example:
 
 ```text
-0.1.0-35eb4068220a-123456789-1
+1.0.0-35eb4068220a-123456789-1
 ```
 
 The update script discovers the newest Docker Hub tag automatically when no
@@ -277,6 +277,11 @@ the workflow also builds that release tag and prepares a versioned
 `docs/html_<tag>/` snapshot plus a landing-page link in an automated pull
 request. Those versioned directories are intentionally tracked so released
 documentation remains locked as the project changes.
+
+The `Docs Continuous Improvement Every 3 Days` Agentic Workflow periodically
+reviews source documentation for focused corrections and opens a draft PR on
+the `automation/docs-continuous-improvement` branch. It excludes generated
+HTML and runtime changes; manual runs are available from the Actions tab.
 
 ## Testing And Publishing
 
@@ -329,6 +334,17 @@ Published npm versions are immutable. Never reuse a version that has already
 been published. The complete maintainer runbook, including prereleases,
 registry verification, package inspection, release ordering, and troubleshooting
 is in [npm-publishing.rst](sphinx_docs_build/source/npm-publishing.rst).
+
+When a GitHub release is published, the `Update Changelog` Agentic Workflow
+generates `CHANGELOG.md` with `git-chglog` and opens or updates a pull request
+on the `automation/update-changelog` branch. It can also be run manually from
+the Actions tab with an optional release tag. The workflow ignores timestamp-
+only changes and is limited to changelog updates.
+
+The `Auto Update Release Notes` Agentic Workflow also formats the GitHub release
+body with npm and Docker installation details, grouped commit summaries, and a
+comparison link. It supports manual backfills; releases containing
+`<!-- PROTECTED -->` are left unchanged.
 
 See [Requirements.rst](Requirements.rst) for normative behavior,
 [PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results and the
