@@ -330,6 +330,12 @@ been published. The complete maintainer runbook, including prereleases,
 registry verification, package inspection, release ordering, and troubleshooting
 is in [npm-publishing.rst](sphinx_docs_build/source/npm-publishing.rst).
 
+When a GitHub release is published, the `Update Changelog` Agentic Workflow
+generates `CHANGELOG.md` with `git-chglog` and opens or updates a pull request
+on the `automation/update-changelog` branch. It can also be run manually from
+the Actions tab with an optional release tag. The workflow ignores timestamp-
+only changes and is limited to changelog updates.
+
 See [Requirements.rst](Requirements.rst) for normative behavior,
 [PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results and the
 Google Home measurement limitation, and
