@@ -33,12 +33,77 @@ ip -brief address
 
 ./docker/spinup.sh \
   --local \
-  --mdns-interface wlp2s0 \
+  --mdns-interface YOUR_LAN_INTERFACE \
   --settings-file /absolute/path/to/paa_local_config.json
 ```
 
-Replace `wlp2s0` with the interface carrying the host's LAN address. Do not
-use `docker0`, `br-*`, or `veth*`.
+Replace `YOUR_LAN_INTERFACE` with the interface carrying the host's LAN
+address. Do not use `docker0`, `br-*`, or `veth*`.
+
+## Watch and inspect the container
+
+The update script creates the container with the stable name
+`purpleair-matterbridge`. Check that it is running and follow the current
+Matterbridge/logger output:
+
+```bash
+docker ps --filter 'name=^/purpleair-matterbridge$'
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+Press `Ctrl+C` to leave the log view without stopping the container. Inspect
+the image and host-network configuration with:
+
+```bash
+docker inspect --format '{{.Config.Image}} {{.HostConfig.NetworkMode}}' purpleair-matterbridge
+```
+
+The output should show the selected immutable image tag and `host`. Use
+`docker logs --since 10m -f purpleair-matterbridge` to watch only recent
+output. The update script preserves the `matterbridge-data` and `logger-data`
+volumes when it replaces the container.
+
+## Automate image updates with cron
+
+The update script can run unattended from the system root crontab. Edit it
+with:
+
+```bash
+sudo crontab -e
+```
+
+Add a nightly entry such as:
+
+```cron
+0 0 * * * FULL_PATH_TO_SCRIPT --local --settings-file FULL_PATH_TO_SETTINGS_FILE --mdns-interface YOUR_LAN_INTERFACE >> /var/log/purpleair-matterbridge-update.log 2>&1
+```
+
+This runs at midnight according to the Linux system timezone. The updater
+queries Docker Hub for the newest published immutable image tag, pulls it,
+replaces the `purpleair-matterbridge` container, and starts it with the
+persistent Matterbridge and logger volumes. The commissioning identity is
+therefore preserved during normal automated updates.
+
+Use absolute paths in cron entries. Do not use `~`, since cron does not load
+your interactive shell environment. Replace `FULL_PATH_TO_SCRIPT`,
+`FULL_PATH_TO_SETTINGS_FILE`, and `YOUR_LAN_INTERFACE` with values appropriate
+for the host. The script's Docker Hub lookup requires network access and
+Python 3; failures are written to the update log.
+
+View the update history with:
+
+```bash
+sudo tail -f /var/log/purpleair-matterbridge-update.log
+```
+
+The running container's application logs remain separate:
+
+```bash
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+Do not put `--fdr` in a recurring cron entry. Factory reset is destructive,
+removes commissioning state, and requires deliberate one-time use.
 
 ## Allow Matter through UFW
 
@@ -53,12 +118,12 @@ If UFW is active, allow mDNS discovery and Matter commissioning on the LAN
 interface:
 
 ```bash
-sudo ufw allow in on wlp2s0 proto udp to any port 5353 comment 'Matter mDNS'
-sudo ufw allow in on wlp2s0 proto udp to any port 5540 comment 'Matter commissioning'
+sudo ufw allow in on YOUR_LAN_INTERFACE proto udp to any port 5353 comment 'Matter mDNS'
+sudo ufw allow in on YOUR_LAN_INTERFACE proto udp to any port 5540 comment 'Matter commissioning'
 ```
 
-Replace `wlp2s0` with the actual LAN interface. Confirm IPv6 support is
-enabled in UFW:
+Replace `YOUR_LAN_INTERFACE` with the actual LAN interface. Confirm IPv6
+support is enabled in UFW:
 
 ```bash
 grep '^IPV6=' /etc/default/ufw
@@ -102,9 +167,9 @@ mDNS multicast membership and that Matterbridge has IPv4 and IPv6 reachability.
 Check the interface addresses and multicast routes:
 
 ```bash
-ip -brief address show dev wlp2s0
+ip -brief address show dev YOUR_LAN_INTERFACE
 ip -6 route
-ip maddr show dev wlp2s0
+ip maddr show dev YOUR_LAN_INTERFACE
 ```
 
 The interface should have an IPv6 link-local address, and multicast membership
@@ -115,7 +180,7 @@ should include IPv4 `224.0.0.251` and IPv6 `ff02::fb`.
 Capture traffic while starting pairing from the controller:
 
 ```bash
-sudo tcpdump -ni wlp2s0 'udp port 5353 or udp port 5540'
+sudo tcpdump -ni YOUR_LAN_INTERFACE 'udp port 5353 or udp port 5540'
 ```
 
 Healthy discovery resembles:
@@ -167,7 +232,7 @@ A working native Linux setup may show all of the following:
 - `ss` shows `0.0.0.0:5540` and `[::]:5540`.
 - `tcpdump` sees IPv4 mDNS to `224.0.0.251` and IPv6 mDNS to `ff02::fb`.
 - The Android controller appears in the mDNS capture.
-- Matterbridge logs `Using mdnsinterface wlp2s0` and publishes
+- Matterbridge logs `Using mdnsinterface YOUR_LAN_INTERFACE` and publishes
   `_matterc._udp.local`.
 
 These observations confirm that Docker host networking, IPv6, mDNS, and the

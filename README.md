@@ -73,23 +73,54 @@ resulting container status. It can be run from any directory inside the
 repository.
 
 To update an existing installation from a published image without building
-locally, use `docker/update_pa_matterbridge.sh`. Published tags are immutable,
-so provide the complete tag from the Docker publishing workflow:
+locally, use `docker/update_pa_matterbridge.sh`. It defaults to the Docker Hub
+repository `carlkidcrypto/purpleair-matterbridge-images` and the currently
+newest published immutable image tag:
 
 ```bash
 ./docker/update_pa_matterbridge.sh \
 	--local \
-	--image-tag '0.1.0-35eb4068220a-123456789-1' \
 	--settings-file /absolute/path/to/sensors.json
 ```
 
-The script pulls from GHCR by default, stops and removes the existing
-`purpleair-matterbridge` container, then starts the pulled image with host
-networking, persistent named volumes, and the settings file mounted read-only.
+When `--image-tag` is omitted, the script queries Docker Hub and selects the
+newest generated immutable tag. Pass `--image-tag TAG` for a specific image.
+The automatic lookup applies to Docker Hub repositories; pass an explicit tag
+when using another registry. The script pulls the selected image, stops and removes the existing
+`purpleair-matterbridge` container, then starts it with host networking,
+persistent named volumes, and the settings file mounted read-only.
 The Matterbridge home, including its commissioning identity, is stored in the
 `matterbridge-data` volume. Replacing the container or pulling a new immutable
 image does not reset pairing state.
-To use Docker Hub instead, set the repository explicitly:
+
+### Watch the updated container
+
+The update script uses the stable container name
+`purpleair-matterbridge`. Check its status and follow its live logs with:
+
+```bash
+docker ps --filter 'name=^/purpleair-matterbridge$'
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+Press `Ctrl+C` to stop following the logs; it does not stop the container. To
+inspect the selected image, network mode, mounts, and environment:
+
+```bash
+docker inspect purpleair-matterbridge
+docker inspect --format '{{.Config.Image}} {{.HostConfig.NetworkMode}}' purpleair-matterbridge
+```
+
+For a shorter live window, use `--since`, for example:
+
+```bash
+docker logs --since 10m -f purpleair-matterbridge
+```
+
+Use `docker start purpleair-matterbridge` or
+`docker restart purpleair-matterbridge` after a manual stop. Normal restarts
+preserve the named Matterbridge and logger volumes.
+For example, to use a specific immutable Docker Hub image tag:
 
 ```bash
 ./docker/update_pa_matterbridge.sh \
@@ -123,7 +154,6 @@ persistent volume, and starts a clean instance that prints new pairing codes:
 
 ./docker/update_pa_matterbridge.sh \
 	--local \
-	--image-tag '0.1.0-35eb4068220a-123456789-1' \
 	--fdr \
 	--settings-file /absolute/path/to/sensors.json
 ```
@@ -182,7 +212,7 @@ available for that Node release, Matterbridge 3.10.3, and the published
 Linux engine is unavailable, use the Docker Engine installed inside WSL:
 
 ```bash
-cd /home/carlkidcrypto/Github/purpleair-matterbridge
+cd REPOSITORY_ROOT
 
 docker build \
 	--progress=plain \
@@ -215,17 +245,17 @@ The final command should print:
 
 The Docker publishing workflow targets
 `carlkidcrypto/purpleair-matterbridge-images` on Docker Hub and the matching
-repository on GHCR. Repository tags are configured as immutable, so the
-workflow does not publish `latest`, reusable bare version tags, or a duplicate
-SHA-only tag. Each build publishes one unique tag containing the package
-version, commit, GitHub run ID, and run attempt, for example:
+repository on GHCR. Each build publishes one immutable tag to both registries.
+The immutable tag contains the package version, commit, GitHub run ID, and run
+attempt, for example:
 
 ```text
 0.1.0-35eb4068220a-123456789-1
 ```
 
-Use the complete generated tag when pulling an image. A new workflow run or
-retry creates a new tag instead of attempting to move an existing tag.
+The update script discovers the newest Docker Hub tag automatically when no
+tag is supplied. Use the complete generated tag explicitly when
+reproducibility is required.
 
 ## Documentation
 
@@ -301,7 +331,8 @@ registry verification, package inspection, release ordering, and troubleshooting
 is in [npm-publishing.rst](sphinx_docs_build/source/npm-publishing.rst).
 
 See [Requirements.rst](Requirements.rst) for normative behavior,
-[PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results, and
+[PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results and the
+Google Home measurement limitation, and
 [TROUBLESHOOTING-LINUX.md](TROUBLESHOOTING-LINUX.md) for native Linux
 firewall, IPv6, mDNS, and commissioning procedures. See
 [TROUBLESHOOTING-WINDOWS-WSL.md](TROUBLESHOOTING-WINDOWS-WSL.md) for Windows/WSL
