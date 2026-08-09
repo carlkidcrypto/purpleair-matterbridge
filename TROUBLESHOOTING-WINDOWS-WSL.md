@@ -75,6 +75,13 @@ uses host networking, starts the PurpleAir logger on `127.0.0.1:9855`, and
 starts Matterbridge after registering the plugin. Do not set `LOGGER_ARGS`; the
 selected mode supplies the correct logger option.
 
+The Compose service intentionally uses Docker host networking. On native
+Linux, this gives Matterbridge the host's IPv4 and IPv6 interfaces and lets it
+bind UDP 5353 for mDNS and UDP 5540 for Matter directly; no `ports:` mapping is
+needed or desirable. On WSL, the WSL mirrored-networking and Hyper-V firewall
+configuration still controls whether traffic from the controller can reach
+those host sockets.
+
 Follow startup output with:
 
 ```bash
@@ -180,6 +187,20 @@ ss -ulpn | grep -E ':(5353|5540)'
 Matterbridge should own UDP listeners on ports 5353 and 5540 for IPv4 and IPv6.
 If it does not, inspect the Matterbridge terminal for startup errors before
 attempting commissioning.
+
+For the combined Docker container, run the listener check on the host or in
+the WSL distribution where Docker host networking is enabled:
+
+```bash
+ss -H -lunp | grep -E ':(5353|5540)'
+```
+
+Look for both IPv4 wildcard bindings such as `0.0.0.0:5540` and IPv6
+bindings such as `[::]:5540`. A listener only on `127.0.0.1` or `::1` cannot
+be reached by a controller on the LAN. If the listeners are present but
+commissioning still times out, the remaining path is the host firewall,
+Hyper-V firewall in WSL, Wi-Fi isolation, or multicast/IPv6 routing between
+the controller and host.
 
 ## Persistent error logging
 
