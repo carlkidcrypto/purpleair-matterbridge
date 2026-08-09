@@ -92,6 +92,34 @@ persistent named volumes, and the settings file mounted read-only.
 The Matterbridge home, including its commissioning identity, is stored in the
 `matterbridge-data` volume. Replacing the container or pulling a new immutable
 image does not reset pairing state.
+
+### Watch the updated container
+
+The update script uses the stable container name
+`purpleair-matterbridge`. Check its status and follow its live logs with:
+
+```bash
+docker ps --filter 'name=^/purpleair-matterbridge$'
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+Press `Ctrl+C` to stop following the logs; it does not stop the container. To
+inspect the selected image, network mode, mounts, and environment:
+
+```bash
+docker inspect purpleair-matterbridge
+docker inspect --format '{{.Config.Image}} {{.HostConfig.NetworkMode}}' purpleair-matterbridge
+```
+
+For a shorter live window, use `--since`, for example:
+
+```bash
+docker logs --since 10m -f purpleair-matterbridge
+```
+
+Use `docker start purpleair-matterbridge` or
+`docker restart purpleair-matterbridge` after a manual stop. Normal restarts
+preserve the named Matterbridge and logger volumes.
 For example, to use a specific immutable Docker Hub image tag:
 
 ```bash

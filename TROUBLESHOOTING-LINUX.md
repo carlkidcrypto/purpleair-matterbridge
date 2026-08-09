@@ -40,6 +40,70 @@ ip -brief address
 Replace `wlp2s0` with the interface carrying the host's LAN address. Do not
 use `docker0`, `br-*`, or `veth*`.
 
+## Watch and inspect the container
+
+The update script creates the container with the stable name
+`purpleair-matterbridge`. Check that it is running and follow the current
+Matterbridge/logger output:
+
+```bash
+docker ps --filter 'name=^/purpleair-matterbridge$'
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+Press `Ctrl+C` to leave the log view without stopping the container. Inspect
+the image and host-network configuration with:
+
+```bash
+docker inspect --format '{{.Config.Image}} {{.HostConfig.NetworkMode}}' purpleair-matterbridge
+```
+
+The output should show the selected immutable image tag and `host`. Use
+`docker logs --since 10m -f purpleair-matterbridge` to watch only recent
+output. The update script preserves the `matterbridge-data` and `logger-data`
+volumes when it replaces the container.
+
+## Automate image updates with cron
+
+The update script can run unattended from the system root crontab. Edit it
+with:
+
+```bash
+sudo crontab -e
+```
+
+Add a nightly entry such as:
+
+```cron
+0 0 * * * /home/carlkidcrypto/Documents/repos/purpleair-matterbridge/docker/update_pa_matterbridge.sh --local --settings-file /home/carlkidcrypto/Documents/paa_local_config.json --mdns-interface wlp2s0 >> /var/log/purpleair-matterbridge-update.log 2>&1
+```
+
+This runs at midnight according to the Linux system timezone. The updater
+queries Docker Hub for the newest published immutable image tag, pulls it,
+replaces the `purpleair-matterbridge` container, and starts it with the
+persistent Matterbridge and logger volumes. The commissioning identity is
+therefore preserved during normal automated updates.
+
+Use absolute paths in cron entries. Do not use `~`, since cron does not load
+your interactive shell environment. Replace `wlp2s0` and the settings path
+with values appropriate for the host. The script's Docker Hub lookup requires
+network access and Python 3; failures are written to the update log.
+
+View the update history with:
+
+```bash
+sudo tail -f /var/log/purpleair-matterbridge-update.log
+```
+
+The running container's application logs remain separate:
+
+```bash
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+Do not put `--fdr` in a recurring cron entry. Factory reset is destructive,
+removes commissioning state, and requires deliberate one-time use.
+
 ## Allow Matter through UFW
 
 A default UFW policy that denies incoming traffic blocks the Matter session.
