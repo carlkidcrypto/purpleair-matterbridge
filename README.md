@@ -278,6 +278,11 @@ the workflow also builds that release tag and prepares a versioned
 request. Those versioned directories are intentionally tracked so released
 documentation remains locked as the project changes.
 
+The `Docs Continuous Improvement Every 3 Days` Agentic Workflow periodically
+reviews source documentation for focused corrections and opens a draft PR on
+the `automation/docs-continuous-improvement` branch. It excludes generated
+HTML and runtime changes; manual runs are available from the Actions tab.
+
 ## Testing And Publishing
 
 The package is configured for public npm access. From a clean checkout, install
