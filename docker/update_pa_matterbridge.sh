@@ -4,14 +4,52 @@ set -eu
 
 CONTAINER_NAME=purpleair-matterbridge
 IMAGE_REPOSITORY=carlkidcrypto/purpleair-matterbridge-images
-IMAGE_TAG=latest
+IMAGE_TAG=
 FDR=0
 LOGGER_MODE=
 MDNS_INTERFACE=
 SETTINGS_FILE=
 
+resolve_newest_docker_hub_tag() {
+    case "$IMAGE_REPOSITORY" in
+        */*/*)
+            printf '%s\n' "Cannot discover tags automatically for registry repository '$IMAGE_REPOSITORY'; pass --image-tag." >&2
+            exit 64
+            ;;
+    esac
+
+    python3 - "$IMAGE_REPOSITORY" <<'PY'
+import json
+import re
+import sys
+from urllib.parse import quote
+from urllib.request import Request, urlopen
+
+repository = sys.argv[1]
+url = (
+    "https://hub.docker.com/v2/repositories/"
+    f"{quote(repository, safe='/')}/tags?page_size=100&ordering=last_updated"
+)
+request = Request(url, headers={"Accept": "application/json", "User-Agent": "purpleair-matterbridge"})
+
+try:
+    with urlopen(request, timeout=15) as response:
+        payload = json.load(response)
+except Exception as error:
+    raise SystemExit(f"Could not query Docker Hub tags for {repository}: {error}")
+
+immutable_tag = re.compile(r"^\d+\.\d+\.\d+-[0-9a-f]+-\d+-\d+$")
+tags = [tag for tag in payload.get("results", []) if immutable_tag.fullmatch(tag.get("name", ""))]
+if not tags:
+    raise SystemExit(f"No published immutable image tags found for {repository}")
+
+tags.sort(key=lambda tag: tag.get("last_updated", ""), reverse=True)
+print(tags[0]["name"])
+PY
+}
+
 usage() {
-    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --local|--remote --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--image-tag TAG] [--mdns-interface INTERFACE] [--image-repository REPOSITORY] [--fdr]" >&2
+    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --local|--remote --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--image-tag TAG] [--mdns-interface INTERFACE] [--image-repository DOCKER_HUB_REPOSITORY] [--fdr]" >&2
 }
 
 while [ "$#" -gt 0 ]; do
@@ -82,6 +120,11 @@ esac
 if [ ! -f "$SETTINGS_FILE" ]; then
     printf '%s\n' "PurpleAir settings file does not exist: $SETTINGS_FILE" >&2
     exit 1
+fi
+
+if [ -z "$IMAGE_TAG" ]; then
+    printf '%s\n' "Discovering the newest published Docker Hub image tag for $IMAGE_REPOSITORY..."
+    IMAGE_TAG=$(resolve_newest_docker_hub_tag)
 fi
 
 IMAGE="$IMAGE_REPOSITORY:$IMAGE_TAG"

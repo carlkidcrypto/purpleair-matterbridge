@@ -74,7 +74,8 @@ repository.
 
 To update an existing installation from a published image without building
 locally, use `docker/update_pa_matterbridge.sh`. It defaults to the Docker Hub
-repository `carlkidcrypto/purpleair-matterbridge-images` and the `latest` tag:
+repository `carlkidcrypto/purpleair-matterbridge-images` and the currently
+newest published immutable image tag:
 
 ```bash
 ./docker/update_pa_matterbridge.sh \
@@ -82,9 +83,10 @@ repository `carlkidcrypto/purpleair-matterbridge-images` and the `latest` tag:
 	--settings-file /absolute/path/to/sensors.json
 ```
 
-Pass `--image-tag TAG` when a specific published image is required. Pass
-`--image-repository REPOSITORY` to use another registry or image repository.
-The script pulls the selected image, stops and removes the existing
+When `--image-tag` is omitted, the script queries Docker Hub and selects the
+newest generated immutable tag. Pass `--image-tag TAG` for a specific image.
+The automatic lookup applies to Docker Hub repositories; pass an explicit tag
+when using another registry. The script pulls the selected image, stops and removes the existing
 `purpleair-matterbridge` container, then starts it with host networking,
 persistent named volumes, and the settings file mounted read-only.
 The Matterbridge home, including its commissioning identity, is stored in the
@@ -215,17 +217,17 @@ The final command should print:
 
 The Docker publishing workflow targets
 `carlkidcrypto/purpleair-matterbridge-images` on Docker Hub and the matching
-repository on GHCR. Repository tags are configured as immutable, so the
-workflow does not publish `latest`, reusable bare version tags, or a duplicate
-SHA-only tag. Each build publishes one unique tag containing the package
-version, commit, GitHub run ID, and run attempt, for example:
+repository on GHCR. Each build publishes one immutable tag to both registries.
+The immutable tag contains the package version, commit, GitHub run ID, and run
+attempt, for example:
 
 ```text
 0.1.0-35eb4068220a-123456789-1
 ```
 
-Use the complete generated tag when pulling an image. A new workflow run or
-retry creates a new tag instead of attempting to move an existing tag.
+The update script discovers the newest Docker Hub tag automatically when no
+tag is supplied. Use the complete generated tag explicitly when
+reproducibility is required.
 
 ## Documentation
 
