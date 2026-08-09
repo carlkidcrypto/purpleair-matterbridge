@@ -212,7 +212,7 @@ available for that Node release, Matterbridge 3.10.3, and the published
 Linux engine is unavailable, use the Docker Engine installed inside WSL:
 
 ```bash
-cd /home/carlkidcrypto/Github/purpleair-matterbridge
+cd REPOSITORY_ROOT
 
 docker build \
 	--progress=plain \
