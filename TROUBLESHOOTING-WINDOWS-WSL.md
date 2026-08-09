@@ -37,6 +37,76 @@ The version check should print `1.5.0a2`. If the Docker Desktop client reports
 that `dockerDesktopLinuxEngine` is unavailable, run these commands from WSL so
 the Docker CLI uses the WSL Engine instead.
 
+## Start the combined container
+
+Run the same lifecycle script from WSL or from a native Linux host. Choose
+`--local` for a local sensor settings file or `--remote` for a settings file
+that uses PurpleAir API credentials:
+
+```bash
+./docker/spinup.sh --local --settings-file /absolute/path/to/paa_local_config.json
+```
+
+```bash
+./docker/spinup.sh --remote --settings-file /absolute/path/to/paa_remote_config.json
+```
+
+If Matterbridge reports Docker bridge or `veth*` interfaces during its system
+check, identify the host interface carrying the LAN address:
+
+```bash
+ip -brief address
+```
+
+Start the container with that interface, for example:
+
+```bash
+./docker/spinup.sh --local \
+  --mdns-interface eth0 \
+  --settings-file /absolute/path/to/paa_local_config.json
+```
+
+Use the actual interface name from `ip -brief address`; do not use `docker0`,
+`br-*`, or `veth*`. The same `--mdns-interface` option is available on
+`update_pa_matterbridge.sh`.
+
+The settings file is mounted read-only inside the container. The container
+uses host networking, starts the PurpleAir logger on `127.0.0.1:9855`, and
+starts Matterbridge after registering the plugin. Do not set `LOGGER_ARGS`; the
+selected mode supplies the correct logger option.
+
+The Compose service intentionally uses Docker host networking. On native
+Linux, this gives Matterbridge the host's IPv4 and IPv6 interfaces and lets it
+bind UDP 5353 for mDNS and UDP 5540 for Matter directly; no `ports:` mapping is
+needed or desirable. On WSL, the WSL mirrored-networking and Hyper-V firewall
+configuration still controls whether traffic from the controller can reach
+those host sockets.
+
+Follow startup output with:
+
+```bash
+docker logs --tail 200 -f purpleair-matterbridge
+```
+
+On first startup, look for both `QR Code URL:` and `Manual pairing code` in the
+Matterbridge output. Commission the bridge with either value. The
+`matterbridge-data` and `logger-data` Docker volumes preserve state across
+restarts and image updates.
+
+The image uses Node.js 26, which is supported by this project. Matterbridge's
+recommendation to use Node.js 24 LTS is advisory and does not indicate a failed
+system check.
+
+To intentionally erase Matterbridge commissioning and runtime state, use the
+explicit factory-reset flag:
+
+```bash
+./docker/spinup.sh --local --fdr --settings-file /absolute/path/to/paa_local_config.json
+```
+
+This invalidates existing controller pairings. Do not use `--fdr` for an
+ordinary restart or image update.
+
 ## Known-good network shape
 
 - WSL uses mirrored networking.
@@ -117,6 +187,20 @@ ss -ulpn | grep -E ':(5353|5540)'
 Matterbridge should own UDP listeners on ports 5353 and 5540 for IPv4 and IPv6.
 If it does not, inspect the Matterbridge terminal for startup errors before
 attempting commissioning.
+
+For the combined Docker container, run the listener check on the host or in
+the WSL distribution where Docker host networking is enabled:
+
+```bash
+ss -H -lunp | grep -E ':(5353|5540)'
+```
+
+Look for both IPv4 wildcard bindings such as `0.0.0.0:5540` and IPv6
+bindings such as `[::]:5540`. A listener only on `127.0.0.1` or `::1` cannot
+be reached by a controller on the LAN. If the listeners are present but
+commissioning still times out, the remaining path is the host firewall,
+Hyper-V firewall in WSL, Wi-Fi isolation, or multicast/IPv6 routing between
+the controller and host.
 
 ## Persistent error logging
 

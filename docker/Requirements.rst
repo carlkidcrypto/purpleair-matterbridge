@@ -42,9 +42,9 @@ Configuration
 -------------
 
 PAMB-010
-   The image SHALL configure the PurpleAir logger with
-   ``-paa_multiple_sensor_request_json_file
-   /config/purpleair-settings.json --matter-only`` by default.
+   The image SHALL support local and remote PurpleAir logger modes. Local mode
+   SHALL use ``-paa_local_sensor_request_json_file`` and remote mode SHALL use
+   ``-paa_multiple_sensor_request_json_file``.
 
 PAMB-011
    The runtime SHALL make the supplied host settings file available inside
@@ -54,8 +54,10 @@ PAMB-012
    The settings file SHALL be mounted read-only.
 
 PAMB-013
-   The spin-up script SHALL accept exactly one command-line argument, which
-   SHALL be the path to the host PurpleAir settings JSON file.
+   The spin-up script SHALL require exactly one of the named ``--local`` or
+   ``--remote`` options, SHALL require the host PurpleAir settings JSON file
+   through ``--settings-file``, SHALL support the presence option ``--fdr``,
+   and SHALL support ``--help``.
 
 PAMB-014
    The spin-up script SHALL reject a missing, non-regular, or nonexistent
@@ -65,6 +67,21 @@ PAMB-015
    The logger SHALL serve its Matter JSON feed on ``127.0.0.1:9855`` inside
    the container.
 
+PAMB-016
+   The registry update script SHALL require exactly one of the named
+   ``--local`` or ``--remote`` options, SHALL require the host PurpleAir
+   settings JSON file through ``--settings-file``, and SHALL support named
+   ``--image-tag``, ``--image-repository``, the presence option ``--fdr``, and
+   ``--help``.
+
+PAMB-017
+   The registry update script SHALL pull a complete immutable image tag before
+   replacing the running container and SHALL NOT build the image locally.
+
+PAMB-018
+   The registry update script SHALL support GHCR by default and SHALL support
+   Docker Hub when ``--image-repository`` is explicitly provided.
+
 Networking and persistence
 --------------------------
 
@@ -72,13 +89,20 @@ PAMB-020
    The runtime SHALL use host networking so Matter mDNS, IPv6, multicast, and
    UDP commissioning traffic can reach the local network.
 
+PAMB-020A
+   The Docker lifecycle scripts SHALL support an optional
+   ``--mdns-interface`` value and SHALL pass it to Matterbridge as
+   ``--mdnsinterface`` when provided.
+
 PAMB-021
    The runtime SHALL expose Matter UDP ports 5540 and 5353 as declared by the
    image configuration.
 
 PAMB-022
-   The runtime SHALL persist Matterbridge state in the ``matterbridge-data``
-   volume mounted at ``/data/matterbridge``.
+   The runtime SHALL persist the Matterbridge home directory, including
+   commissioning state, in the ``matterbridge-data`` volume mounted at
+   ``/data``. The logger data volume MAY be mounted below that path at
+   ``/data/logger``.
 
 PAMB-023
    The runtime SHALL persist logger data in the ``logger-data`` volume mounted
@@ -105,11 +129,29 @@ PAMB-032
 
 PAMB-033
    The entrypoint SHALL start the logger before Matterbridge so the local feed
-   is available when the bridge begins operation.
+   is available when the bridge begins operation. It SHALL register the plugin
+   before starting the long-running Matterbridge process and SHALL NOT pass the
+   shutdown-only ``--add`` command to that process.
 
 PAMB-034
    The entrypoint SHALL terminate with a non-zero status when the required
    logger configuration is unavailable.
+
+PAMB-035
+   On first startup, the entrypoint SHALL preserve Matterbridge console output
+   containing the pairing QR URL and numerical manual pairing code in the
+   container logs. The bridge SHALL remain running after plugin registration so
+   those codes can be emitted.
+
+PAMB-036
+   The runtime SHALL NOT reset Matterbridge commissioning state during an
+   ordinary restart, image pull, or container replacement.
+
+PAMB-037
+   The Docker lifecycle scripts SHALL perform a Matterbridge factory reset
+   only when the operator explicitly passes ``--fdr``. The reset SHALL complete
+   before the normal Matterbridge process starts and SHALL use the supported
+   ``matterbridge --factoryreset`` command.
 
 Build and verification
 ----------------------
