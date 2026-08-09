@@ -23,13 +23,13 @@ permissions:
   contents: read
   copilot-requests: write
 safe-outputs:
-  update-release:
-    timeout-minutes: 60
+  update-release: {}
+timeout-minutes: 60
 engine:
   id: copilot
-  model: claude-sonnet-4.6
+model: claude-sonnet-5
 network:
-  allowed: [defaults, github, npmjs.com]
+  allowed: [defaults, github, node]
 tools:
   bash: true
 ---

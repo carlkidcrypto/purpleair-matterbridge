@@ -3,8 +3,8 @@ name: Docs Continuous Improvement Every 3 Days
 on:
   workflow_dispatch:
   schedule: every 3 days
-skip-if-match:
-  query: 'is:pr is:open head:automation/docs-continuous-improvement label:documentation label:automated-pr'
+  skip-if-match:
+    query: 'is:pr is:open head:automation/docs-continuous-improvement label:documentation label:automated-pr'
 permissions:
   copilot-requests: write
   actions: read
@@ -21,7 +21,7 @@ safe-outputs:
 timeout-minutes: 45
 engine:
   id: copilot
-  model: claude-sonnet-4.6
+model: claude-sonnet-5
 network:
   allowed: [defaults, github]
 tools:

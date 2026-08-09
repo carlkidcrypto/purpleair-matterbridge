@@ -12,8 +12,8 @@ on:
         description: Optional release tag to document
         required: false
         type: string
-skip-if-match:
-  query: 'is:pr is:open head:automation/update-changelog label:documentation label:automated-pr'
+  skip-if-match:
+    query: 'is:pr is:open head:automation/update-changelog label:documentation label:automated-pr'
 permissions:
   copilot-requests: write
   actions: read
@@ -30,7 +30,7 @@ safe-outputs:
 timeout-minutes: 30
 engine:
   id: copilot
-  model: claude-sonnet-4.6
+model: claude-sonnet-5
 network:
   allowed: [defaults, github]
 tools:
