@@ -3,7 +3,7 @@
 project = "purpleair-matterbridge"
 copyright = "2026, carlkidcrypto"
 author = "carlkidcrypto"
-release = "0.1.0"
+release = "1.0.0"
 
 extensions = []
 templates_path = ["_templates"]

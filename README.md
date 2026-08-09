@@ -126,7 +126,7 @@ For example, to use a specific immutable Docker Hub image tag:
 ./docker/update_pa_matterbridge.sh \
 	--image-repository 'carlkidcrypto/purpleair-matterbridge-images' \
 	--local \
-	--image-tag '0.1.0-35eb4068220a-123456789-1' \
+	--image-tag '1.0.0-35eb4068220a-123456789-1' \
 	--settings-file /absolute/path/to/sensors.json
 ```
 
@@ -250,7 +250,7 @@ The immutable tag contains the package version, commit, GitHub run ID, and run
 attempt, for example:
 
 ```text
-0.1.0-35eb4068220a-123456789-1
+1.0.0-35eb4068220a-123456789-1
 ```
 
 The update script discovers the newest Docker Hub tag automatically when no
