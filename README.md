@@ -73,23 +73,24 @@ resulting container status. It can be run from any directory inside the
 repository.
 
 To update an existing installation from a published image without building
-locally, use `docker/update_pa_matterbridge.sh`. Published tags are immutable,
-so provide the complete tag from the Docker publishing workflow:
+locally, use `docker/update_pa_matterbridge.sh`. It defaults to the Docker Hub
+repository `carlkidcrypto/purpleair-matterbridge-images` and the `latest` tag:
 
 ```bash
 ./docker/update_pa_matterbridge.sh \
 	--local \
-	--image-tag '0.1.0-35eb4068220a-123456789-1' \
 	--settings-file /absolute/path/to/sensors.json
 ```
 
-The script pulls from GHCR by default, stops and removes the existing
-`purpleair-matterbridge` container, then starts the pulled image with host
-networking, persistent named volumes, and the settings file mounted read-only.
+Pass `--image-tag TAG` when a specific published image is required. Pass
+`--image-repository REPOSITORY` to use another registry or image repository.
+The script pulls the selected image, stops and removes the existing
+`purpleair-matterbridge` container, then starts it with host networking,
+persistent named volumes, and the settings file mounted read-only.
 The Matterbridge home, including its commissioning identity, is stored in the
 `matterbridge-data` volume. Replacing the container or pulling a new immutable
 image does not reset pairing state.
-To use Docker Hub instead, set the repository explicitly:
+For example, to use a specific immutable Docker Hub image tag:
 
 ```bash
 ./docker/update_pa_matterbridge.sh \
@@ -123,7 +124,6 @@ persistent volume, and starts a clean instance that prints new pairing codes:
 
 ./docker/update_pa_matterbridge.sh \
 	--local \
-	--image-tag '0.1.0-35eb4068220a-123456789-1' \
 	--fdr \
 	--settings-file /absolute/path/to/sensors.json
 ```

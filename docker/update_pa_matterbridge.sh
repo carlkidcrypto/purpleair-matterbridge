@@ -3,15 +3,15 @@
 set -eu
 
 CONTAINER_NAME=purpleair-matterbridge
-IMAGE_REPOSITORY=ghcr.io/carlkidcrypto/purpleair-matterbridge
-IMAGE_TAG=
+IMAGE_REPOSITORY=carlkidcrypto/purpleair-matterbridge-images
+IMAGE_TAG=latest
 FDR=0
 LOGGER_MODE=
 MDNS_INTERFACE=
 SETTINGS_FILE=
 
 usage() {
-    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --local|--remote --image-tag VERSION-SHA-RUN-ATTEMPT --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--mdns-interface INTERFACE] [--image-repository REPOSITORY] [--fdr]" >&2
+    printf '%s\n' "Usage: ./update_pa_matterbridge.sh --local|--remote --settings-file PATH_TO_PURPLEAIR_SETTINGS_JSON [--image-tag TAG] [--mdns-interface INTERFACE] [--image-repository REPOSITORY] [--fdr]" >&2
 }
 
 while [ "$#" -gt 0 ]; do
@@ -69,7 +69,7 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-if [ "$#" -ne 0 ] || [ -z "$IMAGE_TAG" ] || [ -z "$SETTINGS_FILE" ] || [ -z "$LOGGER_MODE" ]; then
+if [ "$#" -ne 0 ] || [ -z "$SETTINGS_FILE" ] || [ -z "$LOGGER_MODE" ]; then
     usage
     exit 1
 fi
