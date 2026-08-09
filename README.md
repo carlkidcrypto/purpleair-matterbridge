@@ -336,6 +336,11 @@ on the `automation/update-changelog` branch. It can also be run manually from
 the Actions tab with an optional release tag. The workflow ignores timestamp-
 only changes and is limited to changelog updates.
 
+The `Auto Update Release Notes` Agentic Workflow also formats the GitHub release
+body with npm and Docker installation details, grouped commit summaries, and a
+comparison link. It supports manual backfills; releases containing
+`<!-- PROTECTED -->` are left unchanged.
+
 See [Requirements.rst](Requirements.rst) for normative behavior,
 [PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results and the
 Google Home measurement limitation, and
