@@ -15,5 +15,3 @@ docs/html_v*/.doctrees/
 docs/html/.buildinfo
 docs/html_v*/.buildinfo
 sphinx_docs_build/landing/.doctrees/
-.github/workflows/*.lock.yml
-.github/workflows/agentics-maintenance.yml
