@@ -8,7 +8,7 @@ quality sensors.
 - Node.js 20.19, 22.13, 24, or 26
 - Matterbridge 3.10.0 or newer
 - A running PurpleAir Matter feed, normally
-	`http://127.0.0.1:9855/matter/sensors`
+  `http://127.0.0.1:9855/matter/sensors`
 - IPv6 and mDNS connectivity for Matter commissioning
 
 ## Install From npm
@@ -36,8 +36,11 @@ Registration persists. Start the bridge with:
 ```
 
 ## Local Development
+
 ## Docker
+
 ## Docker
+
 The combined Matterbridge and `purpleair_data_logger` container files are in
 [docker](docker). The image uses Ubuntu 26.04, Node.js 26, and host networking
 so Matter mDNS and UDP traffic can reach the local network. Build and start it

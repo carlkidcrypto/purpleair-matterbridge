@@ -4,8 +4,16 @@ coverage/
 .cache/
 docs/doctrees/
 docs/.doctrees/
+docs/_static/
+docs/_sources/
+docs/*.html
+docs/searchindex.js
+docs/html/
+docs/html_v*/
 docs/html/.doctrees/
 docs/html_v*/.doctrees/
 docs/html/.buildinfo
 docs/html_v*/.buildinfo
 sphinx_docs_build/landing/.doctrees/
+.github/workflows/*.lock.yml
+.github/workflows/agentics-maintenance.yml

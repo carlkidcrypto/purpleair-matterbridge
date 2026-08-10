@@ -1,10 +1,8 @@
 name: Publish npm Package
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
-      - "v*.*.*-*"
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:

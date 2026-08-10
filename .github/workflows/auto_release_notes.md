@@ -11,12 +11,12 @@ on:
       backfill_all:
         description: Backfill release notes for ALL existing releases
         required: false
-        default: 'false'
+        default: "false"
         type: boolean
       additional_context:
         description: Optional extra context to incorporate into every release note
         required: false
-        default: ''
+        default: ""
         type: string
 permissions:
   actions: read
@@ -128,49 +128,53 @@ from local git history, commit paths, and available PR or issue references.
    followed by `Compared to: <base_tag_or_root_commit>`. Include this install
    and image section immediately afterward:
 
-    ````markdown
+   ````markdown
    ## Install / Upgrade
 
    ```bash
    npm install purpleair-matterbridge@<npm_version>
-  ```
-
-   npm package: https://www.npmjs.com/package/purpleair-matterbridge/v/<npm_version>
-
-   ## Container Images
-
-   ```bash
-   docker pull carlkidcrypto/purpleair-matterbridge-images:<immutable_tag>
    ```
+   ````
 
-   Docker Hub: https://hub.docker.com/r/carlkidcrypto/purpleair-matterbridge-images/tags
-   GHCR: https://github.com/carlkidcrypto/purpleair-matterbridge/pkgs/container/purpleair-matterbridge
-  ````
+````
 
-   Then add each non-empty theme as `## <Theme>` with bullets. Rewrite terse
-   commit titles into natural language and include PR links as `(#NNN)` when
-   available. End with:
+ npm package: https://www.npmjs.com/package/purpleair-matterbridge/v/<npm_version>
 
-   ```markdown
-   ---
-   **Full Changelog**:
-   https://github.com/carlkidcrypto/purpleair-matterbridge/compare/<base_tag>...<current_tag>
-  ```
+ ## Container Images
 
-   For the Docker command, use the immutable release tag produced by
-   `build_and_publish_docker_images.yml` when it is available. Do not invent a
-   `latest` tag because this repository publishes immutable image tags only.
+ ```bash
+ docker pull carlkidcrypto/purpleair-matterbridge-images:<immutable_tag>
+````
+
+Docker Hub: https://hub.docker.com/r/carlkidcrypto/purpleair-matterbridge-images/tags
+GHCR: https://github.com/carlkidcrypto/purpleair-matterbridge/pkgs/container/purpleair-matterbridge
+
+`````
+
+ Then add each non-empty theme as `## <Theme>` with bullets. Rewrite terse
+ commit titles into natural language and include PR links as `(#NNN)` when
+ available. End with:
+
+ ```markdown
+ ---
+ **Full Changelog**:
+ https://github.com/carlkidcrypto/purpleair-matterbridge/compare/<base_tag>...<current_tag>
+```
+
+ For the Docker command, use the immutable release tag produced by
+ `build_and_publish_docker_images.yml` when it is available. Do not invent a
+ `latest` tag because this repository publishes immutable image tags only.
 
 5. Update the GitHub release.
 
-   - Fetch the current release body before writing.
-   - If it contains the exact string `<!-- PROTECTED -->`, skip it and log:
-     `Skipping <tag>: marked <!-- PROTECTED -->`.
-   - Otherwise fully overwrite the release body through the GitHub release API;
-     do not preserve or merge previous body content.
-   - In published-release mode, update only the triggering release.
-   - In backfill mode, process releases serially and add a short delay if API
-     throttling is detected.
+ - Fetch the current release body before writing.
+ - If it contains the exact string `<!-- PROTECTED -->`, skip it and log:
+   `Skipping <tag>: marked <!-- PROTECTED -->`.
+ - Otherwise fully overwrite the release body through the GitHub release API;
+   do not preserve or merge previous body content.
+ - In published-release mode, update only the triggering release.
+ - In backfill mode, process releases serially and add a short delay if API
+   throttling is detected.
 
 ## Release Notes Body Format
 
@@ -226,7 +230,7 @@ GHCR: https://github.com/carlkidcrypto/purpleair-matterbridge/pkgs/container/pur
 ---
 **Full Changelog**:
 https://github.com/carlkidcrypto/purpleair-matterbridge/compare/<base_tag>...<current_tag>
-````
+`````
 
 ## Constraints
 

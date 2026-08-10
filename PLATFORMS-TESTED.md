@@ -14,13 +14,13 @@ network configuration.
 
 ## Compatibility matrix
 
-| Platform            | Status      | Notes                                                                                                                  |
-| ------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Google Home         | Worked      | Direct commissioning works and Google Home shows the full measurement set. When the device is commissioned in SmartThings and shared to Google Home, Google Home currently shows only temperature. |
-| Home Assistant      | Worked      | Google Home-first test: commission in Google Home, then share the Matter device to Home Assistant. Full measurement data is visible. |
-| Apple Home          | Not tested  |                                                                                                                        |
-| Amazon Alexa        | Not tested  |                                                                                                                        |
-| Samsung SmartThings | Worked      | Direct commissioning works and full PurpleAir measurement data is visible. Sharing a device commissioned in Google Home to SmartThings also preserves the full measurement set. |
+| Platform            | Status     | Notes                                                                                                                                                                                              |
+| ------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Google Home         | Worked     | Direct commissioning works and Google Home shows the full measurement set. When the device is commissioned in SmartThings and shared to Google Home, Google Home currently shows only temperature. |
+| Home Assistant      | Worked     | Google Home-first test: commission in Google Home, then share the Matter device to Home Assistant. Full measurement data is visible.                                                               |
+| Apple Home          | Not tested |                                                                                                                                                                                                    |
+| Amazon Alexa        | Not tested |                                                                                                                                                                                                    |
+| Samsung SmartThings | Worked     | Direct commissioning works and full PurpleAir measurement data is visible. Sharing a device commissioned in Google Home to SmartThings also preserves the full measurement set.                    |
 
 ## Details to record
 
@@ -37,13 +37,13 @@ When adding a test result, include when available:
 
 ## Cross-controller sharing workflows
 
-The plugin publishes the canonical Matter ``AirQualitySensor`` device type
+The plugin publishes the canonical Matter `AirQualitySensor` device type
 with the Air Quality, Temperature Measurement, Relative Humidity Measurement,
 Pressure Measurement, PM1, PM2.5, PM10, and optional TVOC clusters on the same
 endpoint. The endpoint implementation and automated tests verify those
 clusters; the values are not omitted from the Matter device.
 
-The plugin publishes the canonical Matter ``AirQualitySensor`` device type
+The plugin publishes the canonical Matter `AirQualitySensor` device type
 with the Air Quality, Temperature Measurement, Relative Humidity Measurement,
 Pressure Measurement, PM1, PM2.5, PM10, and optional TVOC clusters on the same
 endpoint. The endpoint implementation and automated tests verify those
@@ -56,7 +56,7 @@ Two sharing workflows were tested:
 1. Commission the PurpleAir Matterbridge in Samsung SmartThings.
 2. Confirm that SmartThings displays the broader measurement set.
 3. Use SmartThings' sharing or multi-admin flow to share the Matter device to
-  Google Home.
+   Google Home.
 4. Open the shared device in Google Home.
 
 On Android 17, SmartThings displayed the air quality, temperature, humidity,
@@ -69,7 +69,7 @@ limitation in the SmartThings-to-Google-Home sharing path.
 1. Commission the PurpleAir Matterbridge directly in Google Home.
 2. Confirm that Google Home displays the full measurement set.
 3. Use Google Home's linked Matter app or multi-admin flow to share the Matter
-  device to Samsung SmartThings.
+   device to Samsung SmartThings.
 4. Open the device in SmartThings.
 
 In this direction, both Google Home and SmartThings displayed the full
@@ -81,7 +81,7 @@ particulate measurements.
 1. Commission the PurpleAir Matterbridge directly in Google Home.
 2. Confirm that Google Home displays the full measurement set.
 3. Use Google Home's linked Matter app or multi-admin flow to share the Matter
-  device to Home Assistant.
+   device to Home Assistant.
 4. Open the device in Home Assistant.
 
 This workflow also completed successfully. Home Assistant displayed the full
@@ -98,4 +98,3 @@ Do not factory-reset or split the readings into synthetic Matter endpoints to
 work around the first sharing result. Synthetic endpoints could create
 duplicate or misleading devices. Use the Google-Home-first sharing workflow
 when both controllers need the full measurement set.
-
