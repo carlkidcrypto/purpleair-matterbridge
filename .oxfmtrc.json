@@ -1,0 +1,3 @@
+{
+  "ignorePatterns": ["**/README*", ".github/workflows/*.lock.json", ".github/workflows/*.yaml"]
+}
