@@ -2,6 +2,12 @@
 
 All notable changes to `purpleair-matterbridge` are documented here.
 
+## [1.0.3] - 2026-08-09
+
+### Fixed
+
+- Updated compiled GitHub Agentic Workflow artifacts for reliable automation.
+
 ## [1.0.1] - 2026-08-09
 
 ### Fixed
