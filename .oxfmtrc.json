@@ -1,6 +1,6 @@
 {
   "ignorePatterns": [
-    "**/README*",
+    "*.md",
     ".github/workflows/*.lock.json",
     ".github/workflows/*.yaml",
     ".github/workflows/*.yml"
