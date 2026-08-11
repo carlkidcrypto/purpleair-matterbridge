@@ -5,15 +5,9 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  release:
+    types: [published]
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - docker/**
-      - package.json
-      - package-lock.json
-      - src/**
-      - .github/workflows/build_and_publish_docker_images.yml
 
 env:
   DOCKER_REPO: carlkidcrypto/purpleair-matterbridge-images

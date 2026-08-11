@@ -3,12 +3,18 @@
 Matterbridge plugin that exposes PurpleAir Matter JSON as bridged Matter air
 quality sensors.
 
+[![Sphinx Docs](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/sphinx_build.yml?branch=main&style=flat-square&label=Sphinx%20Docs)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/sphinx_build.yml)
+[![Docker Images](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/build_and_publish_docker_images.yml?branch=main&style=flat-square&label=Docker%20Images)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/build_and_publish_docker_images.yml)
+[![npm Publish](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/publish_npm.yml?branch=main&style=flat-square&label=npm%20Publish)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/publish_npm.yml)
+[![npm Version](https://img.shields.io/npm/v/purpleair-matterbridge?style=flat-square)](https://www.npmjs.com/package/purpleair-matterbridge)
+[![License](https://img.shields.io/github/license/carlkidcrypto/purpleair-matterbridge?style=flat-square)](LICENSE)
+
 ## Requirements
 
 - Node.js 20.19, 22.13, 24, or 26
 - Matterbridge 3.10.0 or newer
 - A running PurpleAir Matter feed, normally
-  `http://127.0.0.1:9855/matter/sensors`
+	`http://127.0.0.1:9855/matter/sensors`
 - IPv6 and mDNS connectivity for Matter commissioning
 
 ## Install From npm
@@ -36,11 +42,8 @@ Registration persists. Start the bridge with:
 ```
 
 ## Local Development
-
 ## Docker
-
 ## Docker
-
 The combined Matterbridge and `purpleair_data_logger` container files are in
 [docker](docker). The image uses Ubuntu 26.04, Node.js 26, and host networking
 so Matter mDNS and UDP traffic can reach the local network. Build and start it
