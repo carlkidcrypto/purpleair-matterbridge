@@ -1,5 +1,5 @@
-purpleair-matterbridge Docker requirements
-===========================================
+purpleair-matterbridge Docker software requirements
+===================================================
 
 Scope
 -----

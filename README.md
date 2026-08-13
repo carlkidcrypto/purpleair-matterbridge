@@ -351,7 +351,7 @@ body with npm and Docker installation details, grouped commit summaries, and a
 comparison link. It supports manual backfills; releases containing
 `<!-- PROTECTED -->` are left unchanged.
 
-See [Requirements.rst](Requirements.rst) for normative behavior,
+See [Software-Requirements.rst](Software-Requirements.rst) for normative behavior,
 [PLATFORMS-TESTED.md](PLATFORMS-TESTED.md) for controller results and the
 Google Home measurement limitation, and
 [TROUBLESHOOTING-LINUX.md](TROUBLESHOOTING-LINUX.md) for native Linux

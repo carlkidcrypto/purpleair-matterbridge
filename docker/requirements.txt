@@ -1,1 +1,1 @@
-purpleair-data-logger==1.5.0a2
+purpleair-data-logger==1.5.0

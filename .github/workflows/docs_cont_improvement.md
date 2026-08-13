@@ -39,7 +39,7 @@ Audit and improve, when a meaningful issue is found:
 
 - `README.md`
 - `CHANGELOG.md`, without rewriting historical release entries
-- `Requirements.rst`
+- `Software-Requirements.rst`
 - `PLATFORMS-TESTED.md`
 - `TROUBLESHOOTING-WINDOWS-WSL.md`
 - `TROUBLESHOOTING-LINUX.md`

@@ -21,7 +21,7 @@
     "PLATFORMS-TESTED.md",
     "README.md",
     "CHANGELOG.md",
-    "Requirements.rst",
+    "Software-Requirements.rst",
     "TROUBLESHOOTING-LINUX.md",
     "TROUBLESHOOTING-WINDOWS-WSL.md",
     "*.config.json",
