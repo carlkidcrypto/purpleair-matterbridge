@@ -20,7 +20,7 @@ bash bash_scripts/release.sh 1.0.7
 The script:
 
 1. Updates the version in `package.json` and `package-lock.json`.
-2. Updates the current Sphinx release and documentation link.
+2. Updates the current Sphinx release.
 3. Runs formatting and the formatting check.
 4. Runs the JavaScript/TypeScript linter.
 5. Runs the TypeScript typecheck.

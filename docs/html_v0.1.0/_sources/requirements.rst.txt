@@ -2,7 +2,7 @@ Requirements
 ============
 
 The normative plugin requirements are maintained in the repository's
-``Requirements.rst`` file.
+``Software-Requirements.rst`` file.
 
 The plugin must:
 

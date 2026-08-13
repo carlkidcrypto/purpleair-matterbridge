@@ -1,8 +1,5 @@
 FROM ubuntu:26.04
 
-ARG MATTERBRIDGE_VERSION=3.10.3
-ARG LOGGER_VERSION=1.5.0a2
-
 ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/data \
     PATH=/opt/plugin/node_modules/.bin:/opt/matterbridge/bin:/opt/logger-venv/bin:$PATH \
@@ -33,15 +30,19 @@ USER matterbridge
 WORKDIR /opt/plugin
 COPY --chown=matterbridge:matterbridge package.json package-lock.json tsconfig.base.json tsconfig.build.json tsconfig.json vitest.config.ts ./
 COPY --chown=matterbridge:matterbridge src ./src
+COPY --chown=matterbridge:matterbridge docker/package.json /opt/matterbridge-package.json
 
 RUN npm ci --include=dev --ignore-scripts \
-    && npm install --global --prefix /opt/matterbridge --omit=dev matterbridge@${MATTERBRIDGE_VERSION} \
+    && matterbridge_version="$(node --input-type=commonjs --eval "console.log(require('/opt/matterbridge-package.json').dependencies.matterbridge)")" \
+    && npm install --global --prefix /opt/matterbridge --omit=dev "matterbridge@${matterbridge_version}" \
     && mkdir -p node_modules \
     && ln -s /opt/matterbridge/lib/node_modules/matterbridge node_modules/matterbridge \
     && npm run build
 
+COPY --chown=matterbridge:matterbridge docker/requirements.txt /opt/logger-requirements.txt
+
 RUN uv venv --python 3.14 /opt/logger-venv \
-    && uv pip install --python /opt/logger-venv/bin/python --no-cache "purpleair-data-logger==${LOGGER_VERSION}"
+    && uv pip install --python /opt/logger-venv/bin/python --no-cache --requirement /opt/logger-requirements.txt
 
 EXPOSE 5540/udp 5353/udp
 VOLUME ["/data"]

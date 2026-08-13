@@ -6,17 +6,16 @@ Matter controller, such as Home Assistant, runs elsewhere on the LAN.
 ## Build the Docker image from WSL
 
 The combined image is built for Ubuntu 26.04 and installs Node.js 26, the
-latest npm and npx available for that Node release, Matterbridge 3.10.3, and
-`purpleair-data-logger` 1.5.0a2 with Python 3.14. Docker Desktop's Linux
-engine does not need to be running when WSL has its own Docker Engine.
+latest npm and npx available for that Node release, the Matterbridge version
+pinned in `docker/package.json`, and the `purpleair-data-logger` version pinned
+in `docker/requirements.txt` with Python 3.14. Docker Desktop's Linux engine
+does not need to be running when WSL has its own Docker Engine.
 
 From an Ubuntu WSL terminal at the repository root, run:
 
 ```bash
 docker build \
   --progress=plain \
-  --build-arg LOGGER_VERSION=1.5.0a2 \
-  --build-arg MATTERBRIDGE_VERSION=3.10.3 \
   -f docker/Dockerfile \
   -t purpleair-matterbridge:logger-1.5.0a2 .
 ```

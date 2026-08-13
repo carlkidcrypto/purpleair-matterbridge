@@ -11,7 +11,8 @@ quality sensors.
    overview
    configuration
    development
-   requirements
+   npm-publishing
+   Software-Requirements
 
 Indices and tables
 ==================

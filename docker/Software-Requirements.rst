@@ -1,5 +1,5 @@
-purpleair-matterbridge Docker requirements
-===========================================
+purpleair-matterbridge Docker software requirements
+===================================================
 
 Scope
 -----
@@ -24,11 +24,11 @@ PAMB-003
 
 PAMB-004
    The image SHALL install the pinned ``purpleair-data-logger`` release
-   specified by ``LOGGER_VERSION``.
+   specified by ``docker/requirements.txt``.
 
 PAMB-005
    The image SHALL install the pinned Matterbridge release specified by
-   ``MATTERBRIDGE_VERSION``.
+   ``docker/package.json``.
 
 PAMB-006
    The image SHALL include the compiled ``purpleair-matterbridge`` plugin and
@@ -165,8 +165,8 @@ PAMB-041
    considered ready.
 
 PAMB-042
-   The image SHALL contain the exact ``purpleair-data-logger`` version
-   requested by ``LOGGER_VERSION``.
+   The image SHALL contain the exact ``purpleair-data-logger`` version pinned
+   in ``docker/requirements.txt``.
 
 PAMB-043
    The Compose configuration SHALL render successfully when supplied with a

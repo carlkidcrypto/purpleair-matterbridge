@@ -1,5 +1,5 @@
-purpleair-matterbridge requirements
-===================================
+purpleair-matterbridge software requirements
+===========================================
 
 Scope
 -----
