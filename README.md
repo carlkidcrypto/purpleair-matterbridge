@@ -42,8 +42,19 @@ Registration persists. Start the bridge with:
 ```
 
 ## Local Development
+
+`npm run dev:link` links the locally installed Matterbridge package without
+adding Matterbridge or Matter.js to this package's dependencies. This preserves
+the single Matter.js instance required by Matterbridge.
+
+For a local plugin registration, run Matterbridge from the repository parent:
+
+```bash
+"$HOME/.local/bin/matterbridge" --add ./purpleair-matterbridge
+```
+
 ## Docker
-## Docker
+
 The combined Matterbridge and `purpleair_data_logger` container files are in
 [docker](docker). The image uses Ubuntu 26.04, Node.js 26, and host networking
 so Matter mDNS and UDP traffic can reach the local network. Build and start it
@@ -187,16 +198,6 @@ failure.
 The `matterbridge-data` volume stores Matterbridge commissioning and runtime
 state. The `logger-data` volume stores logger data. Both volumes survive normal
 restarts, image updates, and container replacement.
-
-`npm run dev:link` links the locally installed Matterbridge package without
-adding Matterbridge or Matter.js to this package's dependencies. This preserves
-the single Matter.js instance required by Matterbridge.
-
-For a local plugin registration, run Matterbridge from the repository parent:
-
-```bash
-"$HOME/.local/bin/matterbridge" --add ./purpleair-matterbridge
-```
 
 ## Configuration
 
