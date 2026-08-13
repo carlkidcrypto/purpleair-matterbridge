@@ -1,6 +1,51 @@
-Last Updated: 2026-08-11 04:09:41 UTC
+Last Updated: 2026-08-13 14:30:53 UTC
 
 # Changelog
+
+
+<a name="v1.0.7"></a>
+
+## [v1.0.7](https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.0.6...v1.0.7) (2026-08-13)
+
+
+
+
+
+
+
+
+
+### Release Notes
+
+
+
+#### 
+
+
+
+- dependency-version: 3.10.4
+  
+
+- dependency-type: direct:production
+  
+
+- update-type: version-update:semver-patch
+...
+  
+
+- dependency-version: 26.2.0
+  
+
+- dependency-type: direct:development
+  
+
+- update-type: version-update:semver-minor
+...
+  
+  
+  
+
+---
 
 
 <a name="v1.0.6"></a>
