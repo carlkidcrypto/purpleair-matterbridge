@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Configuration" href="configuration.html"><link rel="prev" title="purpleair-matterbridge documentation" href="index.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Overview - purpleair-matterbridge 0.1.0 documentation</title>
+        <title>Overview - purpleair-matterbridge 1.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">purpleair-matterbridge 0.1.0 documentation</div></a>
+      <a href="index.html"><div class="brand">purpleair-matterbridge 1.0.6 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">purpleair-matterbridge 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">purpleair-matterbridge 1.0.6 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -195,7 +195,8 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="npm-publishing.html">Publishing to npm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Software-Requirements.html">Software Requirements</a></li>
 </ul>
 
 </div>
@@ -250,6 +251,26 @@ fabrics itself. Matterbridge remains the host runtime and owns those concerns.</
 <li><p>IPv6 and mDNS connectivity for Matter commissioning</p></li>
 </ul>
 <p>The default feed URL is <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:9855/matter/sensors</span></code>.</p>
+</section>
+<section id="combined-docker-runtime">
+<h2>Combined Docker runtime<a class="headerlink" href="#combined-docker-runtime" title="Link to this heading">¶</a></h2>
+<p>The combined Docker image runs <code class="docutils literal notranslate"><span class="pre">purpleair_data_logger</span></code> and Matterbridge in
+one container. Start it with exactly one logger mode:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./docker/spinup.sh --local --settings-file /absolute/path/to/local.json</span>
+<span class="go">./docker/spinup.sh --remote --settings-file /absolute/path/to/remote.json</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">--local</span></code> selects <code class="docutils literal notranslate"><span class="pre">-paa_local_sensor_request_json_file</span></code>. <code class="docutils literal notranslate"><span class="pre">--remote</span></code>
+selects <code class="docutils literal notranslate"><span class="pre">-paa_multiple_sensor_request_json_file</span></code> for API-backed settings.
+The settings file is mounted read-only, the logger feed remains on
+<code class="docutils literal notranslate"><span class="pre">127.0.0.1:9855</span></code>, and Matterbridge uses host networking for mDNS and UDP
+commissioning. See the repository README and the Windows/WSL troubleshooting
+guide for pairing, persistent volumes, updates, and factory reset.</p>
+<p>When the host has Docker bridge or virtual Ethernet interfaces, pass the real
+LAN interface explicitly, for example <code class="docutils literal notranslate"><span class="pre">--mdns-interface</span> <span class="pre">eth0</span></code>. Do not select
+<code class="docutils literal notranslate"><span class="pre">docker0</span></code>, <code class="docutils literal notranslate"><span class="pre">br-*</span></code>, or <code class="docutils literal notranslate"><span class="pre">veth*</span></code>. The Node.js 26 versus Node.js 24 LTS
+message from Matterbridge is advisory; Node.js 26 is the configured and
+supported image runtime.</p>
 </section>
 </section>
 
@@ -310,6 +331,7 @@ fabrics itself. Matterbridge remains the host runtime and owns those concerns.</
             <ul>
 <li><a class="reference internal" href="#">Overview</a><ul>
 <li><a class="reference internal" href="#runtime-requirements">Runtime requirements</a></li>
+<li><a class="reference internal" href="#combined-docker-runtime">Combined Docker runtime</a></li>
 </ul>
 </li>
 </ul>
@@ -321,7 +343,7 @@ fabrics itself. Matterbridge remains the host runtime and owns those concerns.</
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=01f34227"></script>
+</div><script src="_static/documentation_options.js?v=e2a723ec"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
