@@ -65,8 +65,6 @@ jobs:
           file: docker/Dockerfile
           push: true
           pull: true
-          build-args: |
-            MATTERBRIDGE_VERSION=3.10.3
           tags: ${{ steps.tags.outputs.docker_tags }}
           labels: |
             org.opencontainers.image.title=purpleair-matterbridge

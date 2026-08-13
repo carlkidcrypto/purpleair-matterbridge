@@ -25,6 +25,11 @@ updates:
     package-ecosystem: pip
     schedule:
       interval: daily
+  - directory: /docker
+    open-pull-requests-limit: 10
+    package-ecosystem: npm
+    schedule:
+      interval: daily
   - directory: /sphinx_docs_build
     open-pull-requests-limit: 10
     package-ecosystem: pip

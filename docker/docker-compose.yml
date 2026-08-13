@@ -3,8 +3,6 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-      args:
-        MATTERBRIDGE_VERSION: "3.10.3"
     container_name: purpleair-matterbridge
     network_mode: host
     restart: unless-stopped

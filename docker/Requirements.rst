@@ -28,7 +28,7 @@ PAMB-004
 
 PAMB-005
    The image SHALL install the pinned Matterbridge release specified by
-   ``MATTERBRIDGE_VERSION``.
+   ``docker/package.json``.
 
 PAMB-006
    The image SHALL include the compiled ``purpleair-matterbridge`` plugin and
