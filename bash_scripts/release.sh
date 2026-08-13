@@ -43,10 +43,7 @@ VERSION="$VERSION" node <<'NODE'
 const fs = require('node:fs');
 
 const version = process.env.VERSION;
-const files = [
-  'sphinx_docs_build/source/conf.py',
-  'sphinx_docs_build/landing/source/index.rst',
-];
+const files = ['sphinx_docs_build/source/conf.py'];
 
 for (const file of files) {
   const path = file;
@@ -55,17 +52,10 @@ for (const file of files) {
   const normalized = original.replace(/\r\n/g, '\n');
   let updated;
 
-  if (file.endsWith('conf.py')) {
-    updated = normalized.replace(
-      /^release = "[^"]+"$/m,
-      `release = "${version}"`,
-    );
-  } else {
-    updated = normalized.replace(
-      /(^\* `v)[^ ]+( <\.\/html_v)[^/]+(\/index\.html>`_$)/m,
-      `$1${version}$2${version}$3`,
-    );
-  }
+  updated = normalized.replace(
+    /^release = "[^"]+"$/m,
+    `release = "${version}"`,
+  );
 
   if (updated === normalized) {
     throw new Error(`Could not find the expected version entry in ${path}`);
