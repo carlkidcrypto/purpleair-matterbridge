@@ -1,7 +1,6 @@
 FROM ubuntu:26.04
 
 ARG MATTERBRIDGE_VERSION=3.10.3
-ARG LOGGER_VERSION=1.5.0a2
 
 ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/data \
@@ -40,8 +39,10 @@ RUN npm ci --include=dev --ignore-scripts \
     && ln -s /opt/matterbridge/lib/node_modules/matterbridge node_modules/matterbridge \
     && npm run build
 
+COPY --chown=matterbridge:matterbridge docker/requirements.txt /opt/logger-requirements.txt
+
 RUN uv venv --python 3.14 /opt/logger-venv \
-    && uv pip install --python /opt/logger-venv/bin/python --no-cache "purpleair-data-logger==${LOGGER_VERSION}"
+    && uv pip install --python /opt/logger-venv/bin/python --no-cache --requirement /opt/logger-requirements.txt
 
 EXPOSE 5540/udp 5353/udp
 VOLUME ["/data"]

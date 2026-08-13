@@ -213,16 +213,16 @@ octets, for example `purple-air-84-a1-4b`.
 ### Verify the image from WSL
 
 The container build uses Ubuntu 26.04, Node.js 26, the latest npm and npx
-available for that Node release, Matterbridge 3.10.3, and the published
-`purpleair-data-logger` 1.5.0a2 package on Python 3.14. When Docker Desktop's
-Linux engine is unavailable, use the Docker Engine installed inside WSL:
+available for that Node release, Matterbridge 3.10.3, and the
+`purpleair-data-logger` version pinned in `docker/requirements.txt` on Python
+3.14. When Docker Desktop's Linux engine is unavailable, use the Docker Engine
+installed inside WSL:
 
 ```bash
 cd REPOSITORY_ROOT
 
 docker build \
 	--progress=plain \
-	--build-arg LOGGER_VERSION=1.5.0a2 \
 	--build-arg MATTERBRIDGE_VERSION=3.10.3 \
 	-f docker/Dockerfile \
 	-t purpleair-matterbridge:logger-1.5.0a2 .
