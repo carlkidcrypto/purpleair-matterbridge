@@ -45,9 +45,8 @@ options:
       # Fallback
       other: Other Changes
   header:
-    # Pattern matches: conventional commits (feat:, fix:), capitalized prefixes (Fix, Add),
-    # and number-prefixed commits (461 feature, 442 question)
-    pattern: "^\\s*(([\\w]+)(?:[:\\s/-].*)?)$"
+    # Expanded pattern to better handle different prefixes and commit styles
+    pattern: "^\\s*(([\\w/-]+)(?:[:\\s/-].*)?)$"
     pattern_maps:
       - Subject
       - Type
