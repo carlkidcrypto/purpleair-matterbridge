@@ -37,7 +37,9 @@ RUN npm ci --include=dev --ignore-scripts \
     && npm install --global --prefix /opt/matterbridge --omit=dev "matterbridge@${matterbridge_version}" \
     && mkdir -p node_modules \
     && ln -s /opt/matterbridge/lib/node_modules/matterbridge node_modules/matterbridge \
-    && npm run build
+    && npm run build \
+    && mkdir -p /opt/plugin/apps/frontend \
+    && echo '{"name": "frontend", "version": "1.0.0"}' > /opt/plugin/apps/frontend/package.json
 
 COPY --chown=matterbridge:matterbridge docker/requirements.txt /opt/logger-requirements.txt
 
