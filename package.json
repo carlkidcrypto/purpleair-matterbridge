@@ -1,6 +1,6 @@
 {
   "name": "purpleair-matterbridge",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Matterbridge plugin that exposes PurpleAir Matter JSON as bridged Matter air quality sensors",
   "keywords": [
     "air-quality",
@@ -54,7 +54,6 @@
   "devDependencies": {
     "@types/node": "26.2.0",
     "@vitest/coverage-v8": "4.1.11",
-    "matterbridge": "^3.10.4",
     "oxfmt": "^0.64.0",
     "oxlint": "1.79.0",
     "typescript": "7.0.2",
