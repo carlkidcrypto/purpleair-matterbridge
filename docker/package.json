@@ -2,6 +2,6 @@
   "name": "purpleair-matterbridge-docker",
   "private": true,
   "dependencies": {
-    "matterbridge": "3.10.6"
+    "matterbridge": "3.10.7"
   }
 }

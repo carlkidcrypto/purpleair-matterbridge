@@ -7,6 +7,10 @@ Scope
 These requirements define the behavior of the ``purpleair-matterbridge``
 companion plugin. ``SHALL`` and ``SHALL NOT`` are normative.
 
+NOTE: A plugin must never declare Matterbridge as a dependency, devDependency, or peerDependency.
+See the Matterbridge development guide for more information:
+https://github.com/Luligu/matterbridge/blob/main/README-DEV.md
+
 Runtime and configuration
 -------------------------
 
