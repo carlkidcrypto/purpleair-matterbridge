@@ -35,6 +35,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      
+      - name: Install and Link Matterbridge for CI
+        run: |
+          npm install -g matterbridge@3.10.7
+          npm link matterbridge
 
       - name: Check formatting
         run: npm run format:check
