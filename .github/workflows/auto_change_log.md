@@ -3,6 +3,7 @@ name: Update Changelog
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
+  job-discriminator: ${{ github.run_id }}
 on:
   release:
     types: [published]
