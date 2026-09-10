@@ -225,7 +225,7 @@ cd REPOSITORY_ROOT
 docker build \
 	--progress=plain \
 	-f docker/Dockerfile \
-	-t purpleair-matterbridge:logger-1.5.0a2 .
+	-t purpleair-matterbridge:logger-1.5.0 .
 ```
 
 The build output should show the Matterbridge TypeScript build completing and
@@ -233,18 +233,18 @@ the logger package being installed. Verify the generated image and the
 published logger module with:
 
 ```bash
-docker image inspect purpleair-matterbridge:logger-1.5.0a2
+docker image inspect purpleair-matterbridge:logger-1.5.0
 
 docker run --rm \
 	--entrypoint /opt/logger-venv/bin/python \
-	purpleair-matterbridge:logger-1.5.0a2 \
+	purpleair-matterbridge:logger-1.5.0 \
 	-c 'import importlib.metadata as m; print(m.version("purpleair-data-logger"))'
 ```
 
 The final command should print:
 
 ```text
-1.5.0a2
+1.5.0
 ```
 
 ### Published image tags
