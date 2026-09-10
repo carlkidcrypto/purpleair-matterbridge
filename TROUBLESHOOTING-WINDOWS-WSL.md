@@ -17,22 +17,22 @@ From an Ubuntu WSL terminal at the repository root, run:
 docker build \
   --progress=plain \
   -f docker/Dockerfile \
-  -t purpleair-matterbridge:logger-1.5.0a2 .
+  -t purpleair-matterbridge:logger-1.5.0 .
 ```
 
 The build should finish after the final runtime-user setup layer. Confirm that
 the image was exported and that the published logger is importable:
 
 ```bash
-docker image inspect purpleair-matterbridge:logger-1.5.0a2
+docker image inspect purpleair-matterbridge:logger-1.5.0
 
 docker run --rm \
   --entrypoint /opt/logger-venv/bin/python \
-  purpleair-matterbridge:logger-1.5.0a2 \
+  purpleair-matterbridge:logger-1.5.0 \
   -c 'import importlib.metadata as m; print(m.version("purpleair-data-logger"))'
 ```
 
-The version check should print `1.5.0a2`. If the Docker Desktop client reports
+The version check should print `1.5.0`. If the Docker Desktop client reports
 that `dockerDesktopLinuxEngine` is unavailable, run these commands from WSL so
 the Docker CLI uses the WSL Engine instead.
 
