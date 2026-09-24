@@ -52,12 +52,12 @@
     "prepublishOnly": "npm run clean && npm run typecheck && npm test && npm run build"
   },
   "devDependencies": {
-    "@types/node": "26.5.1",
-    "@vitest/coverage-v8": "4.1.11",
-    "oxfmt": "^0.64.0",
-    "oxlint": "1.82.0",
+    "@types/node": "26.6.2",
+    "@vitest/coverage-v8": "5.0.1",
+    "oxfmt": "^0.69.0",
+    "oxlint": "1.84.0",
     "typescript": "7.0.2",
-    "vitest": "4.1.11"
+    "vitest": "5.0.1"
   },
   "engines": {
     "node": ">=20.19.0 <21.0.0 || >=22.13.0 <23.0.0 || >=24.0.0 <25.0.0 || >=26.0.0 <27.0.0"
