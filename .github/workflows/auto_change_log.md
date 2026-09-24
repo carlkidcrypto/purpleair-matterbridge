@@ -28,7 +28,8 @@ safe-outputs:
     if-no-changes: "ignore"
     base-branch: main
     protected-files: allowed
-timeout-minutes: 30
+timeout-minutes: 15
+max-ai-credits: 25
 engine:
   id: copilot
 model: claude-sonnet-5
