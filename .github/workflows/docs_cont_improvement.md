@@ -18,7 +18,8 @@ safe-outputs:
     if-no-changes: "ignore"
     base-branch: main
     protected-files: allowed
-timeout-minutes: 45
+timeout-minutes: 15
+max-ai-credits: 25
 engine:
   id: copilot
 model: claude-sonnet-5
@@ -54,6 +55,19 @@ Do not audit or edit generated output such as `docs/html/`, `docs/html_*`, build
 artifacts, `dist/`, `node_modules/`, or package-lock files unless the change is
 strictly required by a documentation-only correction. Do not edit source code,
 Dockerfiles, runtime configuration, or tests as part of this workflow.
+
+## Hard Requirements & Scope Limits (Token & AIC Optimization)
+
+0. **Deterministic Audit Helper**:
+   Execute the audit helper script to check for common typos, broken class casings, and formatting issues before doing any manual file reads:
+   ```bash
+   python3 .github/scripts/audit_docs.py
+   ```
+   If issues are found, you may use `python3 .github/scripts/audit_docs.py --fix` to auto-resolve them.
+
+- **Single-Target Scope**: Limit each run to at most 1–2 documentation files or 1 TypeScript source file's docstrings (1–3 focused improvements maximum). Do not attempt a repo-wide audit in a single run.
+- **Bounded file reads**: Files larger than 20 KB must **not** be read in full. Use targeted `grep`, `head`, `tail`, or line-range views.
+- **Turn Budget**: Complete inspection and edits within 10–12 turns. If no clear improvements are found, stop cleanly without editing.
 
 ## Goals
 

@@ -25,12 +25,13 @@ permissions:
   copilot-requests: write
 safe-outputs:
   update-release: {}
-timeout-minutes: 60
+timeout-minutes: 20
+max-ai-credits: 40
 engine:
   id: copilot
 model: claude-sonnet-5
 network:
-  allowed: [defaults, github, node]
+  allowed: [defaults, github, node, python]
 tools:
   bash: true
 ---
@@ -52,15 +53,37 @@ from local git history, commit paths, and available PR or issue references.
 
 ## Steps
 
-0. Determine the run mode.
+0. **Token & AIC Optimization (Helper Script)**:
+   Use the deterministic helper script `.github/scripts/generate_release_notes.py`
+   to minimize token consumption and AI Credit (AIC) usage. The script
+   automatically executes base tag resolution, commit range extraction, theme
+   grouping into the 9 categories, active verb title formatting, npm and Docker
+   command formatting, and skip-protected checks.
 
-   - For `release: published`, process only the triggering release tag.
-   - For `workflow_dispatch` with `backfill_all: true`, fetch all releases using
-     the GitHub API and process them oldest first.
-   - For `workflow_dispatch` with `backfill_all: false`, process only the most
-     recently published release.
-   - If `additional_context` is non-empty, apply it as supplemental context to
-     every release without echoing it verbatim.
+   - If triggered by `release: published`:
+     Determine the published tag name from the release event, then execute:
+     ```bash
+     mkdir -p /tmp/gh-aw/agent
+     python3 .github/scripts/generate_release_notes.py --tag <tag_name> --output-file /tmp/gh-aw/agent/release_notes.md
+     ```
+     (Pass `--additional-context "<context>"` if `additional_context` input is provided).
+     Review `/tmp/gh-aw/agent/release_notes.md` and use the `update_release` tool (or run with `--publish`) to update the release.
+
+   - If triggered by `workflow_dispatch` with `backfill_all: true`:
+     Execute:
+     ```bash
+     python3 .github/scripts/generate_release_notes.py --backfill --publish
+     ```
+     (Append `--additional-context "<context>"` if `additional_context` input is provided).
+
+   - If triggered by `workflow_dispatch` with `backfill_all: false` or unset:
+     Execute:
+     ```bash
+     python3 .github/scripts/generate_release_notes.py --latest --publish
+     ```
+     (Append `--additional-context "<context>"` if `additional_context` input is provided).
+
+   The steps below document the underlying deterministic specification implemented by the helper script:
 
 1. Identify release context.
 
@@ -87,13 +110,9 @@ from local git history, commit paths, and available PR or issue references.
    - Use full local history and tags. Do not use GitHub commit-reading APIs for
      changelog intelligence.
    - Run:
-
      ```bash
-     git log <base_tag_or_root>..<current_tag> --pretty=format:"%H %s"
+     git log <base_tag_or_root>..<current_tag> --name-only --format="COMMIT:%H%x09%s"
      ```
-
-   - For each commit, retrieve its body with `git log -1 --pretty=format:"%b" <hash>`
-     and changed paths with `git show --name-only --pretty="" <hash>`.
    - Collect PR and issue references such as `(#123)`, `#123`, `Closes #123`,
      `Fixes #123`, and `Resolves #123`.
    - If history is unavailable or the range is empty, continue with a minimal
@@ -129,109 +148,48 @@ from local git history, commit paths, and available PR or issue references.
    followed by `Compared to: <base_tag_or_root_commit>`. Include this install
    and image section immediately afterward:
 
-   ````markdown
+   ```markdown
    ## Install / Upgrade
 
    ```bash
    npm install purpleair-matterbridge@<npm_version>
    ```
-   ````
 
-````
+   npm package: https://www.npmjs.com/package/purpleair-matterbridge/v/<npm_version>
 
- npm package: https://www.npmjs.com/package/purpleair-matterbridge/v/<npm_version>
+   ## Container Images
 
- ## Container Images
+   ```bash
+   docker pull carlkidcrypto/purpleair-matterbridge-images:<immutable_tag>
+   ```
 
- ```bash
- docker pull carlkidcrypto/purpleair-matterbridge-images:<immutable_tag>
-````
+   Docker Hub: https://hub.docker.com/r/carlkidcrypto/purpleair-matterbridge-images/tags
+   GHCR: https://github.com/carlkidcrypto/purpleair-matterbridge/pkgs/container/purpleair-matterbridge
+   ```
 
-Docker Hub: https://hub.docker.com/r/carlkidcrypto/purpleair-matterbridge-images/tags
-GHCR: https://github.com/carlkidcrypto/purpleair-matterbridge/pkgs/container/purpleair-matterbridge
+   Then add each non-empty theme as `## <Theme>` with bullets. Rewrite terse
+   commit titles into natural language and include PR links as `(#NNN)` when
+   available. End with:
 
-`````
+   ```markdown
+   ---
+   **Full Changelog**: https://github.com/carlkidcrypto/purpleair-matterbridge/compare/<base_tag>...<current_tag>
+   ```
 
- Then add each non-empty theme as `## <Theme>` with bullets. Rewrite terse
- commit titles into natural language and include PR links as `(#NNN)` when
- available. End with:
-
- ```markdown
- ---
- **Full Changelog**:
- https://github.com/carlkidcrypto/purpleair-matterbridge/compare/<base_tag>...<current_tag>
-```
-
- For the Docker command, use the immutable release tag produced by
- `build_and_publish_docker_images.yml` when it is available. Do not invent a
- `latest` tag because this repository publishes immutable image tags only.
+   For the Docker command, use the immutable release tag produced by
+   `build_and_publish_docker_images.yml` when it is available. Do not invent a
+   `latest` tag because this repository publishes immutable image tags only.
 
 5. Update the GitHub release.
 
- - Fetch the current release body before writing.
- - If it contains the exact string `<!-- PROTECTED -->`, skip it and log:
-   `Skipping <tag>: marked <!-- PROTECTED -->`.
- - Otherwise fully overwrite the release body through the GitHub release API;
-   do not preserve or merge previous body content.
- - In published-release mode, update only the triggering release.
- - In backfill mode, process releases serially and add a short delay if API
-   throttling is detected.
-
-## Release Notes Body Format
-
-````markdown
-<One or two sentence summary.>
-
-Compared to: <base_tag_or_root_commit>
-
-## Install / Upgrade
-
-```bash
-npm install purpleair-matterbridge@<npm_version>
-```
-
-npm package: https://www.npmjs.com/package/purpleair-matterbridge/v/<npm_version>
-
-## Container Images
-
-```bash
-docker pull carlkidcrypto/purpleair-matterbridge-images:<immutable_tag>
-```
-
-Docker Hub: https://hub.docker.com/r/carlkidcrypto/purpleair-matterbridge-images/tags
-GHCR: https://github.com/carlkidcrypto/purpleair-matterbridge/pkgs/container/purpleair-matterbridge
-
-## Features / Enhancements
-- <human-readable change summary> (#PR or short hash)
-
-## Bug Fixes
-- <human-readable change summary> (#PR or short hash)
-
-## Runtime / Plugin
-- <human-readable change summary> (#PR or short hash)
-
-## Containers / Packaging
-- <human-readable change summary> (#PR or short hash)
-
-## Tests
-- <human-readable change summary> (#PR or short hash)
-
-## CI / Workflows
-- <human-readable change summary> (#PR or short hash)
-
-## Documentation
-- <human-readable change summary> (#PR or short hash)
-
-## Dependencies
-- <human-readable change summary> (#PR or short hash)
-
-## Chores / Misc
-- <human-readable change summary> (#PR or short hash)
-
----
-**Full Changelog**:
-https://github.com/carlkidcrypto/purpleair-matterbridge/compare/<base_tag>...<current_tag>
-`````
+   - Fetch the current release body before writing.
+   - If it contains the exact string `<!-- PROTECTED -->`, skip it and log:
+     `Skipping <tag>: marked <!-- PROTECTED -->`.
+   - Otherwise fully overwrite the release body through the GitHub release API;
+     do not preserve or merge previous body content.
+   - In published-release mode, update only the triggering release.
+   - In backfill mode, process releases serially and add a short delay if API
+     throttling is detected.
 
 ## Constraints
 
