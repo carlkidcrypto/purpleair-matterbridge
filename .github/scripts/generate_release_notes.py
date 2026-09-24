@@ -285,7 +285,10 @@ def categorize_item(title: str, files: list[str]) -> str:
         or "dependabot" in title_lower
     ):
         return "Dependencies"
-    if files and all(f in ("package-lock.json", "requirements.txt") for f in files):
+    if files and all(
+        f in ("package-lock.json", "requirements.txt")
+        for f in files
+    ):
         return "Dependencies"
 
     # 2. CI / Workflows (priority over docs so .github/workflows/*.md isn't marked doc)
@@ -302,12 +305,7 @@ def categorize_item(title: str, files: list[str]) -> str:
         (
             f.startswith(("docs/", "sphinx_docs_build/"))
             or f.endswith((".rst", ".md"))
-            or f
-            in (
-                "PLATFORMS-TESTED.md",
-                "TROUBLESHOOTING-LINUX.md",
-                "TROUBLESHOOTING-WINDOWS-WSL.md",
-            )
+            or f in ("PLATFORMS-TESTED.md", "TROUBLESHOOTING-LINUX.md", "TROUBLESHOOTING-WINDOWS-WSL.md")
         )
         and not f.startswith(".github/")
         for f in files
@@ -317,9 +315,7 @@ def categorize_item(title: str, files: list[str]) -> str:
         return "Documentation"
 
     # 4. Tests
-    if files and all(
-        f.startswith(("vitest/", "tests/")) or f == "vitest.config.ts" for f in files
-    ):
+    if files and all(f.startswith(("vitest/", "tests/")) or f == "vitest.config.ts" for f in files):
         return "Tests"
     if any(title_lower.startswith(p) for p in ["test", "tests"]):
         return "Tests"
@@ -328,7 +324,8 @@ def categorize_item(title: str, files: list[str]) -> str:
     if (
         files
         and any(
-            f.startswith("docker/") or f in ("package.json", "package-lock.json")
+            f.startswith("docker/")
+            or f in ("package.json", "package-lock.json")
             for f in files
         )
         and not any(f.startswith("src/") for f in files)
@@ -468,9 +465,7 @@ def determine_base_tag(
             return base
 
     # Priority 5: Final fallback root commit
-    root_commit = run_cmd(["git", "rev-list", "--max-parents=0", "HEAD"]).splitlines()[
-        0
-    ]
+    root_commit = run_cmd(["git", "rev-list", "--max-parents=0", "HEAD"]).splitlines()[0]
     print(f"Selected base for {current_tag}: {root_commit}")
     return root_commit
 
@@ -657,24 +652,16 @@ def build_release_notes(
         lines.append(f"npm install purpleair-matterbridge@{npm_version}")
         lines.append("```")
         lines.append("")
-        lines.append(
-            f"npm package: https://www.npmjs.com/package/purpleair-matterbridge/v/{npm_version}"
-        )
+        lines.append(f"npm package: https://www.npmjs.com/package/purpleair-matterbridge/v/{npm_version}")
         lines.append("")
         lines.append("## Container Images")
         lines.append("")
         lines.append("```bash")
-        lines.append(
-            f"docker pull carlkidcrypto/purpleair-matterbridge-images:{npm_version}"
-        )
+        lines.append(f"docker pull carlkidcrypto/purpleair-matterbridge-images:{npm_version}")
         lines.append("```")
         lines.append("")
-        lines.append(
-            "Docker Hub: https://hub.docker.com/r/carlkidcrypto/purpleair-matterbridge-images/tags"
-        )
-        lines.append(
-            "GHCR: https://github.com/carlkidcrypto/purpleair-matterbridge/pkgs/container/purpleair-matterbridge"
-        )
+        lines.append("Docker Hub: https://hub.docker.com/r/carlkidcrypto/purpleair-matterbridge-images/tags")
+        lines.append("GHCR: https://github.com/carlkidcrypto/purpleair-matterbridge/pkgs/container/purpleair-matterbridge")
         lines.append("")
 
     for cat in THEME_CATEGORIES:
@@ -877,3 +864,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+

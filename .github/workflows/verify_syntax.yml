@@ -40,3 +40,4 @@ jobs:
       - name: Run CI helper script tests
         run: |
           python -m pytest .github/scripts/tests
+

@@ -298,3 +298,4 @@ def test_build_release_notes():
         "**Full Changelog**: https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.0.8...v1.0.9"
         in notes
     )
+

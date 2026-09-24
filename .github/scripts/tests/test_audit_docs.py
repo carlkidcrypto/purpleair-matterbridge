@@ -69,3 +69,4 @@ def test_audit_file_with_issues_and_fix():
         assert issues_after == []
     finally:
         tf_path.unlink(missing_ok=True)
+
