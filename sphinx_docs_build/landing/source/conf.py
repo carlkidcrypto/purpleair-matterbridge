@@ -10,3 +10,4 @@ exclude_patterns = []
 
 html_theme = "furo"
 html_title = "purpleair-matterbridge Documentation"
+html_sourcelink_suffix = ""
