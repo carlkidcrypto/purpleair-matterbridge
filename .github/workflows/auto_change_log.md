@@ -1,9 +1,8 @@
 ---
 name: Update Changelog
 concurrency:
-  group: ${{ github.workflow }}
-  cancel-in-progress: false
-  job-discriminator: ${{ github.run_id }}
+  group: "${{ github.repository }}-${{ github.workflow }}"
+  cancel-in-progress: true
 on:
   release:
     types: [published]

@@ -1,4 +1,7 @@
 name: Validate Workflow Files
+concurrency:
+  group: "${{ github.repository }}-${{ github.workflow }}"
+  cancel-in-progress: true
 
 on:
   push:
@@ -40,4 +43,3 @@ jobs:
       - name: Run CI helper script tests
         run: |
           python -m pytest .github/scripts/tests
-
