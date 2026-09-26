@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [v1.1.0a0] - 2026-09-24
+
+- Unified concurrency across all workflows.
+- Default tile now shows AQI (new `pm25ToAqi` helper).
+- Added AQI conversion unit tests.
+- Bumped package version to `1.1.0a0`.
+
 <a name="v1.0.7"></a>
 
 ## [v1.0.7](https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.0.6...v1.0.7) (2026-08-13)

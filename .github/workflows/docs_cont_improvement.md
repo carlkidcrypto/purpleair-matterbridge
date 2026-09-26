@@ -1,5 +1,8 @@
 ---
 name: Docs Continuous Improvement Every 3 Days
+concurrency:
+  group: "${{ github.repository }}-${{ github.workflow }}"
+  cancel-in-progress: true
 on:
   workflow_dispatch:
   schedule: every 3 days

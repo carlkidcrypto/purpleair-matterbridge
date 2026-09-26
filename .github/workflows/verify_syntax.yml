@@ -1,4 +1,7 @@
 name: Validate Workflow Files
+concurrency:
+  group: "${{ github.repository }}-${{ github.workflow }}"
+  cancel-in-progress: true
 
 on:
   push:

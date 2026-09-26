@@ -1,7 +1,7 @@
 name: Build and Publish Docker Image
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: "${{ github.repository }}-${{ github.workflow }}"
   cancel-in-progress: true
 
 on:
