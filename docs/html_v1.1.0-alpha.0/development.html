@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Publishing to npm" href="npm-publishing.html"><link rel="prev" title="Configuration" href="configuration.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>purpleair-matterbridge Documentation</title>
+        <title>Development Guide - purpleair-matterbridge v1.1.0-alpha.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">purpleair-matterbridge Documentation</div></a>
+      <a href="index.html"><div class="brand">purpleair-matterbridge v1.1.0-alpha.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -172,7 +172,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -180,9 +180,9 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">purpleair-matterbridge Documentation</span>
+  <span class="sidebar-brand-text">purpleair-matterbridge v1.1.0-alpha.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -190,7 +190,15 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="npm-publishing.html">Publishing to npm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Software-Requirements.html">Software Requirements</a></li>
+</ul>
+
 </div>
 </div>
 
@@ -209,7 +217,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/index.rst.txt" title="View this page">
+  <a class="muted-link" href="_sources/development.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -222,24 +230,57 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="purpleair-matterbridge-documentation">
-<h1>purpleair-matterbridge Documentation<a class="headerlink" href="#purpleair-matterbridge-documentation" title="Link to this heading">¶</a></h1>
-<p>Select a version of the documentation to browse:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="./html/index.html">Latest Version</a></p></li>
-<li><p><a class="reference external" href="./html_v1.1.0-alpha.0/index.html">v1.1.0-alpha.0</a></p></li>
-<li><p><a class="reference external" href="./html_v1.0.9/index.html">v1.0.9</a></p></li>
-<li><p><a class="reference external" href="./html_v0.1.0/index.html">v0.1.0</a></p></li>
-</ul>
-<p>The latest documentation follows the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch. Release documentation
-is copied into versioned directories and remains unchanged after publication.</p>
-<p>For project source, configuration examples, and contribution information, see
-the <a class="reference external" href="https://github.com/carlkidcrypto/purpleair-matterbridge">GitHub repository</a>.</p>
+          <section id="development-guide">
+<h1>Development Guide<a class="headerlink" href="#development-guide" title="Link to this heading">¶</a></h1>
+<section id="local-sphinx-build">
+<h2>Local Sphinx build<a class="headerlink" href="#local-sphinx-build" title="Link to this heading">¶</a></h2>
+<p>Install the documentation dependencies and build the HTML output from the
+repository root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>sphinx_docs_build
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+make<span class="w"> </span>clean
+make<span class="w"> </span>html<span class="w"> </span><span class="nv">SPHINXOPTS</span><span class="o">=</span><span class="s2">&quot;-W&quot;</span>
+</pre></div>
+</div>
+<p>The generated site is written to <code class="docutils literal notranslate"><span class="pre">docs/html/</span></code>. Build warnings are treated as
+errors in the command above, which catches broken references and malformed
+reStructuredText before a change reaches GitHub Actions.</p>
+</section>
+<section id="versioned-documentation">
+<h2>Versioned documentation<a class="headerlink" href="#versioned-documentation" title="Link to this heading">¶</a></h2>
+<p>The GitHub Pages landing page is built from
+<code class="docutils literal notranslate"><span class="pre">sphinx_docs_build/landing/source/index.rst</span></code>. It always links to the latest
+site at <code class="docutils literal notranslate"><span class="pre">docs/html/</span></code> and lists locked release snapshots at
+<code class="docutils literal notranslate"><span class="pre">docs/html_&lt;release-tag&gt;/</span></code>.</p>
+<p>Publishing a GitHub release starts a workflow that builds the documentation
+from the release tag, updates the landing-page version list between its
+<code class="docutils literal notranslate"><span class="pre">VERSION_LIST_START</span></code> and <code class="docutils literal notranslate"><span class="pre">VERSION_LIST_END</span></code> markers, and opens a pull
+request containing the snapshot. Merge that pull request to preserve the
+release documentation as the project evolves.</p>
+</section>
+<section id="code-checks">
+<h2>Code checks<a class="headerlink" href="#code-checks" title="Link to this heading">¶</a></h2>
+<p>Run the project checks from the repository root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>run<span class="w"> </span>typecheck
+npm<span class="w"> </span><span class="nb">test</span>
+npm<span class="w"> </span>run<span class="w"> </span>build
+npm<span class="w"> </span>run<span class="w"> </span>lint
+npm<span class="w"> </span>run<span class="w"> </span>format:check
+</pre></div>
+</div>
+</section>
+<section id="publishing">
+<h2>Publishing<a class="headerlink" href="#publishing" title="Link to this heading">¶</a></h2>
+<p>The package’s <code class="docutils literal notranslate"><span class="pre">prepublishOnly</span></code> hook runs type checking, tests, and the
+production build before <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">publish</span></code>. Matterbridge is intentionally not a
+package dependency; local development links the host Matterbridge package so
+the plugin and host share one Matter.js instance.</p>
+</section>
 </section>
 
         </article>
@@ -247,8 +288,26 @@ the <a class="reference external" href="https://github.com/carlkidcrypto/purplea
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="npm-publishing.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Publishing to npm</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="configuration.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Configuration</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -267,13 +326,35 @@ the <a class="reference external" href="https://github.com/carlkidcrypto/purplea
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Development Guide</a><ul>
+<li><a class="reference internal" href="#local-sphinx-build">Local Sphinx build</a></li>
+<li><a class="reference internal" href="#versioned-documentation">Versioned documentation</a></li>
+<li><a class="reference internal" href="#code-checks">Code checks</a></li>
+<li><a class="reference internal" href="#publishing">Publishing</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=5929fcd5"></script>
+</div><script src="_static/documentation_options.js?v=55e04de1"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
