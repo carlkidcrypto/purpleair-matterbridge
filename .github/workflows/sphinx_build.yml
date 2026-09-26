@@ -88,7 +88,7 @@ jobs:
         env:
           VERSION: ${{ github.event.release.tag_name }}
         run: |
-          if [[ ! "$VERSION" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+          if [[ ! "$VERSION" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+([.-]?[0-9A-Za-z.-]+)?$ ]]; then
             echo "Release tag must be a semantic version, received: $VERSION" >&2
             exit 1
           fi

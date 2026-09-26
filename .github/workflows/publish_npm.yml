@@ -68,4 +68,12 @@ jobs:
         run: npm pack --dry-run
 
       - name: Publish package
-        run: npm publish --access public --provenance
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [[ "$PACKAGE_VERSION" =~ - ]] || [[ "$PACKAGE_VERSION" =~ [a-zA-Z] ]]; then
+            echo "Publishing prerelease version $PACKAGE_VERSION with tag 'next'..."
+            npm publish --access public --provenance --tag next
+          else
+            echo "Publishing release version $PACKAGE_VERSION with tag 'latest'..."
+            npm publish --access public --provenance --tag latest
+          fi

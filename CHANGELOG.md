@@ -1,12 +1,12 @@
 # Changelog
 
 
-## [v1.1.0a0] - 2026-09-24
+## [v1.1.0-alpha.0] - 2026-09-25
 
 - Unified concurrency across all workflows.
 - Default tile now shows AQI (new `pm25ToAqi` helper).
 - Added AQI conversion unit tests.
-- Bumped package version to `1.1.0a0`.
+- Bumped package version to `1.1.0-alpha.0`.
 
 <a name="v1.0.7"></a>
 

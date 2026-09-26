@@ -4,7 +4,7 @@
   "feedUrl": "http://127.0.0.1:9855/matter/sensors",
   "pollIntervalSeconds": 60,
   "requestTimeoutSeconds": 10,
-  "version": "1.1.0a0",
+  "version": "1.1.0-alpha.0",
   "whiteList": [],
   "blackList": [],
   "debug": false,
