@@ -121,18 +121,27 @@ jobs:
           VERSION: ${{ github.event.release.tag_name }}
         run: |
           mkdir -p docs
-          cp -R "/tmp/html_${VERSION}" "docs/html_${VERSION}"
+          rm -rf "docs/html_${VERSION}"
+          cp -r "/tmp/html_${VERSION}" "docs/html_${VERSION}"
           python3 - <<'EOF'
           import pathlib
           import re
 
+          def sort_key(ver_str):
+              try:
+                  from packaging.version import parse
+                  return parse(ver_str.lstrip("v"))
+              except Exception:
+                  return ver_str
+
           docs_dir = pathlib.Path("docs")
           index_path = pathlib.Path("sphinx_docs_build/landing/source/index.rst")
-          versions = sorted(
-              (path.name.removeprefix("html_") for path in docs_dir.iterdir()
-               if path.is_dir() and path.name.startswith("html_")),
-              reverse=True,
-          )
+          raw_versions = [
+              path.name.removeprefix("html_")
+              for path in docs_dir.iterdir()
+              if path.is_dir() and path.name.startswith("html_")
+          ]
+          versions = sorted(raw_versions, key=sort_key, reverse=True)
           entries = ["* `Latest Version <./html/index.html>`_", ""]
           entries.extend(f"* `{version} <./html_{version}/index.html>`_" for version in versions)
           replacement = ".. VERSION_LIST_START\n\n" + "\n".join(entries) + "\n\n.. VERSION_LIST_END"
@@ -169,14 +178,5 @@ jobs:
           base: main
           delete-branch: true
           add-paths: |
-            docs/.nojekyll
-            docs/html_${{ github.event.release.tag_name }}/
+            docs/
             sphinx_docs_build/landing/source/index.rst
-            docs/index.html
-            docs/.buildinfo
-            docs/_static/
-            docs/_sources/
-            docs/genindex.html
-            docs/search.html
-            docs/searchindex.js
-            docs/objects.inv

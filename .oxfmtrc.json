@@ -3,6 +3,7 @@
     "*.md",
     ".github/workflows/*.lock.json",
     ".github/workflows/*.yaml",
-    ".github/workflows/*.yml"
+    ".github/workflows/*.yml",
+    "docs/**"
   ]
 }
