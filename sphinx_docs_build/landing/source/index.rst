@@ -7,7 +7,7 @@ Select a version of the documentation to browse:
 
 * `Latest Version <./html/index.html>`_
 
-* `v1.0.9 <./html_v1.0.9/index.html>`_
+* `v1.1.0-alpha.0 <./html_v1.1.0-alpha.0/index.html>`_
 * `v0.1.0 <./html_v0.1.0/index.html>`_
 
 .. VERSION_LIST_END
