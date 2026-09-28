@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [v1.1.0-alpha.1] - 2026-09-27
+
+- Bumped `purpleair-data-logger` dependency to `1.6.0a0` in Docker requirements.
+- Bumped package version to `1.1.0-alpha.1`.
+
+
 ## [v1.1.0-alpha.0] - 2026-09-25
 
 - Unified concurrency across all workflows.
