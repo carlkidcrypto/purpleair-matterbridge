@@ -6,10 +6,11 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 usage() {
   cat <<'EOF'
-Usage: bash_scripts/release.sh VERSION
+Usage: bash_scripts/release.sh VERSION [LOGGER_VERSION]
 
-Update npm and Sphinx version metadata, regenerate package-lock.json, and run
-formatting, linting, typechecking, tests, and the production build.
+Update npm, config, and Sphinx version metadata, optionally bump purpleair-data-logger,
+regenerate package-lock.json, and run formatting, linting, typechecking, tests,
+and the production build.
 
 The script does not commit, tag, push, publish, or update the changelog.
 EOF
@@ -20,7 +21,7 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" || "$#" -eq 0 ]]; then
   exit 0
 fi
 
-if [[ "$#" -ne 1 ]]; then
+if [[ "$#" -lt 1 || "$#" -gt 2 ]]; then
   usage >&2
   exit 2
 fi
@@ -31,13 +32,20 @@ if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
   exit 2
 fi
 
+LOGGER_VERSION="${2:-}"
+
 cd "$ROOT_DIR"
 
 command -v npm >/dev/null 2>&1 || { printf 'Error: npm is required.\n' >&2; exit 1; }
 command -v node >/dev/null 2>&1 || { printf 'Error: node is required.\n' >&2; exit 1; }
 
+if [[ -n "$LOGGER_VERSION" ]]; then
+  printf 'Bumping purpleair-data-logger to %s...\n' "$LOGGER_VERSION"
+  bash "$ROOT_DIR/bash_scripts/bump_purpleair_data_logger.sh" "$LOGGER_VERSION"
+fi
+
 printf 'Updating package version to %s...\n' "$VERSION"
-npm version "$VERSION" --no-git-tag-version --ignore-scripts
+npm version "$VERSION" --no-git-tag-version --allow-same-version --ignore-scripts
 
 VERSION="$VERSION" node <<'NODE'
 const fs = require('node:fs');
@@ -62,6 +70,13 @@ for (const file of files) {
   }
 
   fs.writeFileSync(path, updated.replace(/\n/g, newline));
+}
+
+const configPath = 'purpleair-matterbridge.config.json';
+if (fs.existsSync(configPath)) {
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  config.version = version;
+  fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
 }
 NODE
 
