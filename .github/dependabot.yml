@@ -4,7 +4,7 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: github-actions
     schedule:
-      interval: daily
+      interval: weekly
     groups:
       github-actions:
         patterns:
@@ -21,7 +21,7 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: npm
     schedule:
-      interval: daily
+      interval: weekly
     groups:
       npm-dependencies:
         patterns:
@@ -30,12 +30,12 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: docker
     schedule:
-      interval: daily
+      interval: weekly
   - directory: /docker
     open-pull-requests-limit: 10
     package-ecosystem: pip
     schedule:
-      interval: daily
+      interval: weekly
     groups:
       python-dependencies:
         patterns:
@@ -44,7 +44,7 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: npm
     schedule:
-      interval: daily
+      interval: weekly
     groups:
       npm-dependencies:
         patterns:
@@ -53,7 +53,7 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: pip
     schedule:
-      interval: daily
+      interval: weekly
     groups:
       python-dependencies:
         patterns:
@@ -62,7 +62,7 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: pip
     schedule:
-      interval: daily
+      interval: weekly
     groups:
       python-dependencies:
         patterns:
