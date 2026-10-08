@@ -25,7 +25,7 @@ timeout-minutes: 15
 max-ai-credits: 25
 engine:
   id: copilot
-model: claude-sonnet-5
+model: sonnet
 network:
   allowed: [defaults, github]
 tools:
