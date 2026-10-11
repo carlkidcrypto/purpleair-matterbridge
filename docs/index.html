@@ -3,7 +3,18 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Matterbridge plugin that exposes PurpleAir sensor data as bridged Matter air quality devices for Apple Home, Google Home, and Home Assistant." name="description" />
+<meta content="purpleair matter bridge, purpleair matterbridge, purpleair-matterbridge, matterbridge purpleair, matter smart home, matter air quality sensor, apple home purpleair, google home purpleair, home assistant purpleair, carlkidcrypto" name="keywords" />
+<meta content="Carlos (&#64;carlkidcrypto)" name="author" />
+<meta content="purpleair-matterbridge — Matter Smart Home Bridge for PurpleAir" property="og:title" />
+<meta content="Expose PurpleAir sensor readings as bridged Matter air quality devices into Apple Home, Google Home, and Home Assistant." property="og:description" />
+<meta content="website" property="og:type" />
+<meta content="https://carlkidcrypto.github.io/purpleair-matterbridge/" property="og:url" />
+<meta content="summary" name="twitter:card" />
+<meta content="purpleair-matterbridge" name="twitter:title" />
+<meta content="Matterbridge plugin exposing PurpleAir sensor readings as bridged Matter air quality sensors." name="twitter:description" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html">
+        <link rel="canonical" href="https://carlkidcrypto.github.io/purpleair-matterbridge/index.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>purpleair-matterbridge Documentation</title>
@@ -34,7 +45,40 @@
       }
     }
   }
-</style></head>
+</style>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://carlkidcrypto.github.io/purpleair-matterbridge/#software",
+        "name": "purpleair-matterbridge",
+        "alternateName": ["PurpleAir Matterbridge", "PurpleAir Matter Bridge"],
+        "description": "Matterbridge plugin exposing PurpleAir sensor data as bridged Matter air quality and environmental devices for Apple Home, Google Home, and Home Assistant.",
+        "url": "https://carlkidcrypto.github.io/purpleair-matterbridge/",
+        "codeRepository": "https://github.com/carlkidcrypto/purpleair-matterbridge",
+        "programmingLanguage": ["TypeScript", "JavaScript"],
+        "operatingSystem": ["Linux", "macOS", "Windows"],
+        "author": {
+          "@type": "Person",
+          "name": "Carlos",
+          "alternateName": "carlkidcrypto",
+          "url": "https://carlkidcrypto.github.io/"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://carlkidcrypto.github.io/purpleair-matterbridge/#website",
+        "url": "https://carlkidcrypto.github.io/purpleair-matterbridge/",
+        "name": "purpleair-matterbridge Documentation",
+        "description": "Official documentation and setup guide for purpleair-matterbridge."
+      }
+    ]
+  }
+  </script>
+</head>
   <body>
     
     <script>
@@ -172,7 +216,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -222,13 +266,29 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
           <section id="purpleair-matterbridge-documentation">
 <h1>purpleair-matterbridge Documentation<a class="headerlink" href="#purpleair-matterbridge-documentation" title="Link to this heading">¶</a></h1>
+<p>The <strong>purpleair-matterbridge</strong> plugin bridges <a class="reference external" href="https://www2.purpleair.com/">PurpleAir</a>
+sensor data into the modern <a class="reference external" href="https://csa-iot.org/all-solutions/matter/">Matter</a> smart home
+ecosystem via <a class="reference external" href="https://github.com/Luligu/matterbridge">Matterbridge</a>. It allows you to
+view real-time air quality, PM2.5 readings, temperature, and humidity directly inside
+<strong>Apple Home</strong>, <strong>Google Home</strong>, and <strong>Home Assistant</strong> without relying on cloud bridges.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Native Matter Support:</strong> Exposes PurpleAir readings as standard Matter air quality and environmental sensing clusters.</p></li>
+<li><p><strong>Smart Home Ecosystems:</strong> Compatible with Apple Home, Google Home, Amazon Alexa, and Home Assistant.</p></li>
+<li><p><strong>Local Network First:</strong> Operates locally via IPv6 and mDNS for low latency and high privacy.</p></li>
+<li><p><strong>Easy Installation:</strong> Distributed as an npm package ready to integrate with Matterbridge.</p></li>
+</ul>
+</section>
+<section id="select-a-version">
+<h2>Select a Version<a class="headerlink" href="#select-a-version" title="Link to this heading">¶</a></h2>
 <p>Select a version of the documentation to browse:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="./html/index.html">Latest Version</a></p></li>
@@ -239,8 +299,16 @@
 </ul>
 <p>The latest documentation follows the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch. Release documentation
 is copied into versioned directories and remains unchanged after publication.</p>
-<p>For project source, configuration examples, and contribution information, see
-the <a class="reference external" href="https://github.com/carlkidcrypto/purpleair-matterbridge">GitHub repository</a>.</p>
+</section>
+<section id="project-links">
+<h2>Project Links<a class="headerlink" href="#project-links" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Source Code:</strong> <a class="reference external" href="https://github.com/carlkidcrypto/purpleair-matterbridge">GitHub Repository</a></p></li>
+<li><p><strong>Package:</strong> <a class="reference external" href="https://www.npmjs.com/package/purpleair-matterbridge">npm Package</a></p></li>
+<li><p><strong>Data Logger:</strong> <a class="reference external" href="https://carlkidcrypto.github.io/purpleair_data_logger/">PurpleAir Data Logger</a></p></li>
+<li><p><strong>Maintainer:</strong> <a class="reference external" href="https://carlkidcrypto.github.io/">Carlos (&#64;carlkidcrypto)</a></p></li>
+</ul>
+</section>
 </section>
 
         </article>
@@ -254,7 +322,7 @@ the <a class="reference external" href="https://github.com/carlkidcrypto/purplea
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2026, carlkidcrypto
+                Copyright &#169; 2024-2026, carlkidcrypto
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -268,8 +336,29 @@ the <a class="reference external" href="https://github.com/carlkidcrypto/purplea
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">purpleair-matterbridge Documentation</a><ul>
+<li><a class="reference internal" href="#key-features">Key Features</a></li>
+<li><a class="reference internal" href="#select-a-version">Select a Version</a></li>
+<li><a class="reference internal" href="#project-links">Project Links</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
