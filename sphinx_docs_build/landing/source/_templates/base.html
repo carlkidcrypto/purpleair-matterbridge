@@ -1,0 +1,36 @@
+{% extends "!base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://carlkidcrypto.github.io/purpleair-matterbridge/#software",
+        "name": "purpleair-matterbridge",
+        "alternateName": ["PurpleAir Matterbridge", "PurpleAir Matter Bridge"],
+        "description": "Matterbridge plugin exposing PurpleAir sensor data as bridged Matter air quality and environmental devices for Apple Home, Google Home, and Home Assistant.",
+        "url": "https://carlkidcrypto.github.io/purpleair-matterbridge/",
+        "codeRepository": "https://github.com/carlkidcrypto/purpleair-matterbridge",
+        "programmingLanguage": ["TypeScript", "JavaScript"],
+        "operatingSystem": ["Linux", "macOS", "Windows"],
+        "author": {
+          "@type": "Person",
+          "name": "Carlos",
+          "alternateName": "carlkidcrypto",
+          "url": "https://carlkidcrypto.github.io/"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://carlkidcrypto.github.io/purpleair-matterbridge/#website",
+        "url": "https://carlkidcrypto.github.io/purpleair-matterbridge/",
+        "name": "purpleair-matterbridge Documentation",
+        "description": "Official documentation and setup guide for purpleair-matterbridge."
+      }
+    ]
+  }
+  </script>
+{% endblock %}
