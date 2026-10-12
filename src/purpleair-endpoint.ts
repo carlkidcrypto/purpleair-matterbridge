@@ -71,7 +71,7 @@ export function createPurpleAirEndpoint(
       undefined,
       reading.firmwareVersion,
     )
-    .createDefaultAirQualityClusterServer(pm25ToAqi(reading.pm25 ?? 0) as AirQuality.AirQualityEnum)
+    .createDefaultAirQualityClusterServer(reading.airQuality as AirQuality.AirQualityEnum)
     .createDefaultTemperatureMeasurementClusterServer(reading.temperature ?? null)
     .createDefaultRelativeHumidityMeasurementClusterServer(reading.humidity ?? null)
     .createDefaultPressureMeasurementClusterServer(reading.pressure ?? null)

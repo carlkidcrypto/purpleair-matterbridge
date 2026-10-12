@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { airQualitySensor } from "matterbridge";
+import { MatterbridgeEndpoint, airQualitySensor } from "matterbridge";
 import {
   AirQuality,
   Pm1ConcentrationMeasurement,
@@ -59,6 +59,14 @@ describe("PurpleAir Matter endpoint", () => {
     ]) {
       expect(endpoint.hasClusterServer(cluster)).toBe(true);
     }
+  });
+
+  it("initializes airQuality cluster with reading.airQuality enum", () => {
+    const spy = vi.spyOn(MatterbridgeEndpoint.prototype, "createDefaultAirQualityClusterServer");
+    const testReading = { ...reading, airQuality: 3, pm25: 155.0 };
+    createPurpleAirEndpoint(testReading, 0xfff1);
+    expect(spy).toHaveBeenCalledWith(3);
+    spy.mockRestore();
   });
 
   it("omits TVOC when the source does not provide it", () => {
