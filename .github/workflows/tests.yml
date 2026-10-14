@@ -5,16 +5,29 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/workflows/*.md'
+      - '.github/workflows/*.lock.yml'
+      - '.github/aw/**'
+      - '.github/*.md'
+      - '**/*.md'
+      - '**/*.rst'
+      - 'docs/**'
+      - 'sphinx_docs_build/**'
   pull_request:
     branches: [main]
-    paths:
-      - src/**
-      - vitest/**
-      - package.json
-      - package-lock.json
-      - tsconfig*.json
-      - vitest.config.ts
-      - .github/workflows/tests.yml
+    paths-ignore:
+      - '.github/workflows/*.md'
+      - '.github/workflows/*.lock.yml'
+      - '.github/aw/**'
+      - '.github/*.md'
+      - '**/*.md'
+      - '**/*.rst'
+      - 'docs/**'
+      - 'sphinx_docs_build/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
