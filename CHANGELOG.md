@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v1.1.0-alpha.2] - 2026-10-13
+
+- Bumped `purpleair-data-logger` dependency to `1.6.0a1` in Docker requirements.
+- Fixed runtime air quality cluster initialization by passing the proper `AirQuality` enum value instead of AQI.
+- Enhanced documentation SEO with metadata, OpenGraph, JSON-LD, and overview additions.
+- Added `bump_purpleair_data_logger.sh` script and integrated with `release.sh`.
+- Switched gh-aw workflows to model alias `sonnet`.
+- Bumped `matterbridge` to 3.10.13.
+- Bumped package version to `1.1.0-alpha.2`.
+
+
 ## [v1.1.0-alpha.1] - 2026-09-27
 
 - Bumped `purpleair-data-logger` dependency to `1.6.0a0` in Docker requirements.
