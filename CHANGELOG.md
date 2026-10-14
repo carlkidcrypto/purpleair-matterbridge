@@ -1,29 +1,256 @@
+Last Updated: 2026-10-14 03:53:52 UTC
+
 # Changelog
 
 
-## [v1.1.0-alpha.2] - 2026-10-13
+<a name="v1.1.0-alpha.2"></a>
 
-- Bumped `purpleair-data-logger` dependency to `1.6.0a1` in Docker requirements.
-- Fixed runtime air quality cluster initialization by passing the proper `AirQuality` enum value instead of AQI.
-- Enhanced documentation SEO with metadata, OpenGraph, JSON-LD, and overview additions.
-- Added `bump_purpleair_data_logger.sh` script and integrated with `release.sh`.
-- Switched gh-aw workflows to model alias `sonnet`.
-- Bumped `matterbridge` to 3.10.13.
-- Bumped package version to `1.1.0-alpha.2`.
+## [v1.1.0-alpha.2](https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.1.0-alpha.1...v1.1.0-alpha.2) (2026-10-13)
 
 
-## [v1.1.0-alpha.1] - 2026-09-27
 
-- Bumped `purpleair-data-logger` dependency to `1.6.0a0` in Docker requirements.
-- Bumped package version to `1.1.0-alpha.1`.
+### Changes
 
 
-## [v1.1.0-alpha.0] - 2026-09-25
 
-- Unified concurrency across all workflows.
-- Default tile now shows AQI (new `pm25ToAqi` helper).
-- Added AQI conversion unit tests.
-- Bumped package version to `1.1.0-alpha.0`.
+#### Dependency Updates
+
+
+
+- Bump the npm-dependencies group with 2 updates ([#122](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/122))
+  
+  
+
+#### Documentation Updates
+
+
+
+- docs: add versioned documentation for v1.1.0-alpha.1 ([#138](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/138))
+  
+  
+
+#### Features
+
+
+
+- feat: enhance documentation SEO with metadata, OpenGraph, JSON-LD, and overview ([#152](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/152))
+  
+
+- feat: use model alias sonnet across all gh-aw workflows ([#149](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/149))
+  
+  
+  
+
+
+
+
+
+
+
+---
+
+
+<a name="v1.1.0-alpha.1"></a>
+
+## [v1.1.0-alpha.1](https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.1.0-alpha.0...v1.1.0-alpha.1) (2026-09-27)
+
+
+
+### Changes
+
+
+
+#### Documentation Updates
+
+
+
+- docs: add versioned documentation for v1.1.0-alpha.0 ([#131](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/131))
+  
+  
+  
+
+
+
+
+
+
+
+---
+
+
+<a name="v1.1.0-alpha.0"></a>
+
+## [v1.1.0-alpha.0](https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.0.9...v1.1.0-alpha.0) (2026-09-25)
+
+
+
+### Changes
+
+
+
+#### Dependency Updates
+
+
+
+- Bump matterbridge from 3.10.9 to 3.10.10 in /docker ([#115](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/115))
+  
+
+- Bump the npm-dependencies group with 5 updates ([#118](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/118))
+  
+
+- Bump the github-actions group with 3 updates ([#119](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/119))
+  
+
+- Bump actions/deploy-pages from 5.0.0 to 5.0.1 ([#84](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/84))
+  
+
+- Bump oxlint from 1.81.0 to 1.82.0 ([#99](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/99))
+  
+
+- Bump [@types](https://github.com/types)/node from 26.4.1 to 26.5.1 ([#101](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/101))
+  
+
+- Bump matterbridge from 3.10.8 to 3.10.9 in /docker ([#103](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/103))
+  
+
+- Bump oxlint from 1.79.0 to 1.81.0 ([#90](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/90))
+  
+
+- Bump [@types](https://github.com/types)/node from 26.2.0 to 26.4.1 ([#88](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/88))
+  
+
+- Bump matterbridge from 3.10.7 to 3.10.8 in /docker ([#93](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/93))
+  
+  
+
+#### Documentation Updates
+
+
+
+- docs: improve documentation ([#94](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/94))
+  
+  
+
+#### Feature/Gh
+
+
+
+- Feature/gh aw compile ([#86](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/86))
+  
+  
+
+#### Features
+
+
+
+- feat: resolve [#79](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/79) with AQI conversion, unify workflow concurrency, and bump to v1.1.0a0 ([#123](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/123))
+  
+  
+  
+
+
+
+
+
+
+
+---
+
+
+<a name="v1.0.9"></a>
+
+## [v1.0.9](https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.0.8...v1.0.9) (2026-08-30)
+
+
+
+### Changes
+
+
+
+#### Documentation Updates
+
+
+
+- docs: add versioned documentation for v1.0.9 ([#75](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/75))
+  
+
+- docs: add versioned documentation for v1.0.8 ([#63](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/63))
+  
+  
+
+#### Hotfix/Deps
+
+
+
+- Hotfix/deps ([#74](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/74))
+  
+  
+
+#### Updates & Improvements
+
+
+
+- Update publish_npm.yml ([#77](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/77))
+  
+  
+  
+
+
+
+
+
+
+
+---
+
+
+<a name="v1.0.8"></a>
+
+## [v1.0.8](https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.0.7...v1.0.8) (2026-08-26)
+
+
+
+### Changes
+
+
+
+#### Dependency Updates
+
+
+
+- Bump oxfmt from 0.62.0 to 0.64.0 ([#55](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/55))
+  
+
+- Bump oxlint from 1.77.0 to 1.79.0 ([#56](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/56))
+  
+
+- Bump docker/setup-buildx-action from 4.2.0 to 4.3.0 ([#52](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/52))
+  
+
+- Bump matterbridge from 3.10.4 to 3.10.6 ([#59](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/59))
+  
+
+- Bump matterbridge from 3.10.4 to 3.10.6 in /docker ([#60](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/60))
+  
+  
+
+#### Documentation Updates
+
+
+
+- docs: add versioned documentation for v1.0.7 ([#44](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/44))
+  
+  
+  
+
+
+
+
+
+
+
+---
+
 
 <a name="v1.0.7"></a>
 
@@ -57,7 +284,7 @@
   
   
 
-#### Features
+#### Feature/Bump
 
 
 
@@ -112,7 +339,7 @@
   
   
 
-#### Features
+#### Feature/Linting
 
 
 
@@ -184,7 +411,7 @@
   
   
 
-#### Features
+#### Feature/Another
 
 
 
@@ -304,15 +531,7 @@
 
 
 
-#### Bug Fixes
-
-
-
-- Fix/sphinx workflow ([#4](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/4))
-  
-  
-
-#### Cleanup
+#### Cleanup/Remove
 
 
 
@@ -348,6 +567,33 @@
   
   
 
+#### Feature/More
+
+
+
+- Feature/more fixes ([#12](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/12))
+  
+  
+
+#### Feature/Npm
+
+
+
+- Feature/npm publishing ([#5](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/5))
+  
+  
+
+#### Feature/Sphinx
+
+
+
+- Feature/sphinx 2 ([#3](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/3))
+  
+
+- Feature/sphinx ([#2](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/2))
+  
+  
+
 #### Features
 
 
@@ -356,20 +602,11 @@
   
   
 
-#### Features
+#### Fix/Sphinx
 
 
 
-- Feature/more fixes ([#12](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/12))
-  
-
-- Feature/npm publishing ([#5](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/5))
-  
-
-- Feature/sphinx 2 ([#3](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/3))
-  
-
-- Feature/sphinx ([#2](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/2))
+- Fix/sphinx workflow ([#4](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/4))
   
   
 
