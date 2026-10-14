@@ -1,8 +1,5 @@
-{% extends "!base.html" %}
-
-{% block extrahead %}
-  {{ super() }}
-  <script type="application/ld+json">
+{% extends "!base.html" %} {% block extrahead %} {{ super() }}
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
@@ -32,5 +29,5 @@
       }
     ]
   }
-  </script>
+</script>
 {% endblock %}
