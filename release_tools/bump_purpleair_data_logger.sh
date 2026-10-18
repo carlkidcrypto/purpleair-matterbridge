@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 usage() {
   cat <<'EOF'
-Usage: bash_scripts/bump_purpleair_data_logger.sh LOGGER_VERSION
+Usage: release_tools/bump_purpleair_data_logger.sh LOGGER_VERSION
 
 Update purpleair-data-logger version in docker/requirements.txt and synchronize
 documentation references across README.md and TROUBLESHOOTING-WINDOWS-WSL.md.
