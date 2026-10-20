@@ -12,3 +12,6 @@ sphinx_docs_build/landing/.doctrees/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+# Dynamically extracted gh-aw inline skills
+/.github/skills/*
+!/.github/skills/agentic-workflows/

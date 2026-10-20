@@ -34,9 +34,10 @@ timeout-minutes: 15
 max-ai-credits: 25
 engine:
   id: copilot
+  args: ["--allow-all-tools"]
 model: sonnet
 network:
-  allowed: [defaults, github]
+  allowed: [defaults, github, go, api.github.com]
 tools:
   bash: true
 ---
@@ -129,6 +130,7 @@ has changed.
    - Base: `main`
    - Title: `Update CHANGELOG.md`
    - Commit message: `chore(docs): update changelog`
+   - Git staging: Explicitly run `git add CHANGELOG.md`. NEVER use blanket staging commands (`git add -A` or `git add .`).
    - The PR body must include the trigger source, whether a release tag was
      involved, the explicit comparison range, notable top-level changelog
      sections, a concise summary derived from the single `git log` result,
