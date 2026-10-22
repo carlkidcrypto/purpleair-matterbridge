@@ -53,11 +53,11 @@
   },
   "devDependencies": {
     "@types/node": "26.6.5",
-    "@vitest/coverage-v8": "5.0.3",
-    "oxfmt": "^0.72.0",
-    "oxlint": "1.87.0",
+    "@vitest/coverage-v8": "5.0.5",
+    "oxfmt": "^0.73.0",
+    "oxlint": "1.88.0",
     "typescript": "7.0.2",
-    "vitest": "5.0.3"
+    "vitest": "5.0.5"
   },
   "engines": {
     "node": ">=20.19.0 <21.0.0 || >=22.13.0 <23.0.0 || >=24.0.0 <25.0.0 || >=26.0.0 <27.0.0"
