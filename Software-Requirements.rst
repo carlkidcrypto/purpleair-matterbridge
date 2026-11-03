@@ -140,3 +140,12 @@ MBPA-040
 MBPA-041
    The package SHALL pass TypeScript type checking, production build, unit
    tests, linting, and formatting checks before release.
+
+Release and versioning
+----------------------
+
+MBPA-050
+   The package versioning and release automation SHALL follow SemVer-compliant
+   Calendar Versioning (CalSemVer) using ``YYYY.M.D`` for stable releases and
+   ``YYYY.M.D-N`` for pre-releases, without leading zeroes, complying with SemVer 2.0.0
+   and npm registry publication requirements.
