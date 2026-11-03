@@ -1,6 +1,42 @@
-Last Updated: 2026-10-14 03:53:52 UTC
+Last Updated: 2026-11-03 06:52:59 UTC
 
 # Changelog
+
+
+<a name="v1.1.0"></a>
+
+## [v1.1.0](https://github.com/carlkidcrypto/purpleair-matterbridge/compare/v1.1.0-alpha.2...v1.1.0) (2026-11-02)
+
+
+
+### Changes
+
+
+
+#### Documentation Updates
+
+
+
+- docs: add versioned documentation for v1.1.0-alpha.2 ([#154](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/154))
+  
+  
+
+#### Features
+
+
+
+- feat: migrate release scripts to standardized release_tools ([#160](https://github.com/carlkidcrypto/purpleair-matterbridge/issues/160))
+  
+  
+  
+
+
+
+
+
+
+
+---
 
 
 <a name="v1.1.0-alpha.2"></a>
