@@ -7,8 +7,8 @@ Scope
 These requirements define the behavior of the ``purpleair-matterbridge``
 companion plugin. ``SHALL`` and ``SHALL NOT`` are normative.
 
-NOTE: A plugin must never declare Matterbridge as a dependency, devDependency, or peerDependency.
-See the Matterbridge development guide for more information:
+NOTE: A plugin must never declare Matterbridge as a dependency, devDependency,
+or peerDependency. See the Matterbridge development guide for more information:
 https://github.com/Luligu/matterbridge/blob/main/README-DEV.md
 
 Runtime and configuration
@@ -147,5 +147,5 @@ Release and versioning
 MBPA-050
    The package versioning and release automation SHALL follow SemVer-compliant
    Calendar Versioning (CalSemVer) using ``YYYY.M.D`` for stable releases and
-   ``YYYY.M.D-N`` for pre-releases, without leading zeroes, complying with SemVer 2.0.0
-   and npm registry publication requirements.
+   ``YYYY.M.D-N`` for pre-releases, without leading zeroes, complying with
+   SemVer 2.0.0 and npm registry publication requirements.

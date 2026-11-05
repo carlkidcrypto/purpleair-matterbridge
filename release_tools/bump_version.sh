@@ -181,8 +181,13 @@ if [[ "$verify" == true ]]; then
     # Sphinx documentation build
     sphinx_bin="sphinx-build"
     venv_candidates=(
+        "/home/carlkidcrypto/Github/ezsnmp/python3.14.venv"
+        "/home/carlkidcrypto/Github/ezsnmp/python3.13.venv"
         "/home/carlkidcrypto/Github/ezsnmp/python3.12.venv"
+        "${repo_root}/python3.14.venv"
+        "${repo_root}/python3.13.venv"
         "${repo_root}/python3.12.venv"
+        "${repo_root}/.venv"
         "${VIRTUAL_ENV:-}"
     )
     for vdir in "${venv_candidates[@]}"; do
