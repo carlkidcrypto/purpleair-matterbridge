@@ -1,5 +1,5 @@
 ---
-name: Docs Continuous Improvement Every 3 Days
+name: Docs Continuous Improvement
 concurrency:
   group: "${{ github.repository }}-${{ github.workflow }}"
   cancel-in-progress: true
