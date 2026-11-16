@@ -2,7 +2,7 @@
 name: Update Changelog
 concurrency:
   group: "${{ github.repository }}-${{ github.workflow }}"
-  cancel-in-progress: true
+  cancel-in-progress: false
   job-discriminator: ${{ github.run_id }}
 on:
   release:
@@ -84,6 +84,8 @@ has changed.
    ```bash
    git-chglog --config .chglog/config.yml -o CHANGELOG.tmp
    ```
+
+   - Validate that `CHANGELOG.tmp` is non-empty and that the latest release section contains at least one commit entry (`- `) before proceeding. If the latest section is empty, stop with a clear error instead of opening an empty PR.
 
 3. Determine the comparison range.
 
