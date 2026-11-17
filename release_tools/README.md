@@ -17,7 +17,7 @@ Atomically bumps version strings across npm package metadata, lockfiles, plugin 
 - **Auto-detection**: Automatically extracts current version from `package.json` if omitted.
 - **Safety checks**:
   - Updates `package.json`, `package-lock.json`, `purpleair-matterbridge.config.json`, and `sphinx_docs_build/source/conf.py`.
-  - Optionally bumps `purpleair-data-logger` references across `docker/requirements.txt`, `README.md`, and `TROUBLESHOOTING-WINDOWS-WSL.md`.
+  - Optionally bumps `purpleair-data-logger` references across `docker/requirements.txt`, `README.rst`, and `TROUBLESHOOTING-WINDOWS-WSL.md`.
 
 ### `bump_purpleair_data_logger.sh`
 
@@ -61,7 +61,7 @@ When running `bump_version.sh` in `purpleair-matterbridge`, the following files 
 
 If a logger version is specified:
 5. `docker/requirements.txt` &mdash; Docker PurpleAir data logger pip requirement pin
-6. `README.md` &mdash; Documentation image tags
+6. `README.rst` &mdash; Documentation image tags
 7. `TROUBLESHOOTING-WINDOWS-WSL.md` &mdash; WSL troubleshooting guide image tag references
 
 ---

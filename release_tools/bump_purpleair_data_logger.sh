@@ -9,7 +9,7 @@ usage() {
 Usage: release_tools/bump_purpleair_data_logger.sh LOGGER_VERSION
 
 Update purpleair-data-logger version in docker/requirements.txt and synchronize
-documentation references across README.md and TROUBLESHOOTING-WINDOWS-WSL.md.
+documentation references across README.rst and TROUBLESHOOTING-WINDOWS-WSL.md.
 
 The script does not commit, tag, push, or open a pull request.
 Review the resulting git diff and submit changes via a pull request.
@@ -60,8 +60,8 @@ if (reqUpdated === reqOriginal && !reqOriginal.includes(`purpleair-data-logger==
 fs.writeFileSync(reqPath, reqUpdated.trimEnd() + '\n');
 console.log(`Updated ${reqPath}`);
 
-// 2. Update README.md
-const readmePath = 'README.md';
+// 2. Update README.rst
+const readmePath = 'README.rst';
 let readme = fs.readFileSync(readmePath, 'utf8');
 readme = readme.replace(
   /purpleair-matterbridge:logger-[^\s\\`]+/g,

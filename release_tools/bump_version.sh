@@ -100,7 +100,7 @@ target_files=(
 if [[ -n "$logger_version" ]]; then
     target_files+=(
         docker/requirements.txt
-        README.md
+        README.rst
         TROUBLESHOOTING-WINDOWS-WSL.md
     )
 fi

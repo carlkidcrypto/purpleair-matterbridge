@@ -19,7 +19,7 @@
   "files": [
     "dist",
     "PLATFORMS-TESTED.md",
-    "README.md",
+    "README.rst",
     "CHANGELOG.md",
     "Software-Requirements.rst",
     "TROUBLESHOOTING-LINUX.md",

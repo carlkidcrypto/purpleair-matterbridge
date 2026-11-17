@@ -114,8 +114,8 @@ def test_categorize_item():
     # Documentation
     assert (
         categorize_item(
-            "Update README.md with Docker usage",
-            ["README.md"],
+            "Update README.rst with Docker usage",
+            ["README.rst"],
         )
         == "Documentation"
     )
