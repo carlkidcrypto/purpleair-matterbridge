@@ -43,7 +43,7 @@ individual runs small, focused, and easy to review.
 
 Audit and improve, when a meaningful issue is found:
 
-- `README.md`
+- `README.rst`
 - `CHANGELOG.md`, without rewriting historical release entries
 - `Software-Requirements.rst`
 - `PLATFORMS-TESTED.md`
