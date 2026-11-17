@@ -3,10 +3,19 @@
 Matterbridge plugin that exposes PurpleAir Matter JSON as bridged Matter air
 quality sensors.
 
+[![Tests](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/tests.yml?branch=main&style=flat-square&label=Tests)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/tests.yml)
 [![Sphinx Docs](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/sphinx_build.yml?branch=main&style=flat-square&label=Sphinx%20Docs)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/sphinx_build.yml)
-[![Docker Images](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/build_and_publish_docker_images.yml?branch=main&style=flat-square&label=Docker%20Images)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/build_and_publish_docker_images.yml)
-[![npm Publish](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/publish_npm.yml?branch=main&style=flat-square&label=npm%20Publish)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/publish_npm.yml)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=carlkidcrypto_purpleair-matterbridge&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=carlkidcrypto_purpleair-matterbridge)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=carlkidcrypto_purpleair-matterbridge&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=carlkidcrypto_purpleair-matterbridge)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=carlkidcrypto_purpleair-matterbridge&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=carlkidcrypto_purpleair-matterbridge)
+
 [![npm Version](https://img.shields.io/npm/v/purpleair-matterbridge?style=flat-square)](https://www.npmjs.com/package/purpleair-matterbridge)
+[![npm Downloads](https://img.shields.io/npm/dm/purpleair-matterbridge?style=flat-square)](https://www.npmjs.com/package/purpleair-matterbridge)
+[![npm Publish](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/publish_npm.yml?branch=main&style=flat-square&label=npm%20Publish)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/publish_npm.yml)
+[![Docker Images](https://img.shields.io/github/actions/workflow/status/carlkidcrypto/purpleair-matterbridge/build_and_publish_docker_images.yml?branch=main&style=flat-square&label=Docker%20Images)](https://github.com/carlkidcrypto/purpleair-matterbridge/actions/workflows/build_and_publish_docker_images.yml)
+
+[![Node.js Version](https://img.shields.io/node/v/purpleair-matterbridge?style=flat-square)](https://www.npmjs.com/package/purpleair-matterbridge)
 [![License](https://img.shields.io/github/license/carlkidcrypto/purpleair-matterbridge?style=flat-square)](LICENSE)
 
 ## Requirements
