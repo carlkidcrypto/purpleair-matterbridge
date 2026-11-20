@@ -9,40 +9,27 @@ on:
     types: [published]
   workflow_dispatch:
 
-env:
-  DOCKER_REPO: carlkidcrypto/purpleair-matterbridge-images
-  GHCR_REPO: ghcr.io/carlkidcrypto/purpleair-matterbridge
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-  build-and-push:
+  prepare-metadata:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    permissions:
-      contents: read
-      packages: write
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      tags: ${{ steps.meta.outputs.tags }}
+      labels: ${{ steps.meta.outputs.labels }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Compute image tags
-        id: tags
+      - name: Compute image tags and labels
+        id: meta
         shell: bash
+        env:
+          DOCKER_REPO: carlkidcrypto/purpleair-matterbridge-images
+          GHCR_REPO: ghcr.io/carlkidcrypto/purpleair-matterbridge
         run: |
           set -euo pipefail
           version=$(node -p "require('./package.json').version")
@@ -50,27 +37,35 @@ jobs:
           unique_suffix="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           {
             echo "version=${version}"
-            echo "short_sha=${short_sha}"
-            echo "unique_suffix=${unique_suffix}"
-            echo "docker_tags<<EOF"
+            echo "tags<<EOF"
             echo "${DOCKER_REPO}:${version}-${short_sha}-${unique_suffix}"
             echo "${GHCR_REPO}:${version}-${short_sha}-${unique_suffix}"
             echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+            echo "labels<<EOF"
+            echo "org.opencontainers.image.title=purpleair-matterbridge"
+            echo "org.opencontainers.image.description=Matterbridge plugin with the PurpleAir data logger"
+            echo "org.opencontainers.image.version=${version}"
+            echo "org.opencontainers.image.revision=${GITHUB_SHA}"
+            echo "org.opencontainers.image.source=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
 
-      - name: Build and push image
-        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
-        with:
-          context: .
-          file: docker/Dockerfile
-          push: true
-          pull: true
-          tags: ${{ steps.tags.outputs.docker_tags }}
-          labels: |
-            org.opencontainers.image.title=purpleair-matterbridge
-            org.opencontainers.image.description=Matterbridge plugin with the PurpleAir data logger
-            org.opencontainers.image.version=${{ steps.tags.outputs.version }}
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
-          cache-from: type=gha,scope=purpleair-matterbridge
-          cache-to: type=gha,mode=max,scope=purpleair-matterbridge
+  build-and-push:
+    needs: prepare-metadata
+    permissions:
+      contents: read
+      packages: write
+    uses: carlkidcrypto/shared-workflows/.github/workflows/reusable_docker_publish.yml@3538efdfabdbcf0ae956cfc5685fd4c21a59696b
+    with:
+      docker-repo: carlkidcrypto/purpleair-matterbridge-images
+      ghcr-repo: ghcr.io/carlkidcrypto/purpleair-matterbridge
+      context: .
+      dockerfile: docker/Dockerfile
+      push: true
+      tags: ${{ needs.prepare-metadata.outputs.tags }}
+      labels: ${{ needs.prepare-metadata.outputs.labels }}
+      cache-scope: purpleair-matterbridge
+      timeout-minutes: 120
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
