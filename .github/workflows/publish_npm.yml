@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   publish:
-    uses: carlkidcrypto/shared-workflows/.github/workflows/reusable_npm_publish.yml@22f04e222fa07048891327e4d34bb174d36e7bfa
+    uses: carlkidcrypto/shared-workflows/.github/workflows/reusable_npm_publish.yml@eeefdd5c0a594d59ae86a09437b2de9bb57618a3
     with:
       install-cmd: 'npm ci && npm install -g matterbridge@3.10.7 && npm link matterbridge'
       test-cmd: 'npm run typecheck && npm test && npm run lint && npm run format:check'
