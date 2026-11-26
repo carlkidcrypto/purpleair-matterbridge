@@ -1,4 +1,4 @@
-FROM ubuntu:26.04
+FROM node:26-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/data \
@@ -6,16 +6,13 @@ ENV DEBIAN_FRONTEND=noninteractive \
     NODE_ENV=production \
     PURPLEAIR_SETTINGS_FILE=/config/purpleair-settings.json
 
+COPY --from=ghcr.io/astral-sh/uv:0.13.10 /uv /usr/local/bin/uv
+
 RUN apt-get update \
-    && apt-get install --yes --no-install-recommends ca-certificates curl \
-    && curl --fail --silent --show-error https://deb.nodesource.com/setup_26.x | bash - \
-    && apt-get install --yes --no-install-recommends nodejs \
-    && npm install --global npm@latest \
+    && apt-get install --yes --no-install-recommends ca-certificates \
     && node --version \
     && npm --version \
     && npx --version \
-    && curl --fail --silent --show-error --location https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz \
-        | tar --extract --gzip --strip-components=1 --directory /usr/local/bin uv-x86_64-unknown-linux-gnu/uv \
     && useradd --system --home-dir /data --create-home --shell /usr/sbin/nologin matterbridge \
     && mkdir -p /opt/plugin /opt/matterbridge /opt/logger-venv /data/logger \
     && chown -R matterbridge:matterbridge /opt/plugin /opt/matterbridge /opt/logger-venv /data \
@@ -34,7 +31,7 @@ COPY --chown=matterbridge:matterbridge docker/package.json /opt/matterbridge-pac
 
 RUN npm ci --include=dev --ignore-scripts \
     && matterbridge_version="$(node --input-type=commonjs --eval "console.log(require('/opt/matterbridge-package.json').dependencies.matterbridge)")" \
-    && npm install --global --prefix /opt/matterbridge --omit=dev "matterbridge@${matterbridge_version}" \
+    && npm install --global --prefix /opt/matterbridge --omit=dev --ignore-scripts "matterbridge@${matterbridge_version}" \
     && mkdir -p node_modules \
     && ln -s /opt/matterbridge/lib/node_modules/matterbridge node_modules/matterbridge \
     && npm run build
@@ -42,7 +39,7 @@ RUN npm ci --include=dev --ignore-scripts \
 COPY --chown=matterbridge:matterbridge docker/requirements.txt /opt/logger-requirements.txt
 
 RUN uv venv --python 3.14 /opt/logger-venv \
-    && uv pip install --python /opt/logger-venv/bin/python --no-cache --requirement /opt/logger-requirements.txt
+    && uv pip install --python /opt/logger-venv/bin/python --no-cache --no-build --require-hashes --requirement /opt/logger-requirements.txt
 
 EXPOSE 5540/udp 5353/udp
 VOLUME ["/data"]
